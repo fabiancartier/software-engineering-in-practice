@@ -2,41 +2,34 @@
 
 [Po polsku →](github-auth.pl.md) · [← Back to Start here](../../START-HERE.md)
 
-Cloning and reading this repository needed no login at all. The first
-time you run `git push`, though, Git needs to prove to GitHub that
-you're actually you. This page is written for that exact moment — read
-it when a lab tells you to push, not before.
+Cloning and reading the repository does not require a login. The first
+`git push` does require you to authenticate with GitHub. Return to this
+page when a lab first asks you to push changes.
 
 ## What NOT to do
 
-- **Never type your GitHub account password** when Git asks for a
-  password over HTTPS. GitHub stopped accepting account passwords for
-  Git operations years ago — if something is prompting you for one and
-  accepting it, you're not talking to GitHub. If anything you see asks
-  for your account password specifically, stop and see
-  [If you get stuck](#if-you-get-stuck) below rather than typing it in.
+- **Never type your GitHub account password** into the terminal. GitHub
+  does not accept account passwords for Git operations over HTTPS. If
+  you are asked for one, see [If you get stuck](#if-you-get-stuck).
 - **Never paste a token** (anything starting with `ghp_` or similar)
   into this repository's README, into a GitHub issue, into a commit
-  message, or into a chat message to your instructor. A token pasted
-  anywhere public or semi-public should be treated as compromised —
-  revoke it on GitHub (**Settings → Developer settings → Personal
-  access tokens**) and generate a new one.
+  message, or into a message to your instructor. Revoke any token that
+  has been shared with someone else (**Settings → Developer settings →
+  Personal access tokens**) and generate a new one.
 
 ## What to do instead
 
-### The easy path: let VS Code or Git handle it
+### The simplest path: sign in through the browser
 
-Most of the time, you don't need to do anything special — when you run
-`git push` for the first time, either VS Code or Git itself will open a
-browser window asking you to log into GitHub and authorize access. Log
-in normally (your usual GitHub password, and two-factor if you have it
-set up), click **Authorize**, and return to your terminal — the push
-continues on its own.
+When you run `git push` for the first time, VS Code or Git will usually
+open a GitHub sign-in page in your browser. Sign in, complete two-factor
+authentication if enabled, and click **Authorize**. Then return to the
+terminal. The push should continue automatically.
 
-This works because of **Git Credential Manager**, which ships bundled
-with Git for Windows and is commonly already present on macOS and
-Linux Git installs. It securely stores the result of that one-time
-browser login so you won't be asked again on this computer.
+**Git Credential Manager** handles this process. It is bundled with Git
+for Windows and is often available with Git on macOS and Linux. It
+stores the result of the sign-in, so you will usually do this only once
+per computer.
 
 ### If no browser window appears
 
@@ -47,32 +40,31 @@ browser login so you won't be asked again on this computer.
 2. If Git prints a prompt like `Username for
    'https://github.com':`, type your GitHub username and press Enter.
 3. If it then prints `Password for
-   'https://<username>@github.com':`, this is **not** asking for your
-   account password — it's asking for a **personal access token**,
-   which looks like a password but is a separate, revocable credential.
-   Create one:
+   'https://<username>@github.com':`, do **not** enter your account
+   password. Enter a **personal access token**, a separate credential
+   that you can revoke later. To create one:
    - In your browser, go to **GitHub → Settings → Developer settings →
      Personal access tokens → Tokens (classic) → Generate new token**.
    - Give it a name you'll recognize (e.g. `software-engineering-in-practice`),
      an expiration (30-90 days is plenty for a course), and check the
      **repo** scope.
-   - Click **Generate token**, then copy it immediately — GitHub shows
-     it to you exactly once.
-4. Paste that token into the terminal's password prompt (it won't show
-   as you paste it — that's normal) and press Enter.
+   - Click **Generate token** and copy it immediately. GitHub will not
+     show it again.
+4. Paste the token into the terminal's password prompt and press Enter.
+   The terminal will not display characters while you paste.
 
-**How you know it worked:** the terminal shows upload progress ending
-in something like `main -> main`, and no error.
+A successful push ends with output similar to `main -> main` and no
+error.
 
 ## If you get stuck
 
 - **"It's asking me for a password and token didn't work either."**
   Double-check you copied the entire token with no extra spaces, and
   that it hasn't expired. Generate a fresh one if unsure.
-- **"I don't see a browser window and no prompt is appearing at all —
-  the terminal just hangs."** Press `Ctrl+C` to cancel, then try
+- **"I don't see a browser window or a prompt in the terminal."**
+  Press `Ctrl+C` to cancel, then try
   `git push` again from a freshly opened terminal.
 - **Still stuck?** See the shared
   [`troubleshooting.md`](troubleshooting.md) for how to report the
-  problem — and remember: never include a password, token, or other
-  secret in that report.
+  problem. Never include a password, token, or other secret in the
+  report.
