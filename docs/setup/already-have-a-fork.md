@@ -20,9 +20,9 @@ operation.
    ```
    If this prints a path, continue with "I have a local copy already"
    below. If it prints nothing, use the "Clone your fork" step in your
-   system's guide: [Windows](windows.md#63--clone-it-onto-your-computer),
-   [macOS](macos.md#63--clone-it-onto-your-computer),
-   [Linux](linux.md#63--clone-it-onto-your-computer).
+   system's guide: [Windows](windows.md#63-clone-the-repository-onto-your-computer),
+   [macOS](macos.md#63-clone-it-onto-your-computer),
+   [Linux](linux.md#63-clone-it-onto-your-computer).
 
 ## "I have a local copy already"
 
