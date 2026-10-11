@@ -2,50 +2,48 @@
 
 ## Sytuacja
 
-Kuchnia chce powiadomienia, gdy zamówienie jest gotowe — na razie
-wydrukowanego na konsolę; później, może e-mail albo SMS. Trzy różne
-zespoły zbudowały ten sam mały kontrakt do tego: jeden w Pythonie,
-jeden w Go, jeden w Javie. Ta sama idea, trzy bardzo różne ilości
-ceremonii — i musisz dotknąć tylko tego we własnym języku.
+Kuchnia chce otrzymywać powiadomienie, gdy zamówienie jest gotowe. Na
+razie wystarczy komunikat w konsoli, ale później może pojawić się e-mail
+albo SMS. Trzy zespoły przygotowały ten sam niewielki kontrakt w
+Pythonie, Go i Javie. Idea jest wspólna, choć każdy język zapisuje ją
+inaczej. Zmieniasz tylko implementację w wybranym języku.
 
 ## Cele nauki
 
 Po tym labie potrafisz:
 
-- Wyjaśnić, co sprawia, że coś jest "kontraktem", niezależnie od
-  składni jednego konkretnego języka do jego wyrażenia.
-- Wyjaśnić, jak Twój własny język rozpoznaje, że coś spełnia kontrakt
-  — i stwierdzić, na podstawie przeczytania (nie koniecznie
-  uruchomienia) pozostałych dwóch, czym się różnią.
-- Dodać nową implementację istniejącego kontraktu w swoim własnym
-  języku, z przechodzącym testem.
+- Wyjaśnić, co sprawia, że coś jest „kontraktem”, niezależnie od
+  składni użytej do jego zapisania.
+- Wyjaśnić, jak wybrany język rozpoznaje spełnienie kontraktu, i opisać
+  różnice względem pozostałych dwóch języków na podstawie ich kodu.
+- Dodać w wybranym języku nową implementację istniejącego kontraktu i
+  potwierdzić jej działanie testem.
 
 ## Zanim zaczniesz
 
-- Laby 01-05 ukończone (ogólna znajomość środowiska). Laby 06-13 nie
-  są wymagane specyficznie dla tego laba.
-- Potrzebujesz tylko toolchainu **swojego własnego języka** dla tego
-  laba — nic innego nie jest wymagane, żeby go ukończyć.
+- Najpierw ukończ laby 01-05. Laby 06-13 nie są potrzebne do wykonania
+  tego konkretnego ćwiczenia.
+- Potrzebujesz tylko narzędzi dla **wybranego języka**.
 
 ### Python
 
-- `uv` zainstalowany, bieżący katalog `examples/notifier/python/`.
+- Zainstaluj `uv` i pracuj w `examples/notifier/python/`.
 
 ### Go
 
-- Go 1.27.x zainstalowany, bieżący katalog `examples/notifier/go/`.
+- Zainstaluj Go 1.27.x i pracuj w `examples/notifier/go/`.
 
 ### Java
 
-- JDK 21 zainstalowany, bieżący katalog `examples/notifier/java/`.
+- Zainstaluj JDK 21 i pracuj w `examples/notifier/java/`.
 
 ## Twoje zadanie
 
-### Krok 1 — przeczytaj wszystkie trzy kontrakty (ta część nie wymaga toolchainu)
+### Krok 1. Przeczytaj wszystkie trzy kontrakty
 
-Otwórz i przeczytaj te trzy pliki, nawet jeśli masz zainstalowany tylko
-toolchain swojego własnego języka — czytanie kodu źródłowego nie
-wymaga jego uruchamiania:
+Przeczytaj poniższe pliki, nawet jeśli masz zainstalowane narzędzia
+tylko dla jednego języka. Do zapoznania się z kodem źródłowym nie
+trzeba go uruchamiać.
 
 - Python: `examples/notifier/python/notifier/notifier.py`
 - Go: `examples/notifier/go/notifier.go`
@@ -54,12 +52,13 @@ wymaga jego uruchamiania:
   `examples/notifier/java/InMemoryNotifier.java`,
   `examples/notifier/java/ReceiptService.java`
 
-Zauważ formę powtórzoną trzy razy: coś nazwane `Notifier` (interfejs,
-`Protocol`, albo interfejs) opisujące jedną metodę, i co najmniej dwie
-jej implementacje, które są przekazywane do funkcji wywołującej tę
-metodę bez wiedzy, którą implementację otrzymała.
+Znajdź strukturę, która powtarza się we wszystkich trzech językach.
+Typ `Notifier` opisuje jedną metodę, a co najmniej dwie implementacje
+są przekazywane do funkcji. Funkcja wywołuje tę metodę, nie wiedząc,
+którą implementację otrzymała. Python korzysta z `Protocol`, a Go i
+Java z interfejsów.
 
-### Krok 2 — uruchom kontrole swojej ścieżki domowej
+### Krok 2. Uruchom test dla swojej ścieżki
 
 ### Python
 
@@ -79,44 +78,41 @@ cd examples/notifier/go && go test ./... && cd - > /dev/null
 cd examples/notifier/java && javac *.java -d out && java -cp out NotifierCheck && cd - > /dev/null
 ```
 
-### Krok 3 — dodaj `SilentNotifier` w swojej ścieżce domowej
+### Krok 3. Dodaj `SilentNotifier` w swojej ścieżce
 
 ### Python
 
 W `notifier/notifier.py` dodaj klasę `SilentNotifier` z metodą `send`,
-która nic nie robi — żadne dziedziczenie `class
-SilentNotifier(Notifier)` niepotrzebne, to duck typing. Dodaj test w
-`tests/test_notifier.py` potwierdzający, że
-`send_receipt_ready(SilentNotifier(), "A123")` działa bez podnoszenia
-wyjątku.
+która nic nie robi. Nie musisz używać dziedziczenia `class
+SilentNotifier(Notifier)`, ponieważ działa tu duck typing. Dodaj test w
+`tests/test_notifier.py`, który potwierdza, że
+`send_receipt_ready(SilentNotifier(), "A123")` nie zgłasza wyjątku.
 
 ### Go
 
 W `notifier.go` dodaj `type SilentNotifier struct{}` z metodą
 `Send(message string)` z pustym ciałem. Dodaj test w
-`notifier_test.go` potwierdzający, że `SendReceiptReady(SilentNotifier{},
-"A123")` działa bez panica.
+`notifier_test.go`, który potwierdza, że `SendReceiptReady(SilentNotifier{},
+"A123")` nie kończy się paniką.
 
 ### Java
 
 Dodaj klasę `SilentNotifier implements Notifier` w nowym pliku
 `SilentNotifier.java`, z pustym ciałem metody `send`. W
-`NotifierCheck.java` dodaj drugi check, że
-`ReceiptService.sendReceiptReady(new SilentNotifier(), "A123")` działa
-bez wyjątku.
+`NotifierCheck.java` dodaj drugie sprawdzenie, które potwierdza, że
+`ReceiptService.sendReceiptReady(new SilentNotifier(), "A123")` nie
+zgłasza wyjątku.
 
-### Krok 4 — porównaj, jak każdy język rozpoznaje kontrakt
+### Krok 4. Porównaj, jak każdy język rozpoznaje kontrakt
 
-Przeczytałeś/aś już wszystkie trzy i zbudowałeś/aś jeden. Tutaj jest
-to, co faktycznie się dzieje, zweryfikowane dla tego kursu, jeśli klasa
-ma właściwą metodę, ale kontrakt nie jest spełniony poprawnie — użyj
-tego, żeby porównać z zachowaniem swojego własnego języka, bez
-potrzeby instalowania pozostałych dwóch toolchainów samemu:
+Znasz już wszystkie trzy implementacje i masz za sobą pracę z jedną z
+nich. Poniższe przykłady pokazują, co się dzieje, gdy typ nie spełnia
+kontraktu. Wyniki zostały sprawdzone na potrzeby kursu, więc możesz
+porównać języki bez instalowania narzędzi dla pozostałych dwóch.
 
-**Java** — klasa z metodą `send(String message)`, która *nie* pisze
-`implements Notifier`, nie kompiluje się w momencie, gdy próbujesz ją
-przekazać, gdzie oczekiwany jest `Notifier`, nawet jeśli metoda
-istnieje:
+**Java.** Klasa z metodą `send(String message)`, ale bez deklaracji
+`implements Notifier`, nie skompiluje się, gdy spróbujesz przekazać ją
+w miejscu oczekującym `Notifier`. Sama obecność metody nie wystarczy.
 
 ```text
 TryBad.java:4: error: incompatible types: BadNotifier cannot be converted to Notifier
@@ -124,19 +120,18 @@ TryBad.java:4: error: incompatible types: BadNotifier cannot be converted to Not
                                         ^
 ```
 
-**Go** — struct z *błędnie napisaną* nazwą metody (`Sand` zamiast
-`Send`) nie kompiluje się w momencie, gdy próbujesz ją przekazać,
-gdzie oczekiwany jest interfejs `Notifier` — Go sprawdza strukturalne
-dopasowanie, żadne słowo kluczowe `implements` niepotrzebne, ale wciąż
-sprawdza:
+**Go.** Struktura z *błędnie zapisaną* nazwą metody (`Sand` zamiast
+`Send`) nie skompiluje się, gdy spróbujesz przekazać ją w miejscu
+oczekującym interfejsu `Notifier`. Go sprawdza dopasowanie strukturalne
+i nie wymaga słowa kluczowego `implements`.
 
 ```text
 ./notifier.go:20:19: cannot use BadNotifier{} (value of struct type BadNotifier) as Notifier value in argument to SendReceiptReady: BadNotifier does not implement Notifier (missing method Send)
 ```
 
-**Python** — obiekt z *błędnie napisaną* nazwą metody (`sand` zamiast
-`send`) kompiluje się (w sensie: parsuje) i działa bez żadnej skargi,
-aż do dokładnej linii, która faktycznie wywołuje `.send(...)`:
+**Python.** Obiekt z *błędnie zapisaną* nazwą metody (`sand` zamiast
+`send`) zostanie poprawnie sparsowany i nie spowoduje błędu aż do
+wykonania wiersza wywołującego `.send(...)`.
 
 ```text
 Traceback (most recent call last):
@@ -147,47 +142,43 @@ Traceback (most recent call last):
 AttributeError: 'BadNotifier' object has no attribute 'send'. Did you mean: 'sand'?
 ```
 
-Jeśli ta konkretna ścieżka kodu nigdy nie zostałaby wykonana — powiedzmy,
-literówka była w implementacji notifiera, której nic aktualnie nie
-wywołuje — Python nigdy by nie podniósł wyjątku. Nic to nie
-sprawdzało, więc nic tego nie złapało.
+Jeśli ta ścieżka kodu nigdy się nie wykona, na przykład dlatego, że nic
+nie używa implementacji z literówką, Python nie zgłosi wyjątku. Metoda
+nie została sprawdzona, więc błąd pozostał niewykryty.
 
-### Krok 5 — odpowiedz, własnymi słowami
+### Krok 5. Odpowiedz własnymi słowami
 
 W pliku notatek `labs/14-one-contract-three-languages/my-notes.md`
 odpowiedz:
 
-1. Dla Twojego własnego języka konkretnie: jak rozpoznaje, że
+1. Jak wybrany język rozpoznaje, że
    `SilentNotifier` spełnia `Notifier`? Wskaż dokładny mechanizm
    (klauzula `implements` sprawdzana przez kompilator, strukturalne
-   dopasowanie sprawdzane przez kompilator, albo nic sprawdzane
-   wcale).
-2. Wśród wszystkich trzech języków (używając zweryfikowanego wyniku z
-   Kroku 4, nie zgadywania): który złapałby literówkę w nazwie metody
-   *najszybciej* — przed uruchomieniem programu, czy tylko gdy
-   konkretna wadliwa ścieżka kodu się wykona?
-3. Jeśli kolega z zespołu dałby Ci klasę z właściwą metodą, ale nie
-   spełniającą kontraktu poprawnie (brak `implements` w Javie, błędnie
-   napisana metoda w Go albo Pythonie), jaka jest konkretna,
-   obserwowalna różnica w tym, jak narzędzia każdego języka Ci to
-   ujawnią?
+   dopasowanie sprawdzane przez kompilator albo brak sprawdzania).
+2. Korzystając ze zweryfikowanych wyników z kroku 4, wskaż, który język
+   wykryje literówkę w nazwie metody *najszybciej*. Czy stanie się to
+   przed uruchomieniem programu, czy dopiero po wykonaniu błędnej
+   ścieżki kodu?
+3. Jeśli osoba z zespołu przekaże Ci klasę z właściwą metodą, która nie
+   spełnia kontraktu (brak `implements` w Javie, błędnie zapisana metoda
+   w Go albo Pythonie), jaka jest konkretna,
+   obserwowalna różnica w sposobie zgłoszenia problemu przez narzędzia
+   każdego języka?
 
-## Opcjonalnie: uruchom też pozostałe dwa języki
+## Opcjonalne ćwiczenie
 
-Jeśli masz już zainstalowane pozostałe dwa toolchainy, możesz
-uruchomić wszystkie trzy komendy weryfikacyjne z Kroku 2 i zbudować
-`SilentNotifier` we wszystkich trzech — nic w tym labie Ci tego nie
-zabrania. Ale to nie jest wymagane, a kryteria akceptacji poniżej
-sprawdzają tylko Twoją ścieżkę domową.
+Jeśli masz narzędzia dla pozostałych dwóch języków, możesz uruchomić
+wszystkie trzy polecenia z kroku 2 i zbudować `SilentNotifier` w każdym
+języku. Nie jest to wymagane; kryteria akceptacji dotyczą tylko
+wybranej ścieżki.
 
 ## Kryteria akceptacji
 
-- Twój język domowy ma działający `SilentNotifier` i przechodzący
-  check dla niego, obok istniejących checków `ConsoleNotifier` /
+- W wybranym języku działa `SilentNotifier`, a nowe sprawdzenie
+  przechodzi razem z istniejącymi sprawdzeniami `ConsoleNotifier` i
   `InMemoryNotifier`.
-- `my-notes.md` odpowiada na wszystkie trzy pytania z Kroku 5, własnymi
-  słowami, zakotwiczone w zweryfikowanym wyniku z Kroku 4 (nie
-  wymyślonym zachowaniu).
+- `my-notes.md` odpowiada własnymi słowami na wszystkie trzy pytania z
+  kroku 5 i opiera się na zweryfikowanych wynikach z kroku 4.
 
 ## Weryfikacja
 
@@ -212,71 +203,68 @@ cd examples/notifier/java && javac *.java -d out && java -cp out NotifierCheck &
 test -f labs/14-one-contract-three-languages/my-notes.md && echo "notes exist"
 ```
 
-Oczekiwane: kontrole Twojej ścieżki domowej się udają, wliczając nowy
-check `SilentNotifier`, i plik notatek istnieje.
+Testy wybranej ścieżki, łącznie z nowym sprawdzeniem `SilentNotifier`,
+powinny przejść, a plik z notatkami powinien istnieć.
 
 ## Zastanów się
 
-- Interfejs Go i `Protocol` Pythona obie pozwalają spełnić kontrakt
-  samym posiadaniem właściwej metody, bez jawnej deklaracji — ale
-  kompilator Go faktycznie sprawdza to dopasowanie w momencie, gdy
-  przekazujesz swój typ, gdzie oczekiwany jest interfejs, podczas gdy
-  Python nie uruchamia żadnego takiego sprawdzenia w tym labie. Co by
-  kosztowało zamknięcie tej różnicy dla Pythona (podpowiedź: istnieje
-  do tego narzędzie — co musiałbyś/abyś uruchomić, czego ten lab nie
-  uruchamia)?
+- Interfejs Go i `Protocol` Pythona pozwalają spełnić kontrakt samą
+  obecnością właściwej metody, bez jawnej deklaracji. Jednak
+  kompilator Go sprawdza to dopasowanie, gdy przekazujesz wartość jako
+  interfejs. W tym labie Python nie przeprowadza takiej kontroli. Co
+  trzeba zrobić, aby Python również przeprowadzał taką kontrolę?
+  Istnieje do tego narzędzie; jakiego polecenia brakuje w tym labie?
 - `Protocol` Pythona sam w sobie daje Ci *dokumentację* kontraktu, nie
-  *wymuszenie*. Czy to jest wada Pythona, czy trade-off? Co, jak sobie
-  wyobrażasz, programiści Pythona zyskują w zamian za ten brakujący
-  check?
+  *wymuszenie*. Czy to wada Pythona, czy kompromis? Co, jak sobie
+  wyobrażasz, programiści Pythona zyskują w zamian za brak tej
+  kontroli?
 
 ## Jeśli utkniesz
 
 ### Python
 
-- **Podpowiedź 1:** Ciało metody `send` w `SilentNotifier` to po
+- **Podpowiedź 1.** Ciało metody `send` w `SilentNotifier` to po
   prostu `pass`.
-- **Podpowiedź 2:** Nie potrzebujesz `class SilentNotifier(Notifier)`
-  — nic w tym labie nie wymusza `Protocol`, więc zwykłe `class
+- **Podpowiedź 2.** Nie potrzebujesz `class SilentNotifier(Notifier)`.
+  Nic w tym labie nie wymusza `Protocol`, więc zwykłe `class
   SilentNotifier:` z odpowiadającą metodą `send` wystarczy.
-- **Podpowiedź 3:** Cały lab to jedna komenda plus kilka linii kodu:
+- **Podpowiedź 3.** Wystarczy kilka linii kodu i jedno polecenie:
   `uv run pytest -v`.
 
 ### Go
 
-- **Podpowiedź 1:** Ciało metody `Send` w `SilentNotifier` to po
+- **Podpowiedź 1.** Ciało metody `Send` w `SilentNotifier` to po
   prostu puste `{}`.
-- **Podpowiedź 2:** Nie potrzebujesz pisać niczego deklarującego, że
-  `SilentNotifier` implementuje `Notifier` — Go sprawdza to w
-  momencie, gdy przekazujesz `SilentNotifier{}`, gdzie oczekiwany jest
-  `Notifier`.
-- **Podpowiedź 3:** Cały lab to jedna komenda plus kilka linii kodu:
+- **Podpowiedź 2.** Nie musisz deklarować, że `SilentNotifier`
+  implementuje `Notifier`. Go sprawdza to, gdy przekazujesz
+  `SilentNotifier{}` jako `Notifier`.
+- **Podpowiedź 3.** Wystarczy kilka linii kodu i jedno polecenie:
   `go test ./...`.
 
 ### Java
 
-- **Podpowiedź 1:** Ciało metody `send` w `SilentNotifier` to po
+- **Podpowiedź 1.** Ciało metody `send` w `SilentNotifier` to po
   prostu puste `{}`.
-- **Podpowiedź 2:** Zapomnienie `implements Notifier` nie zatrzyma
-  samodzielnej kompilacji `SilentNotifier` — ale *zatrzyma* Cię przed
-  przekazaniem gołego `SilentNotifier` do `sendReceiptReady`, który
-  oczekuje `Notifier`. To jest dokładnie przykład z Kroku 4,
-  odtworzony z Twoją własną klasą, jeśli usuniesz klauzulę, żeby to
-  wypróbować.
-- **Podpowiedź 3:** Żaden build tool niepotrzebny —
+- **Podpowiedź 2.** Brak `implements Notifier` nie zatrzyma
+  samodzielnej kompilacji `SilentNotifier`, ale uniemożliwi przekazanie
+  takiego obiektu do `sendReceiptReady`, który oczekuje `Notifier`.
+  Możesz odtworzyć przykład z kroku 4 we własnej klasie, usuwając tę
+  deklarację.
+- **Podpowiedź 3.** Nie potrzebujesz narzędzia do budowania projektu.
   `javac *.java -d out && java -cp out NotifierCheck` to jedyna
   komenda, której potrzebujesz.
 
-Przed przejściem dalej: zacommituj i wypchnij wszystko z tego laba
+Przed przejściem dalej utwórz commit ze wszystkim z tego laba i
+wypchnij go do repozytorium
 (`git add -A && git commit -m "..."; git push`). Nic później jeszcze
-nie zakłada czystego drzewa, ale Akt IV (zaczynający się od Lab 16)
-tak — przyzwyczajaj się już teraz.
+nie wymaga czystego drzewa roboczego, ale Akt IV (od labu 16) już tak.
+Warto od razu wyrobić sobie ten nawyk.
 
 ## Co dalej
 
-Kody rabatowe (Laby 12-13) i notifiery (ten lab) okazują się mieć
-wspólną formę: wybierz jedno wymienne zachowanie z kilku, na podstawie
-tego, co dostarczy wywołujący, zamiast łańcucha warunków zagrzebanego w
-logice biznesowej. Dalej nazwiesz tę formę.
+Kody rabatowe z labów 12-13 i powiadomienia z tego labu mają wspólną
+strukturę. Kod wywołujący wybiera jedno z kilku wymiennych zachowań,
+zamiast polegać na łańcuchu warunków ukrytym w logice biznesowej. W
+następnym labie nazwiesz tę strukturę.
 
 Przejdź do [Lab 15 — Wzorce bez bałwochwalstwa](../15-patterns-without-worship/README.pl.md).
