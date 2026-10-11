@@ -2,17 +2,15 @@
 
 ## Sytuacja
 
-`examples/restaurant-bill/` liczy rachunek w restauracji: sumę,
-rabat lojalnościowy, podatek, napiwek, sumę całkowitą. Działa. To też
-jedna funkcja (albo jedno `main`, w Go i Javie), która robi pięć różnych
-rzeczy naraz, bez możliwości zmiany jednej części bez ponownego
-przeczytania całości.
+Program w `examples/restaurant-bill/` oblicza rachunek w restauracji:
+wartość pozycji, rabat lojalnościowy, podatek, napiwek i kwotę końcową.
+Działa, ale jedna funkcja (lub jedno `main` w Go i Javie) wykonuje pięć
+różnych zadań. Zmiana jednej części wymaga przejrzenia całego programu.
 
-Swój track wybrałeś/aś w Lab 05 — Python, Go albo Java. Czytaj tylko tę
-sekcję, gdziekolwiek ta strona się rozdziela — trzy startery
-rozwiązują dokładnie ten sam problem z tymi samymi liczbami, więc
-niezależnie od tego, który wybrałeś/aś, cel jest tym samym rodzajem
-projektu, zbudowanym tak, jak Twój język faktycznie buduje projekty.
+W Labie 05 wybrałeś/aś ścieżkę Python, Go albo Java. Gdy instrukcja
+dzieli się na warianty, czytaj tylko sekcję dla swojego języka. Każdy
+starter rozwiązuje ten sam problem na tych samych danych i prowadzi do
+równoważnej struktury projektu.
 
 ## Cele nauki
 
@@ -21,195 +19,182 @@ Po tym labie potrafisz:
 - Rozdzielić odrębne odpowiedzialności skryptu na osobne moduły
   (Python), pakiety (Go) albo klasy (Java).
 - Wyjaśnić różnicę między czystą funkcją obliczającą a punktem wejścia,
-  który obsługuje I/O (w tym przypadku drukowanie).
-- Opisać projekt jego własnemu toolchainowi za pomocą prawdziwego
-  manifestu (`pyproject.toml`, `go.mod` albo `build.gradle`), a nie
-  jako gołego folderu z plikami.
+  który obsługuje wejście i wyjście, w tym przypadku wyświetlanie.
+- Opisać projekt narzędziom danego języka za pomocą manifestu
+  (`pyproject.toml`, `go.mod` albo `build.gradle`), zamiast pozostawiać
+  go jako luźny zbiór plików.
 
 ## Zanim zaczniesz
 
 - Laby 01-04 ukończone.
-- Kontynuuj track, który wybrałeś/aś w Lab 05 — Python, Go albo Java.
-  Wszystkie trzy są prawdziwymi, kompletnymi ścieżkami przez Laby
-  06-10 — żadna z nich nie jest podglądem. Nie powinieneś/aś musieć
-  wybierać ponownie w tym miejscu.
+- Kontynuuj ścieżkę Python, Go albo Java wybraną w Labie 05. Każda z
+  nich jest kompletną drogą przez Laby 06-10.
 - Jeśli już zacząłeś/aś ten projekt w jego starej lokalizacji
-  (`examples/restaurant-bill/bill.py`, bez podfolderu `python/`), nic
-  nie jest stracone: przenieś to, co już stworzyłeś/aś, do
-  `examples/restaurant-bill/python/` samodzielnie (na przykład
+  (`examples/restaurant-bill/bill.py`, bez podkatalogu `python/`),
+  możesz zachować dotychczasową pracę. Przenieś utworzone pliki do
+  `examples/restaurant-bill/python/`, na przykład poleceniem
   `mkdir -p examples/restaurant-bill/python && git mv examples/restaurant-bill/bill.py examples/restaurant-bill/python/`,
-  dopasowując do plików, które sam/a dodałeś/aś), potem kontynuuj od
-  tego miejsca. Nie uruchamiaj `git reset --hard` ani `git clean`, żeby
-  "zacząć od nowa" — każda z nich wyrzuciłaby pracę, której nigdzie
-  jeszcze nie wypchnąłeś/aś.
+  dostosowując je do samodzielnie dodanych plików. Nie uruchamiaj
+  `git reset --hard` ani `git clean`, aby zacząć od nowa. Oba polecenia
+  mogą usunąć pracę, której jeszcze nie ma w zdalnym repozytorium.
 
 ### Python
 
-- Bieżący katalog: `examples/restaurant-bill/python/` dla wszystkich
-  poleceń poniżej.
+- Wszystkie poniższe polecenia uruchamiaj w
+  `examples/restaurant-bill/python/`.
 - `uv` zainstalowany (Lab 05 to obejmuje).
 - Przeczytaj `bill.py` w całości, zanim coś zmienisz.
 
 ### Go
 
-- Bieżący katalog: `examples/restaurant-bill/go/` dla wszystkich poleceń
-  poniżej.
-- Go 1.27.x zainstalowany. Sprawdź przez `go version`. Jeśli go nie ma,
-  zainstaluj go z oficjalnych instrukcji na
-  [go.dev/doc/install](https://go.dev/doc/install) — ten kurs nie używa
-  menedżera wersji Go. (Track Go w Lab 05 już przeprowadził Cię przez
-  instalację tego i eksperyment z `GOTOOLCHAIN` — jeśli kontynuujesz na
-  tej samej maszynie, jest to już skonfigurowane.)
+- Wszystkie poniższe polecenia uruchamiaj w
+  `examples/restaurant-bill/go/`.
+- Zainstalowane Go 1.27.x. Sprawdź je poleceniem `go version`. Jeśli go
+  nie ma, skorzystaj z oficjalnej instrukcji na
+  [go.dev/doc/install](https://go.dev/doc/install). Ten kurs nie używa
+  menedżera wersji Go. Po ukończeniu Labu 05 na tym samym komputerze
+  środowisko jest już gotowe.
 - Przeczytaj `main.go` w całości, zanim coś zmienisz.
 
 ### Java
 
-- Bieżący katalog: `examples/restaurant-bill/java/` dla wszystkich
-  poleceń poniżej.
-- JDK 21 zainstalowany. Sprawdź przez `java -version` (oczekuj `21`
-  gdzieś w wyniku). Jeśli go nie ma, zainstaluj build Temurin 21 od
+- Wszystkie poniższe polecenia uruchamiaj w
+  `examples/restaurant-bill/java/`.
+- Zainstalowany JDK 21. Sprawdź go poleceniem `java -version`; wynik
+  powinien zawierać `21`. Jeśli go nie ma, zainstaluj Temurin 21 od
   Adoptium z [adoptium.net](https://adoptium.net/temurin/releases/?version=21).
-  Globalny Gradle niepotrzebny — ten projekt ma własny, zacommitowany
-  Gradle Wrapper (`./gradlew`). (Track Java w Lab 05 już przeprowadził
-  Cię przez instalację tego i eksperyment z `JavaLanguageVersion` —
-  jeśli kontynuujesz na tej samej maszynie, jest to już
-  skonfigurowane.)
+  Globalna instalacja Gradle nie jest potrzebna, ponieważ projekt
+  zawiera Gradle Wrapper (`./gradlew`). Po ukończeniu Labu 05 na tym
+  samym komputerze środowisko jest już gotowe.
 - Przeczytaj `src/main/java/Main.java` w całości, zanim coś zmienisz.
 
 ## Twoje zadanie
 
 ### Python
 
-1. Uruchom `python3 bill.py` (Windows w Git Bash: `python bill.py` —
+1. Uruchom `python3 bill.py` (Windows w Git Bash: `python bill.py`;
    oficjalny instalator Pythona dla Windows dostarcza `python`, nie
-   `python3`), zapisując jego wynik jako bazę do późniejszego
+   `python3`), zapisując jego wynik jako punkt odniesienia do późniejszego
    porównania: `python3 bill.py | tee /tmp/bill-before.txt` (`python
    bill.py | tee /tmp/bill-before.txt` na Windows).
-2. Zidentyfikuj odrębne odpowiedzialności zmieszane razem w `main()`:
-   obliczenie subtotal, zastosowanie rabatu, obliczenie podatku,
-   obliczenie napiwku i wydrukowanie rachunku.
-3. Utwórz `pyproject.toml` dla tego projektu: nazwa `restaurant-bill`,
-   `requires-python = ">=3.13"`, zależność dev `pytest`, oraz
-   `[tool.pytest.ini_options]` z `pythonpath = ["."]` (ten sam wzorzec
-   co w Lab 05).
+2. Wskaż zadania połączone w `main()`: obliczanie sumy częściowej,
+   rabatu, podatku i napiwku oraz wyświetlanie rachunku.
+3. Utwórz `pyproject.toml`. Ustaw nazwę na `restaurant-bill`, dodaj
+   `requires-python = ">=3.13"`, zależność deweloperską `pytest` oraz
+   sekcję `[tool.pytest.ini_options]` z `pythonpath = ["."]`, tak jak w
+   Labie 05.
 4. Utwórz pakiet `billing/` (`billing/__init__.py`, pusty) z modułem
-   `billing/calculator.py` zawierającym dokładnie te pięć czystych
-   funkcji, z tymi dokładnymi nazwami i sygnaturami (następne dwa laby
-   zależą od tych dokładnych nazw):
+   `billing/calculator.py` zawierającym pięć czystych funkcji o podanych
+   nazwach i sygnaturach. Kolejne dwa laby będą z nich korzystać.
    - `calculate_subtotal(items: list[tuple[str, float, int]]) -> float`
-     — suma `price * quantity` dla każdej pozycji.
-   - `calculate_discount(subtotal: float) -> float` — 10% `subtotal`,
-     jeśli `subtotal >= 50`, inaczej `0`.
-   - `calculate_tax(amount: float) -> float` — płaski 8% `amount`.
-   - `calculate_tip(amount: float, tip_rate: float) -> float` —
+     zwraca sumę `price * quantity` dla wszystkich pozycji.
+   - `calculate_discount(subtotal: float) -> float` zwraca 10%
+     `subtotal`, jeśli `subtotal >= 50`, a w przeciwnym razie `0`.
+   - `calculate_tax(amount: float) -> float` zwraca 8% `amount`.
+   - `calculate_tip(amount: float, tip_rate: float) -> float` zwraca
      `amount * tip_rate`.
    - `calculate_bill(items: list[tuple[str, float, int]], tip_rate: float)
-     -> dict[str, float]` — łączy cztery powyższe funkcje w dict z
+     -> dict[str, float]` łączy cztery powyższe funkcje w słownik z
      kluczami `subtotal`, `discount`, `tax`, `tip`, `total`. **Na razie
-     policz `tax` z całego `subtotal`, zupełnie jak oryginalny skrypt**
-     — ten refactoring musi odtworzyć istniejące zachowanie dokładnie,
-     wliczając bugi. Niczego jeszcze nie naprawiasz.
-5. Utwórz `billing/cli.py` z `main()`, które wywołuje `calculate_bill`
-   *raz* i drukuje rachunek, którego wynik jest bajt-po-bajcie identyczny
+     policz `tax` z całego `subtotal`, tak jak oryginalny skrypt**.
+     Refaktoryzacja ma zachować obecne działanie, w tym błędy. Na razie
+     niczego nie naprawiaj.
+5. Utwórz `billing/cli.py` z funkcją `main()`, która wywołuje
+   `calculate_bill` *raz* i wyświetla rachunek identyczny bajt po bajcie
    z wynikiem oryginalnego skryptu, używając tylko wartości ze
-   zwróconego dict (nie przeliczaj niczego osobno — jedno źródło
-   prawdy).
+   zwróconego słownika. Nie przeliczaj żadnej wartości osobno.
 6. Utwórz `main.py` w katalogu głównym projektu, który importuje `main`
-   z `billing.cli` i wywołuje je pod `if __name__ == "__main__":`.
+   z `billing.cli` i wywołuje ją pod `if __name__ == "__main__":`.
 7. Uruchom swój nowy punkt wejścia tą samą metodą, zapisując też jego
    wynik: `uv run python main.py | tee /tmp/bill-after.txt`. Porównaj
    oba pliki: `diff /tmp/bill-before.txt /tmp/bill-after.txt`.
-8. Gdy diff jest czysty, usuń `bill.py` — został w pełni zastąpiony.
+8. Gdy diff jest pusty, usuń `bill.py`; został w pełni zastąpiony.
 
 ### Go
 
-1. Uruchom `go run main.go`, zapisując jego wynik jako bazę:
+1. Uruchom `go run main.go`, zapisując jego wynik jako punkt odniesienia:
    `go run main.go | tee /tmp/bill-before.txt`. Zauważ, że to działa bez
-   żadnego `go.mod` jeszcze — `go run` na jawnym argumencie-pliku nie
-   potrzebuje modułu, tak samo jak `python3 bill.py` też niczego nie
-   potrzebował.
-2. Zidentyfikuj odrębne odpowiedzialności zmieszane razem w `main()`:
-   obliczenie subtotal, zastosowanie rabatu, obliczenie podatku,
-   obliczenie napiwku i wydrukowanie rachunku.
-3. Zmień ten katalog w prawdziwy moduł: `go mod init restaurant-bill`.
-   To tworzy `go.mod` — odpowiednik `pyproject.toml` w Go, opisujący
-   ten folder jako projekt z nazwą, a nie tylko folder z plikami.
+   `go.mod`. Polecenie `go run` z nazwą pliku nie wymaga modułu, podobnie
+   jak `python3 bill.py` nie wymaga manifestu projektu.
+2. Wskaż zadania połączone w `main()`: obliczanie sumy częściowej,
+   rabatu, podatku i napiwku oraz wyświetlanie rachunku.
+3. Utwórz moduł poleceniem `go mod init restaurant-bill`. Powstanie
+   `go.mod`, odpowiednik `pyproject.toml` w Go, który nada projektowi
+   ścieżkę modułu.
 4. Utwórz pakiet `billing` w nowym podkatalogu `billing/`, z plikiem
-   `billing/calculator.go` (`package billing`) zawierającym dokładnie
-   te pięć eksportowanych funkcji i dwa typy (następne dwa laby zależą
-   od tych dokładnych nazw):
+   `billing/calculator.go` (`package billing`) zawierającym
+   pięć eksportowanych funkcji i dwa typy o podanych nazwach. Kolejne
+   dwa laby będą z nich korzystać.
    - `type Item struct { Name string; Price float64; Qty int }`
    - `type Bill struct { Subtotal, Discount, Tax, Tip, Total float64 }`
-   - `func CalculateSubtotal(items []Item) float64` — suma
+   - `func CalculateSubtotal(items []Item) float64` zwraca sumę
      `Price * float64(Qty)` dla każdej pozycji.
-   - `func CalculateDiscount(subtotal float64) float64` — 10%
-     `subtotal`, jeśli `subtotal >= 50`, inaczej `0`.
-   - `func CalculateTax(amount float64) float64` — płaski 8% `amount`.
-   - `func CalculateTip(amount, tipRate float64) float64` —
+   - `func CalculateDiscount(subtotal float64) float64` zwraca 10%
+     `subtotal`, jeśli `subtotal >= 50`, a w przeciwnym razie `0`.
+   - `func CalculateTax(amount float64) float64` zwraca 8% `amount`.
+   - `func CalculateTip(amount, tipRate float64) float64` zwraca
      `amount * tipRate`.
-   - `func CalculateBill(items []Item, tipRate float64) Bill` — łączy
+   - `func CalculateBill(items []Item, tipRate float64) Bill` łączy
      cztery powyższe funkcje w `Bill`. **Na razie policz `Tax` z całego
-     `subtotal`, zupełnie jak oryginalny program** — wliczając bugi,
-     niczego jeszcze nie naprawiasz.
+     `subtotal`, tak jak oryginalny program**. Zachowaj obecny błąd;
+     na razie nie zmieniaj działania programu.
 5. Utwórz `billing/cli.go` (ten sam pakiet) z funkcją
    `func Run(items []Item, tipRate float64)`, która wywołuje
-   `CalculateBill` *raz* i drukuje rachunek bajt-po-bajcie identyczny z
+   `CalculateBill` *raz* i wyświetla rachunek identyczny bajt po bajcie z
    wynikiem oryginalnego programu, używając tylko pól zwróconego
    `Bill`.
-6. Przepisz `main.go` w katalogu głównym tak, żeby cała jego `func
-   main()` była tylko: zbuduj slice `items`, potem wywołaj
-   `billing.Run(items, 0.15)`. Będziesz potrzebować zaimportować
-   własny pakiet `billing` tego modułu przez jego ścieżkę modułu:
+6. Przepisz `main.go` w katalogu głównym tak, aby `func main()` tworzyła
+   slice `items`, a następnie wywoływała `billing.Run(items, 0.15)`.
+   Zaimportuj pakiet `billing` przez jego ścieżkę modułu:
    `import "restaurant-bill/billing"`.
-7. Uruchom swój zrefaktoryzowany punkt wejścia tą samą metodą,
+7. Uruchom punkt wejścia po refaktoryzacji tą samą metodą,
    zapisując też jego wynik: `go run main.go | tee /tmp/bill-after.txt`.
    Porównaj oba pliki: `diff /tmp/bill-before.txt /tmp/bill-after.txt`.
-8. Gdy diff jest czysty, potwierdź, że `go run .` (bez argumentu-pliku,
-   forma świadoma modułu) też produkuje ten sam wynik — to działa
-   teraz, dopiero gdy istnieje `go.mod`.
+8. Gdy diff jest pusty, potwierdź, że `go run .`, czyli wariant
+   korzystający z modułu, daje ten sam wynik. Polecenie działa teraz,
+   ponieważ istnieje `go.mod`.
 
 ### Java
 
-1. Uruchom starter, zapisując jego wynik jako bazę:
+1. Uruchom starter, zapisując jego wynik jako punkt odniesienia:
    `./gradlew run --console=plain | tee /tmp/bill-before.txt`. Pierwsze
    uruchomienie pobiera dystrybucję Gradle i zależności, jeśli nie są
-   jeszcze w cache — to może zająć minutę lub dwie; to nie jest
-   zawieszenie, a każde kolejne uruchomienie jest szybkie.
-2. Zidentyfikuj odrębne odpowiedzialności zmieszane razem w `main()`:
-   obliczenie subtotal, zastosowanie rabatu, obliczenie podatku,
-   obliczenie napiwku i wydrukowanie rachunku.
-3. Utwórz pakiet `billing`: nowy plik
+   jeszcze w pamięci podręcznej. Może to zająć minutę lub dwie. Kolejne
+   uruchomienia będą szybsze.
+2. Wskaż zadania połączone w `main()`: obliczanie sumy częściowej,
+   rabatu, podatku i napiwku oraz wyświetlanie rachunku.
+3. Utwórz pakiet `billing` z nowym plikiem
    `src/main/java/billing/Calculator.java` (`package billing;`)
-   zawierający dokładnie te dwa zagnieżdżone typy i pięć statycznych
-   metod (następne dwa laby zależą od tych dokładnych nazw):
+   zawierającym dwa zagnieżdżone typy i pięć statycznych metod o
+   podanych nazwach. Kolejne dwa laby będą z nich korzystać.
    - `public static class Item` z publicznymi polami `name` (`String`),
-     `price` (`double`), `qty` (`int`), i odpowiadającym konstruktorem.
+     `price` (`double`), `qty` (`int`) i odpowiadającym konstruktorem.
    - `public static class Bill` z publicznymi polami `subtotal`,
-     `discount`, `tax`, `tip`, `total` (wszystkie `double`), i
+     `discount`, `tax`, `tip`, `total` (wszystkie `double`) i
      odpowiadającym konstruktorem.
-   - `public static double calculateSubtotal(List<Item> items)` — suma
+   - `public static double calculateSubtotal(List<Item> items)` zwraca sumę
      `price * qty` dla każdej pozycji.
-   - `public static double calculateDiscount(double subtotal)` — 10%
-     `subtotal`, jeśli `subtotal >= 50`, inaczej `0`.
-   - `public static double calculateTax(double amount)` — płaski 8%
+   - `public static double calculateDiscount(double subtotal)` zwraca
+     10% `subtotal`, jeśli `subtotal >= 50`, a w przeciwnym razie `0`.
+   - `public static double calculateTax(double amount)` zwraca 8%
      `amount`.
    - `public static double calculateTip(double amount, double tipRate)`
-     — `amount * tipRate`.
+     zwraca `amount * tipRate`.
    - `public static Bill calculateBill(List<Item> items, double tipRate)`
-     — łączy cztery powyższe metody w `Bill`. **Na razie policz `tax` z
-     całego `subtotal`, zupełnie jak oryginalny program** — wliczając
-     bugi, niczego jeszcze nie naprawiasz.
+     łączy cztery powyższe metody w `Bill`. **Na razie policz `tax` z
+     całego `subtotal`, tak jak oryginalny program**. Zachowaj obecny
+     błąd; na razie nie zmieniaj działania programu.
 4. Utwórz `src/main/java/billing/Cli.java` (ten sam pakiet) z metodą
    `public static void run(List<Calculator.Item> items, double tipRate)`,
-   która wywołuje `Calculator.calculateBill` *raz* i drukuje rachunek
-   bajt-po-bajcie identyczny z wynikiem oryginalnego programu, używając
+   która wywołuje `Calculator.calculateBill` *raz* i wyświetla rachunek
+   identyczny bajt po bajcie z wynikiem oryginalnego programu, używając
    tylko pól zwróconego `Bill`.
-5. Przepisz `src/main/java/Main.java` tak, żeby cała jego metoda `main`
-   była tylko: zbuduj listę `items`, potem wywołaj
-   `Cli.run(items, 0.15)`. Będziesz potrzebować `import
-   billing.Calculator;` i `import billing.Cli;`.
-6. Dodaj JUnit 5 do `build.gradle`, żeby Lab 07 miał czym pisać testy —
-   dodaj blok `repositories { mavenCentral() }`, te zależności:
+5. Przepisz `src/main/java/Main.java` tak, aby metoda `main` tworzyła
+   listę `items`, a następnie wywoływała `Cli.run(items, 0.15)`.
+   Potrzebne będą `import billing.Calculator;` oraz
+   `import billing.Cli;`.
+6. Dodaj JUnit 5 do `build.gradle`, przygotowując projekt do Labu 07.
+   Dodaj blok `repositories { mavenCentral() }` i te zależności:
    ```gradle
    dependencies {
        testImplementation platform('org.junit:junit-bom:5.11.0')
@@ -217,22 +202,22 @@ Po tym labie potrafisz:
        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
    }
    ```
-   i blok `test { useJUnitPlatform() }`. Żaden plik testowy jeszcze nie
-   istnieje — to jest w porządku, `./gradlew test` kończy się sukcesem
-   przy zero znalezionych testów.
-7. Uruchom swój zrefaktoryzowany punkt wejścia tą samą metodą, zapisując
+   Dodaj również blok `test { useJUnitPlatform() }`. Nie ma jeszcze
+   pliku testowego, dlatego `./gradlew test` kończy się sukcesem mimo
+   braku testów.
+7. Uruchom punkt wejścia po refaktoryzacji tą samą metodą, zapisując
    też jego wynik: `./gradlew run --console=plain | tee /tmp/bill-after.txt`.
-   Porównaj oba pliki (będziesz musiał/a odrzucić własne linie banera
-   Gradle z porównania, bo nie są częścią wyniku programu) —
-   najprościej: porównaj tylko blok od `Receipt` w każdym pliku, albo
-   porównaj wynik `./gradlew run --console=plain --quiet` bezpośrednio.
+   Porównaj oba pliki, pomijając komunikaty Gradle, które nie są częścią
+   wyniku programu. Możesz porównać tylko fragment od `Receipt` albo
+   bezpośrednio zestawić wyniki
+   `./gradlew run --console=plain --quiet`.
 
 ## Kryteria akceptacji
 
 ### Python
 
 - `examples/restaurant-bill/python/bill.py` już nie istnieje.
-- `uv run python main.py` produkuje wynik *identyczny* z wynikiem
+- `uv run python main.py` daje wynik *identyczny* z wynikiem
   oryginalnego skryptu.
 - `billing/calculator.py` definiuje wszystkie pięć funkcji z dokładnymi
   nazwami i sygnaturami wymienionymi powyżej.
@@ -241,18 +226,18 @@ Po tym labie potrafisz:
 
 - `examples/restaurant-bill/go/go.mod` istnieje, deklarując moduł
   `restaurant-bill`.
-- `go run .` produkuje wynik *identyczny* z wynikiem oryginalnego
+- `go run .` daje wynik *identyczny* z wynikiem oryginalnego
   programu.
-- `billing/calculator.go` definiuje typy `Item`/`Bill` i wszystkie pięć
+- `billing/calculator.go` definiuje typy `Item` i `Bill` oraz wszystkie pięć
   funkcji z dokładnymi nazwami i sygnaturami wymienionymi powyżej.
 
 ### Java
 
 - `examples/restaurant-bill/java/build.gradle` deklaruje zależności
   JUnit 5 i `useJUnitPlatform()`.
-- `./gradlew run` produkuje wynik *identyczny* z wynikiem oryginalnego
+- `./gradlew run` daje wynik *identyczny* z wynikiem oryginalnego
   programu.
-- `billing/Calculator.java` definiuje typy `Item`/`Bill` i wszystkie
+- `billing/Calculator.java` definiuje typy `Item` i `Bill` oraz wszystkie
   pięć metod z dokładnymi nazwami i sygnaturami wymienionymi powyżej.
 
 ## Weryfikacja
@@ -263,7 +248,7 @@ Po tym labie potrafisz:
 cd examples/restaurant-bill/python
 uv run python main.py | tee /tmp/bill-after.txt
 diff /tmp/bill-before.txt /tmp/bill-after.txt && echo "IDENTICAL"
-test -f bill.py && echo "bill.py still exists — delete it" || echo "bill.py correctly removed"
+test -f bill.py && echo "ERROR: bill.py still exists" || echo "bill.py correctly removed"
 cd -
 ```
 
@@ -275,7 +260,7 @@ Oczekiwane: `IDENTICAL` i `bill.py correctly removed`.
 cd examples/restaurant-bill/go
 go run . | tee /tmp/bill-after.txt
 diff /tmp/bill-before.txt /tmp/bill-after.txt && echo "IDENTICAL"
-test -f go.mod && echo "go.mod exists" || echo "go.mod missing — run go mod init"
+test -f go.mod && echo "go.mod exists" || echo "ERROR: go.mod missing; run go mod init"
 cd -
 ```
 
@@ -291,17 +276,16 @@ diff /tmp/bill-before.txt /tmp/bill-after.txt && echo "IDENTICAL"
 cd -
 ```
 
-Oczekiwane: `IDENTICAL`, i `./gradlew test` zakończone sukcesem (nawet
-z zero testami — tego należy oczekiwać do Lab 07).
+Oczekiwany wynik: `IDENTICAL` oraz zakończone sukcesem `./gradlew test`.
+Brak testów jest zgodny z założeniami do Labu 07.
 
 ## Zastanów się
 
-- Właśnie udowodniłeś/aś, że Twój refactoring nie zmienił zachowania,
-  używając ręcznego `diff`. Co musiałbyś/abyś robić od nowa, ręcznie,
-  każdy raz, gdy zmienisz jeszcze jedną linię, bez zautomatyzowanego
-  testu?
-- Krok obliczający potrzebuje tylko jednej liczby, żeby wykonać swoją
-  pracę. Czym ta właściwość jest przydatna dla funkcji (albo metody)?
+- Ręczny `diff` potwierdził, że refaktoryzacja nie zmieniła działania.
+  Co trzeba byłoby powtarzać po każdej kolejnej zmianie bez testu
+  automatycznego?
+- Funkcja obliczająca podatek potrzebuje tylko jednej liczby. Dlaczego
+  taka cecha jest przydatna w funkcji lub metodzie?
 
 ## Jeśli utkniesz
 
@@ -310,20 +294,20 @@ z zero testami — tego należy oczekiwać do Lab 07).
 - **Podpowiedź 1:** Pięć funkcji w `calculator.py`, jedna funkcja w
   `cli.py`, jeden dwuliniowy `main.py`. To cała struktura.
 - **Podpowiedź 2:** `calculate_bill` powinno wywoływać cztery inne
-  funkcje — nie reimplementuj ich logiki inline.
+  funkcje. Nie powielaj ich logiki wewnątrz tej funkcji.
 - **Podpowiedź 3:** Jeśli Twój diff nie jest pusty, wypisz oba pliki
-  przez `cat -A` albo porównaj linię po linii — formatowanie
-  zmiennoprzecinkowe (`.2f`) to częste źródło drobnych niezgodności.
+  przez `cat -A` albo porównaj je linia po linii. Częstym źródłem
+  drobnych różnic jest formatowanie liczb zmiennoprzecinkowych (`.2f`).
 
 ### Go
 
 - **Podpowiedź 1:** Pięć funkcji plus dwa typy w `calculator.go`, jedna
   funkcja w `cli.go`, dwuliniowe `main()`. To cała struktura.
 - **Podpowiedź 2:** `CalculateBill` powinno wywoływać cztery inne
-  funkcje — nie reimplementuj ich logiki inline.
+  funkcje. Nie powielaj ich logiki wewnątrz tej funkcji.
 - **Podpowiedź 3:** Ścieżka importu dla Twojego własnego pakietu to
-  `"<nazwa modułu z go.mod>/billing"` — jeśli `go run .` nie może go
-  znaleźć, sprawdź dwa razy, czy pierwsza linia `go.mod` odpowiada
+  `"<nazwa modułu z go.mod>/billing"`. Jeśli `go run .` nie może go
+  znaleźć, sprawdź, czy pierwsza linia `go.mod` odpowiada
   temu, co importujesz.
 
 ### Java
@@ -332,21 +316,19 @@ z zero testami — tego należy oczekiwać do Lab 07).
   `Calculator.java`, jedna statyczna metoda w `Cli.java`, dwuliniowe
   `main`. To cała struktura.
 - **Podpowiedź 2:** `calculateBill` powinno wywoływać cztery inne
-  metody — nie reimplementuj ich logiki inline.
+  metody. Nie powielaj ich logiki wewnątrz tej metody.
 - **Podpowiedź 3:** Jeśli `./gradlew run` wydaje się wisieć pierwszy
-  raz, pobiera dystrybucję Gradle i zależności — poczekaj, aż się raz
-  skończy; każde kolejne uruchomienie jest szybkie.
+  raz, prawdopodobnie pobiera dystrybucję Gradle i zależności. Zaczekaj
+  na zakończenie; kolejne uruchomienia będą szybsze.
 
-Przed przejściem dalej: zacommituj i wypchnij wszystko z tego laba
-(`git add -A && git commit -m "..."; git push`). Nic później jeszcze
-nie zakłada czystego drzewa, ale Akt IV (zaczynający się od Lab 16)
-tak — przyzwyczajaj się już teraz.
+Przed przejściem dalej zacommituj i wypchnij wszystkie zmiany poleceniem
+`git add -A && git commit -m "..."; git push`. Kolejne laby nie wymagają
+jeszcze czystego drzewa, ale Akt IV, zaczynający się od Labu 16, już tak.
 
 ## Co dalej
 
-Twój refactoring zachował zachowanie. Ale "zachowane" nie jest tym
-samym co "poprawne", i teraz jedynym sposobem sprawdzenia jednego albo
-drugiego jest czytanie kodu na oko. Dalej nauczysz komputer sprawdzać
-za Ciebie.
+Refaktoryzacja zachowała działanie programu, ale nie oznacza to jeszcze,
+że program działa poprawnie. Obie te rzeczy trzeba teraz sprawdzać
+ręcznie. W następnym labie zautomatyzujesz tę pracę.
 
 Przejdź do [Lab 07 — Skąd wiemy, że to działa?](../07-automated-tests/README.pl.md).
