@@ -1,4 +1,4 @@
-# Lab 16 — Branche istnieją, bo praca dzieje się równolegle
+# Lab 16 — Gałęzie istnieją, bo praca toczy się równolegle
 
 ## Sytuacja
 
