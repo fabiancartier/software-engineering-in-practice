@@ -2,9 +2,9 @@
 
 [Czytaj po polsku →](README.pl.md)
 
-**New here? → [Start here](START-HERE.md)** walks you through setting
-up your computer (Windows, macOS, or Linux) and opening this
-repository — no terminal, Git, or GitHub experience assumed.
+**New here? [Start here](START-HERE.md).** The guide will help you set
+up a Windows, macOS, or Linux computer and open this repository. You
+do not need prior experience with the terminal, Git, or GitHub.
 
 [![Course Health](https://github.com/michalmaj/software-engineering-in-practice/actions/workflows/course-health.yml/badge.svg)](https://github.com/michalmaj/software-engineering-in-practice/actions/workflows/course-health.yml)
 [![Python 3.13](https://img.shields.io/badge/Python-3.13-blue)](https://www.python.org/)
@@ -16,31 +16,32 @@ repository — no terminal, Git, or GitHub experience assumed.
 [![License: CC BY 4.0](https://img.shields.io/badge/content-CC%20BY%204.0-lightgrey)](LICENSE-CONTENT.md)
 [![Codespaces — ready](https://img.shields.io/badge/Codespaces%20%E2%80%94%20ready-success)](#github-codespaces)
 
-> From terminal to team — learning to build software that survives change.
+> From the terminal to teamwork. Learn to build software that can
+> change safely.
 
 ## What this course is
 
-30 lab sessions, 90 minutes each: a hands-on Software Engineering lab
-course told as one continuous, progressive story, not a catalogue of
-technologies. It's built for university students taking a Software
-Engineering lab course — no prior professional development experience
-assumed, just basic programming in the language you'll pick for your
-track (Python, Go, or Java).
+This hands-on software engineering course consists of 30
+ninety-minute labs. Each task builds on the same project and follows
+from a problem encountered earlier. The course is intended for
+university students. It requires basic programming knowledge in
+Python, Go, or Java, but no professional experience.
 
 ## Core idea
 
 > Programming is about making a program work. Software engineering is
-> about making software safe to change, understand, review, reproduce,
+> also about making it safe to change, understand, review, reproduce,
 > operate, and hand over.
 
-Every lab exists because the previous state of the project created a
-problem worth solving. You meet a problem before you meet its name.
+Each lab starts with a problem created by the previous stage of the
+project. You encounter the problem first, then learn its name and how
+to address it.
 
 ## Course journey
 
 ```text
 workstation → terminal → Git → project → tests → design →
-collaboration → CI → APIs / data / failures → release →
+collaboration → CI → APIs, data, and failures → release →
 team project → handover
 ```
 
@@ -55,18 +56,17 @@ team project → handover
 
 ## Start here
 
-New to terminals, Git, or GitHub? Follow
-[`START-HERE.md`](START-HERE.md) first — it picks the right guide for
-your computer (Windows, macOS, or Linux) and walks you through
-installing Git and VS Code, forking this repository, and cloning it,
-assuming no prior experience.
+New to terminals, Git, or GitHub? Begin with
+[`START-HERE.md`](START-HERE.md). It links to separate instructions for
+Windows, macOS, and Linux and covers installing Git and VS Code,
+forking this repository, and cloning your fork.
 
 Already comfortable with Git and a terminal? The short version:
 
 1. Fork this repository (**Fork** button, top right of the GitHub
    page).
-2. Clone your fork and open it in VS Code — see
-   [`START-HERE.md`](START-HERE.md) for the exact commands for your
+2. Clone your fork and open it in VS Code. See
+   [`START-HERE.md`](START-HERE.md) for commands specific to your
    system.
 3. Open [`labs/01-workstation/README.md`](labs/01-workstation/README.md)
    and begin.
@@ -76,39 +76,35 @@ locally? See [GitHub Codespaces](#github-codespaces) below.
 
 ## Local setup (the default path)
 
-Windows, macOS, and Linux are all equally supported, first-class paths
-— not a fallback. [`START-HERE.md`](START-HERE.md) and the guides
-under [`docs/setup/`](docs/setup/) walk through each one in full,
-click-by-click detail.
+Windows, macOS, and Linux are equally supported.
+[`START-HERE.md`](START-HERE.md) and the guides under
+[`docs/setup/`](docs/setup/) cover each system step by step.
 
-Getting the repository itself onto your computer only needs Git — no
-Docker Desktop, no WSL, no GitHub Desktop. You will **not** need
-Python, Go, or a JDK until you reach the lab where you pick a language
-track — installing all three toolchains up front isn't necessary and
-isn't expected for Lab 01.
+You only need Git to download the repository. Docker Desktop, WSL, and
+GitHub Desktop are not required. Install Python, Go, or a JDK when you
+choose a language in Lab 05. You do not need all three toolchains.
 
-Once you've picked a language track, later labs do need a real
-toolchain, and we won't pretend otherwise:
+Once you have chosen a language, you will need its toolchain:
 
 | Tool   | Required version |
 |--------|-------------------|
 | Python | 3.13.x             |
-| `uv`   | 0.11.21 exactly    |
+| `uv`   | 0.11.21            |
 | Go     | 1.27.x             |
 | JDK    | 21                 |
 
-Gradle is **not** a global requirement: Java starters ship their own
-committed Gradle Wrapper (`./gradlew`), so all you need locally is a
-JDK. To check your toolchain against this table at any point, run
-`./scripts/check-environment.sh` — it's a reference tool for later
-labs, not a gate for Lab 01.
+You do not need to install Gradle separately. The Java starters include
+the Gradle Wrapper (`./gradlew`), so a JDK is enough. Run
+`./scripts/check-environment.sh` at any time to check your tool
+versions. This becomes useful in later labs but is not required for
+Lab 01.
 
 ## GitHub Codespaces
 
-Prefer not to install anything locally? Codespaces runs this course in
-a browser-based environment instead of on your own machine — nothing
-to install, but it needs a stable internet connection for every
-session, and GitHub's free tier has monthly usage limits.
+If you prefer not to install anything locally, you can work in
+Codespaces. The environment runs in your browser, but it requires a
+stable internet connection and is subject to GitHub's monthly free-tier
+limits.
 
 - **Create it from your own fork**, not the original course repository.
   You need write access for later labs that have you commit and push.
@@ -141,30 +137,24 @@ session, and GitHub's free tier has monthly usage limits.
 | Go        | standard Go tooling      | `go test`                 |
 | Java      | JDK 21 + Gradle Wrapper  | JUnit, via `./gradlew test` |
 
-Labs 01-04 are one shared path, language-agnostic. From Lab 05 on,
-you pick one of three equal, **fully supported** language tracks —
-Python, Go, or Java, not one primary language with the other two as
-examples — and use it consistently from there through the Act VI
-capstone: same learning outcomes, real working starters, and the same
-run/test commands pattern (just the language-specific tool) in all
-three. Lab 14 is a deliberate pause to compare how the same idea looks
-across all three — you read all three there, but still only implement
-it in the one you picked, not a switch of track. In all three, the
-language is the medium — the subject is software engineering. You
-only need **one toolchain** for the whole course: whichever language
-you choose at Lab 05, not all three up front.
+Labs 01-04 are shared by everyone. In Lab 05 you choose one of three
+equal, **fully supported** paths: Python, Go, or Java. You use that
+language through the Act VI capstone. Each path has the same learning
+outcomes, working starters, and language-specific commands for running
+code and tests.
+
+Lab 14 compares the same idea in all three languages, but you still
+write code only in the language you chose. The language is a tool; the
+subject is software engineering. One toolchain is enough for the
+entire course.
 
 ## How the labs work
 
-Every lab shares the same backbone: **Story → Learning objectives →
+Every lab follows a similar structure: **Story → Learning objectives →
 Before you start → Your task → Acceptance criteria → Verification →
 Think about it → If you get stuck → What's next.** Some labs add a
-section where the material actually calls for one — a timing note on
-the heavier sessions, an "All tracks" note, or (Lab 26) a short
-architecture-decision record — rather than forcing every lab into an
-identical length. That backbone is deliberate — these materials are
-designed for self-study, whether you're working through them solo or
-as part of a classroom.
+timing note, an "All tracks" section, or an architecture decision
+record. The materials work both for self-study and for classroom use.
 
 ## Course map
 
