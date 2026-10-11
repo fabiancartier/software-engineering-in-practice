@@ -2,26 +2,25 @@
 
 ## Sytuacja
 
-Nowy współtwórca pyta: "jak jeszcze raz uruchomić testy? I czy to był
-formatter czy analizator pierwszy?" Wpisałeś/aś te polecenia tyle razy,
-że już o nich nie myślisz — co jest właśnie powodem, czemu nowy
-człowiek nie powinien musieć pytać.
+Nowa osoba w projekcie pyta: „Jak uruchomić testy? Najpierw było
+formatowanie czy analiza?”. Wykonujesz te polecenia tak często, że nie
+zastanawiasz się już nad kolejnością. Nowa osoba nie powinna jej
+zapamiętywać.
 
 ## Cele nauki
 
 Po tym labie potrafisz:
 
 - Opakować sekwencję poleceń w mały, czytelny skrypt shellowy.
-- Wyjaśnić, czemu skrypt na poziomie projektu jest lepszy niż
+- Wyjaśnić, dlaczego skrypt w projekcie jest lepszy niż
   instrukcja w README, którą czytelnik musi skopiować ręcznie.
-- Wyjaśnić, co znaczy "brak ukrytej magii" dla automatyzacji, którą
-  sam/a piszesz.
+- Wyjaśnić, co oznacza brak ukrytych mechanizmów we własnej
+  automatyzacji.
 
 ## Zanim zaczniesz
 
-- Lab 09 ukończony, w którejkolwiek ścieżce realizujesz: Twój
-  formatter, Twój analizator i Twoje testy wszystkie się udają
-  pojedynczo.
+- Lab 09 ukończony w wybranej ścieżce. Formatowanie, analiza i testy
+  uruchomione osobno kończą się sukcesem.
 - **Uwaga dla Windows:** ten kurs działa na Git Bash na Windowsie, nie
   WSL i nie Docker. Git nie przechowuje bitu wykonywalności Unix tak
   samo jak Linux i macOS, więc skrypt, który działa, gdy wpisujesz
@@ -33,43 +32,41 @@ Po tym labie potrafisz:
   bash scripts/check.sh
   ```
   To zawsze działa, bo nigdy nie zależy od własnego bitu wykonywalności
-  pliku — po prostu mówisz `bash`, żeby uruchomił plik, tak samo jak
-  powiedziałbyś/abyś mu uruchomić jakikolwiek inny skrypt. Wciąż
-  oznacz skrypty jako wykonywalne (`chmod +x scripts/*.sh`) poniżej —
-  gdzie bezpośrednie wykonanie działa na Twoim systemie, to wygodny
-  skrót, nie jedyny wspierany sposób.
+  pliku. Polecenie jawnie wskazuje interpreter `bash`. Mimo to oznacz
+  skrypty jako wykonywalne poleceniem `chmod +x scripts/*.sh`.
+  Bezpośrednie uruchomienie jest wygodnym skrótem na systemach, które
+  je obsługują.
 
 ### Python
 
-- Bieżący katalog: `examples/restaurant-bill/python/`.
+- Pracuj w `examples/restaurant-bill/python/`.
 
 ### Go
 
-- Bieżący katalog: `examples/restaurant-bill/go/`.
+- Pracuj w `examples/restaurant-bill/go/`.
 
 ### Java
 
-- Bieżący katalog: `examples/restaurant-bill/java/`. Twoje skrypty
-  opakowują zacommitowany `./gradlew`, nigdy globalnie zainstalowany
-  `gradle` — ten projekt nie zakłada, że taki istnieje.
+- Pracuj w `examples/restaurant-bill/java/`. Skrypty korzystają z
+  dołączonego `./gradlew`, a nie z globalnego `gradle`. Projekt nie
+  zakłada, że Gradle jest zainstalowany globalnie.
 
 ## Twoje zadanie
 
-Utwórz katalog `scripts/` z czterema skryptami, każdym uruchamianym z
-dowolnego miejsca (same `cd` do katalogu głównego projektu, więc Twój
-bieżący katalog w momencie wywołania nie ma znaczenia):
+Utwórz w katalogu `scripts/` cztery skrypty. Każdy z nich ma działać z
+dowolnego katalogu, ponieważ sam przechodzi do katalogu głównego
+projektu.
 
-1. `scripts/test.sh` — uruchamia zestaw testów.
-2. `scripts/check.sh` — uruchamia kontrolę formattera i analizator
+1. `scripts/test.sh` uruchamia zestaw testów.
+2. `scripts/check.sh` uruchamia kontrolę formatowania i analizator
    statyczny (w tej kolejności), potem zestaw testów.
-3. `scripts/format.sh` — faktycznie przeformatowuje kod (nie tylko
+3. `scripts/format.sh` przeformatowuje kod (nie tylko
    kontrola).
-4. `scripts/run.sh` — uruchamia aplikację.
+4. `scripts/run.sh` uruchamia aplikację.
 
 Zrób wszystkie cztery wykonywalne (`chmod +x scripts/*.sh`). Każdy
 skrypt powinien być wystarczająco krótki, żeby czytanie go od góry do
-dołu mówiło Ci dokładnie, co robi — żadna osobna dokumentacja nie
-powinna być potrzebna, żeby go zrozumieć.
+dołu wyjaśniało jego działanie bez dodatkowej dokumentacji.
 
 ### Python
 
@@ -99,8 +96,8 @@ go test ./...
 To jest `scripts/test.sh` w całości. `scripts/format.sh` uruchamia
 `gofmt -w .`. `scripts/run.sh` uruchamia `go run main.go`.
 `scripts/check.sh` jest jedynym skryptem, który potrzebuje więcej niż
-jednej komendy, z powodu dziwactwa `gofmt -l` z Lab 09 (wylistowuje
-problemy, ale sam nigdy nie failuje):
+jednego polecenia ze względu na zachowanie `gofmt -l` z Labu 09.
+Narzędzie wyświetla problemy, ale nadal kończy się kodem `0`:
 
 ```bash
 #!/usr/bin/env bash
@@ -153,17 +150,17 @@ echo "== tests =="
 ./gradlew test --console=plain
 ```
 
-(Eksportowana zmienna tylko wygasza niegroźne ostrzeżenie PMD z Lab 09
-— nie zmienia tego, co jest sprawdzane.)
+(Eksportowana zmienna wycisza niegroźne ostrzeżenie PMD z Labu 09. Nie
+zmienia zakresu kontroli.)
 
 ## Kryteria akceptacji
 
-- Wszystkie cztery skrypty istnieją, są wykonywalne, i działają, gdy
+- Wszystkie cztery skrypty istnieją, są wykonywalne i działają, gdy
   wywołane przez `bash scripts/<name>.sh` z innego katalogu startowego
   (np. Twojego katalogu domowego).
 - `scripts/check.sh` kończy się statusem niezerowym, jeśli
-  formatowanie, analiza statyczna albo testy failują — nowy człowiek
-  powinien zobaczyć jedną jasną porażkę, nie ciche kontynuowanie.
+  formatowanie, analiza statyczna albo testy nie przechodzą. Skrypt ma
+  wyraźnie zgłosić błąd i przerwać działanie.
 - Przeczytanie jednego skryptu zajmuje mniej niż trzydzieści sekund.
 
 ## Weryfikacja
@@ -198,17 +195,17 @@ bash /path/to/examples/restaurant-bill/java/scripts/run.sh
 cd -
 ```
 
-(Zastąp `/path/to/` swoją rzeczywistą ścieżką repozytorium.) Oczekiwane:
-wszystkie trzy kończą się sukcesem, bez ręcznego `cd` z Twojej strony.
+Zastąp `/path/to/` rzeczywistą ścieżką repozytorium. Wszystkie trzy
+polecenia powinny zakończyć się sukcesem bez ręcznej zmiany katalogu.
 
 ## Zastanów się
 
-- Co by się stało ze `scripts/check.sh`, gdyby jedna z jego komend
-  failowała w połowie, a skrypt nie zatrzymał się natychmiast? Która
+- Co stałoby się ze `scripts/check.sh`, gdyby jedno z jego poleceń
+  zakończyło się błędem, a skrypt działał dalej? Która
   linia w Twoim skrypcie temu zapobiega?
 - Czy jest coś w tym, co te skrypty robią, co nie jest widoczne po
-  samym ich przeczytaniu? Jeśli kolega z zespołu zapytałby "co
-  faktycznie robi `check.sh`", czy mógłbyś/mogłabyś po prostu pokazać
+  samym ich przeczytaniu? Jeśli ktoś z zespołu zapyta „Co robi
+  `check.sh`?”, czy wystarczy pokazać
   mu plik?
 
 ## Jeśli utkniesz
@@ -216,50 +213,48 @@ wszystkie trzy kończą się sukcesem, bez ręcznego `cd` z Twojej strony.
 ### Python
 
 - **Podpowiedź 1:** Zacznij każdy skrypt od `#!/usr/bin/env bash` i
-  `set -euo pipefail` — druga linia zatrzymuje skrypt natychmiast przy
-  pierwszej failującej komendzie.
-- **Podpowiedź 2:** Żeby skrypt działał niezależnie od bieżącego
-  katalogu wywołującego, umieść `cd "$(dirname "$0")/.."` blisko góry,
+  `set -euo pipefail`. Druga linia zatrzymuje skrypt przy pierwszym
+  poleceniu zakończonym błędem.
+- **Podpowiedź 2:** Aby skrypt działał niezależnie od bieżącego
+  katalogu, umieść `cd "$(dirname "$0")/.."` blisko góry,
   zaraz po `set -euo pipefail`.
-- **Podpowiedź 3:** `chmod +x scripts/*.sh` robi wszystkie cztery
-  wykonywalne naraz.
+- **Podpowiedź 3:** `chmod +x scripts/*.sh` nadaje uprawnienie do
+  uruchamiania wszystkim czterem skryptom.
 
 ### Go
 
-- **Podpowiedź 1:** Ten sam zwyczaj `set -euo pipefail` dotyczy tutaj
-  — bez niego, `scripts/check.sh` wciąż uruchomiłby `go vet`, nawet
-  jeśli `gofmt` coś znalazł, co psuje cały sens.
+- **Podpowiedź 1:** Tutaj również użyj `set -euo pipefail`. Bez niego
+  `scripts/check.sh` uruchomiłby `go vet` nawet wtedy, gdy
+  `gofmt` znalazł problem, co podważa sens kontroli.
 - **Podpowiedź 2:** `unformatted="$(gofmt -l .)"` przechwytuje wynik
-  komendy do zmiennej, zamiast go natychmiast wypisywać — `[ -n
-  "$unformatted" ]` potem sprawdza, czy ta zmienna jest niepusta.
+  polecenia do zmiennej zamiast od razu go wyświetlać. `[ -n
+  "$unformatted" ]` sprawdza następnie, czy zmienna jest niepusta.
 - **Podpowiedź 3:** Jeśli `scripts/run.sh` nie może znaleźć `main.go`,
-  gdy wywołany z innego katalogu, sprawdź dwa razy, czy linia
-  `cd "$(dirname "$0")/.."` jest naprawdę pierwszą rzeczą po
+  gdy jest wywołany z innego katalogu, sprawdź, czy linia
+  `cd "$(dirname "$0")/.."` znajduje się bezpośrednio po
   `set -euo pipefail`.
 
 ### Java
 
 - **Podpowiedź 1:** `--console=plain` utrzymuje wynik Gradle prosty i
-  przyjazny dla skryptów — bez tego, bardziej wyszukany wynik
-  terminalowy Gradle może wyglądać dziwnie, gdy jest przekierowany
-  albo logowany.
+  czytelny dla skryptów. Bez tej opcji formatowanie terminalowe Gradle
+  może wyglądać nieczytelnie po przekierowaniu do pliku lub logu.
 - **Podpowiedź 2:** Jeśli `scripts/run.sh` wydaje się wisieć pierwszy
-  raz od świeżego checkoutu, to Gradle pobiera swoją dystrybucję
-  jeszcze raz — tak samo jak pierwsze uruchomienie w Lab 06.
+  raz po sklonowaniu repozytorium, Gradle prawdopodobnie pobiera swoją
+  dystrybucję, podobnie jak przy pierwszym uruchomieniu w Labie 06.
 - **Podpowiedź 3:** Wszystkie cztery skrypty wywołują `./gradlew`,
-  nigdy goły `gradle` — jeśli wpisałeś/aś `gradle` przez pomyłkę w
-  jednym z nich, to jest prawie na pewno bug.
+  a nie samo `gradle`. Jeśli jeden z nich używa `gradle`, to
+  prawdopodobnie jest przyczyną problemu.
 
-Przed przejściem dalej: zacommituj i wypchnij wszystko z tego laba
-(`git add -A && git commit -m "..."; git push`). Akt IV (zaczynający
-się od Lab 16) zakłada czyste drzewo od teraz.
+Przed przejściem dalej zacommituj i wypchnij wszystkie zmiany poleceniem
+`git add -A && git commit -m "..."; git push`. Akt IV, zaczynający się
+od Labu 16, zakłada czyste drzewo robocze.
 
 ## Co dalej
 
-Zmieniłeś/aś jednoplikowy monolit w mały, dobrze przetestowany,
-konsekwentnie sprawdzany projekt, w swoim wybranym języku. Akt II jest
-zakończony — dla wszystkich trzech ścieżek, tak samo jak wszystko aż do
-Aktu VI: Go i Java kontynuują teraz aż do capstone, w tym samym języku,
-którego używasz od tego aktu.
+Jednoplikowy monolit stał się małym, dobrze przetestowanym projektem ze
+spójnym zestawem kontroli. Akt II jest kompletny we wszystkich trzech
+ścieżkach. Pozostała część kursu aż do Aktu VI również je obsługuje:
+Go i Java prowadzą teraz aż do projektu końcowego obok Pythona.
 
 Przejdź do [Lab 11 — Klient zmienił zdanie](../11-changed-requirements/README.pl.md).
