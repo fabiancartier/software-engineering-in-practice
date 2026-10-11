@@ -3,8 +3,8 @@
 ## Story
 
 Your commit from Lab 03 is sitting safely in your local repository. A
-teammate asks you: "did you push that?" You realize you're not actually
-sure what that question means yet.
+teammate asks, "Did you push that?" You are not yet sure what that
+question means.
 
 ## Learning objectives
 
@@ -12,7 +12,7 @@ After this lab you should be able to:
 
 - Explain the difference between your working tree, your local repository,
   and a remote repository.
-- Inspect which remote(s) your local repository is configured with.
+- Inspect the remote repositories configured for your local repository.
 - Publish a local commit to a remote with `git push`, and fetch others'
   work with `git pull`.
 - Explain that Git (the tool) and GitHub (a hosting service for Git
@@ -20,42 +20,41 @@ After this lab you should be able to:
 
 ## Before you start
 
-- Lab 03 complete — you have at least one local commit.
-- Your repository has a configured remote (cloning your fork, whether
-  via [`START-HERE.md`](../../START-HERE.md) or Codespaces, sets this
-  up automatically).
-- Current directory: the repository root.
+- Lab 03 complete. You have at least one local commit.
+- Your repository has a configured remote. Cloning your fork through
+  [`START-HERE.md`](../../START-HERE.md) or using Codespaces sets this
+  up automatically.
+- Your current directory is the repository root.
 - If `git remote -v` shows a URL that is *not* your own fork (it points
-  to the original course repository instead), stop here — see
+  to the original course repository instead), stop here and read
   [`docs/setup/already-have-a-fork.md`](../../docs/setup/already-have-a-fork.md)
   before continuing. Pushing to a repository you don't own will fail
   with a permissions error.
 - This lab is also where you'll push to GitHub for the first time. If
   Git asks you to authenticate and you're not sure what to do, see
-  [`docs/setup/github-auth.md`](../../docs/setup/github-auth.md) —
-  it's written for exactly this moment.
+  [`docs/setup/github-auth.md`](../../docs/setup/github-auth.md).
 
 ## Your task
 
-1. Run `git remote -v` and note the URL(s) shown for `origin`.
+1. Run `git remote -v` and note the URLs shown for `origin`.
 2. Extend `labs/04-local-vs-remote/notes/my-observations.txt` with one
    sentence explaining, in your own words, what `origin` refers to.
 3. Add and commit that file (`docs: add lab 04 observations`).
 4. Run `git push`. If it succeeds, your commits (from this lab and Lab 03,
-   if not already pushed) now exist on the remote too.
+   if not already pushed) now also exist in the remote repository.
 5. Run `git log` locally, then compare it with the commit history shown on
-   the remote's web interface (e.g. the GitHub "Commits" view) for the same
-   branch.
+   the remote's web interface for the same branch, for example the GitHub
+   "Commits" view.
 6. Run `git pull`. Even with no new remote changes, confirm it completes
-   without error — this is the command you'll rely on to fetch teammates'
-   work later in the course.
+   without error. You will use this command to fetch teammates' work
+   later in the course.
 
 ## Acceptance criteria
 
-- `git remote -v` output is recorded (in your own words) in
-  `my-observations.txt`.
+- `my-observations.txt` explains in your own words what the `origin`
+  shown by `git remote -v` refers to.
 - Your Lab 03 and Lab 04 commits are visible both in `git log` locally and
-  in the remote's web history for your branch.
+  in your branch's remote history.
 - You can state, out loud, one sentence distinguishing "local repository"
   from "remote repository", and one sentence distinguishing Git from
   GitHub.
@@ -65,7 +64,7 @@ After this lab you should be able to:
 ```bash
 git remote -v
 git log --oneline -3
-git status   # should show "up to date" / "nothing to commit"
+git status   # expect "up to date" and "nothing to commit"
 ```
 
 Then open the repository on GitHub (or your Git host) and confirm your
@@ -83,9 +82,9 @@ latest commit message appears there too.
 - **Hint 1:** You need three new commands beyond Lab 03: `git remote -v`,
   `git push`, `git pull`.
 - **Hint 2:** If `git push` is rejected, it usually means the remote has
-  commits you don't have locally yet — `git pull` first, then push again.
-- **Hint 3:** `origin` is just a name (a local alias) for a remote URL —
-  it's not a special Git keyword, just the conventional default name.
+  commits you don't have locally yet. Run `git pull`, then push again.
+- **Hint 3:** `origin` is a local alias for a remote URL. It is the
+  conventional default name, not a special Git keyword.
 
 ## What's next
 
