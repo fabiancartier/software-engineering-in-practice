@@ -2,25 +2,20 @@
 
 [Zacznij tutaj (po polsku) →](START-HERE.pl.md)
 
-This page gets you from "I have never used a terminal" to "I have my
-own copy of this course on my computer, open in VS Code, ready for
-Lab 01." It does not explain what the course is about yet — that's in
-the main [`README.md`](README.md). This page is only about the
-computer part.
+This guide will help you prepare your computer for Lab 01. By the end,
+you will have your own copy of the course open in VS Code. You do not
+need experience with the terminal or Git. See the main
+[`README.md`](README.md) for an overview of the course itself.
 
-## What you'll have when you're done
+## What you will set up
 
-- Your own **fork** of this course on GitHub (your own copy, under
-  your own account).
-- A **clone** of that fork on your own computer (a local copy you can
-  edit).
-- That copy open in **VS Code**, with a working terminal inside it.
-- A clear idea of what to do if something doesn't match what this
-  page says.
+- Your own **fork** of the course on GitHub.
+- A **clone** of the fork on your computer that you can edit.
+- The project open in **VS Code** with a working terminal.
+- A place to look for help if something goes wrong.
 
-You will **not** install Python, Go, or Java yet. Those come later,
-once you've picked which language track you're using — this page is
-only about getting the repository itself onto your machine.
+Do not install Python, Go, or Java yet. You will do that after choosing
+a language in Lab 05. For now, you only need the repository.
 
 ## Pick your system
 
@@ -30,14 +25,13 @@ only about getting the repository itself onto your machine.
 | macOS | [`docs/setup/macos.md`](docs/setup/macos.md) |
 | Linux | [`docs/setup/linux.md`](docs/setup/linux.md) |
 
-Each guide is a single, complete path: open a terminal, install Git
-and VS Code if you don't have them, fork and clone this repository,
-and open it in VS Code. Follow the one for your system from the top —
-you don't need to read the other two.
+Choose the guide for your system and follow it from beginning to end.
+You will install Git and VS Code, create a fork, clone the repository,
+and open it in the editor. You do not need to read the other two
+guides.
 
-Prefer to skip installing anything on your own machine? See
-[GitHub Codespaces](#github-codespaces-the-no-install-option) below
-instead — it's still supported, just no longer the default path.
+If you prefer not to install tools on your computer, use
+[GitHub Codespaces](#github-codespaces-the-no-install-option).
 
 ## Already partway through this?
 
@@ -47,16 +41,16 @@ You don't need to start over.
   it yet."** Skip to the "Clone your fork" step in your system's
   guide above.
 - **"I already have a local copy of this repository on my computer."**
-  Go straight to
-  [`docs/setup/already-have-a-fork.md`](docs/setup/already-have-a-fork.md) —
-  it tells you how to find it, open it, and check it's actually in a
-  safe state, without recreating anything.
+  Go to
+  [`docs/setup/already-have-a-fork.md`](docs/setup/already-have-a-fork.md).
+  It explains how to find the copy, open it, and check its state
+  safely.
 - **"Something went wrong and I'm not sure what state I'm in."** See
   [`docs/setup/troubleshooting.md`](docs/setup/troubleshooting.md).
 
 ## When you're ready for Lab 01
 
-You're ready once every one of these is true:
+You can start once every item below is true:
 
 - [ ] I have my own fork on GitHub.
 - [ ] I have a copy of it on my computer.
@@ -70,17 +64,15 @@ You're ready once every one of these is true:
 - [ ] I know where to find Lab 01's instructions.
 - [ ] I know what to do if I get stuck later.
 
-That's this course's actual definition of "ready for Lab 01." If all
-ten are true, open
+If you can check all ten items, open
 [`labs/01-workstation/README.md`](labs/01-workstation/README.md) and
 start.
 
 ## GitHub Codespaces (the no-install option)
 
-Codespaces runs this course in a browser-based environment instead of
-on your own machine — nothing to install locally, but it needs a
-stable internet connection for every session, and GitHub's free tier
-has monthly usage limits.
+Codespaces provides a development environment in your browser. You do
+not need to install anything locally, but you do need a stable internet
+connection. GitHub limits monthly use on the free tier.
 
 1. Fork this repository (**Fork** button, top right of the GitHub
    page), the same as the local path.
@@ -90,6 +82,5 @@ has monthly usage limits.
 4. Open [`labs/01-workstation/README.md`](labs/01-workstation/README.md)
    and begin.
 
-The Codespace's terminal is already Bash, so the "on Windows, that
-terminal is Git Bash" checklist item above doesn't apply — any Bash
-prompt satisfies it.
+The Codespace terminal already uses Bash, so the Git Bash checklist
+item for Windows does not apply.
