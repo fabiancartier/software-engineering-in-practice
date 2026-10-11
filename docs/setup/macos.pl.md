@@ -5,7 +5,7 @@
 Jeśli gdzieś utkniesz, przejdź do [Jeśli utkniesz](#jeśli-utkniesz) na
 dole, albo do wspólnego [`troubleshooting.pl.md`](troubleshooting.pl.md).
 
-## Część 1 — Otwórz Terminal
+## Część 1: Otwórz Terminal
 
 1. Naciśnij `Cmd+Space`, żeby otworzyć wyszukiwanie Spotlight.
 2. Wpisz `Terminal`.
@@ -18,7 +18,7 @@ dole, albo do wspólnego [`troubleshooting.pl.md`](troubleshooting.pl.md).
 Terminala, jest też w **Applications → Utilities → Terminal** przez
 Findera.
 
-## Część 2 — Sprawdź Xcode Command Line Tools
+## Część 2: Sprawdź Xcode Command Line Tools
 
 Git na macOS przychodzi razem z narzędziami wiersza poleceń Apple, nie
 jest instalowany osobno.
@@ -27,11 +27,11 @@ jest instalowany osobno.
    ```bash
    git --version
    ```
-2. **Co powinieneś/aś zobaczyć — jedno z dwóch:**
-   - Prawdziwy numer wersji jak `git version 2.39.3 (Apple Git-145)` —
-     narzędzia są już zainstalowane, przejdź do Części 3.
+2. **Możliwe są dwa wyniki:**
+   - Numer wersji, na przykład `git version 2.39.3 (Apple Git-145)`.
+     Narzędzia są już zainstalowane, więc przejdź do Części 3.
    - Okno popup: "The 'git' command requires the command line developer
-     tools. Would you like to install the tools now?" — kliknij
+     tools. Would you like to install the tools now?". Kliknij
      **Install**, potem zaakceptuj umowę licencyjną, która się pojawi.
 3. Jeśli widziałeś/aś popup, zaczekaj, aż pobieranie i instalacja się
    zakończą (to może zająć kilka minut, zależnie od połączenia), potem
@@ -39,38 +39,37 @@ jest instalowany osobno.
    ```bash
    git --version
    ```
-   **Skąd wiesz, że możesz kontynuować:** wypisuje się prawdziwy numer
+   **Skąd wiesz, że możesz kontynuować:** pojawia się numer
    wersji.
 
-## Część 3 — Zainstaluj VS Code
+## Część 3: Zainstaluj VS Code
 
-Najprostsza ścieżka instaluje przez Homebrew, konsolowy menedżer
+Najprościej użyć Homebrew, konsolowego menedżera
 pakietów macOS. Jeśli nie chcesz instalować Homebrew, użyj alternatywy
 z bezpośrednim pobraniem poniżej.
 
-### Opcja A — Używając Homebrew (polecana)
+### Opcja A: Homebrew (polecana)
 
 1. Sprawdź, czy Homebrew jest już zainstalowany:
    ```bash
    brew --version
    ```
 2. **Jeśli widzisz** `command not found: brew`, zainstaluj go oficjalną
-   komendą (to jest prawdziwa komenda ze strony
-   [brew.sh](https://brew.sh) — wklej ją dokładnie tak, jak jest
-   napisana):
+   poleceniem ze strony [brew.sh](https://brew.sh). Wklej je bez
+   zmian:
    ```bash
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
    ```
-3. Postępuj zgodnie z instrukcjami, które wypisze na końcu — na Makach
+3. Postępuj zgodnie z instrukcjami wyświetlonymi na końcu. Na Makach
    z Apple Silicon instalator Homebrew zwykle prosi o uruchomienie
    jednej lub dwóch dodatkowych komend, żeby dodać go do `PATH` Twojej
-   powłoki. Skopiuj i uruchom dokładnie to, co pokazuje.
+   powłoki. Skopiuj i uruchom wyświetlone polecenie.
 4. Zamknij Terminal całkowicie i otwórz go ponownie (Część 1), potem
    potwierdź:
    ```bash
    brew --version
    ```
-   **Skąd wiesz, że możesz kontynuować:** wypisuje się prawdziwy numer
+   **Skąd wiesz, że możesz kontynuować:** pojawia się numer
    wersji.
 5. Zainstaluj VS Code:
    ```bash
@@ -79,60 +78,59 @@ z bezpośrednim pobraniem poniżej.
 6. **Co powinieneś/aś zobaczyć:** wynik pobierania i instalacji
    kończący się bez błędu.
 
-### Opcja B — Bezpośrednie pobranie (bez Homebrew)
+### Opcja B: Bezpośrednie pobranie
 
 1. Wejdź na [code.visualstudio.com](https://code.visualstudio.com/) w
    przeglądarce i pobierz wersję dla macOS.
-2. Otwórz pobrany plik `.zip` — rozpakowuje się do
+2. Otwórz pobrany plik `.zip`. Po rozpakowaniu otrzymasz
    `Visual Studio Code.app`.
-3. Przenieś go do folderu **Applications**.
+3. Przenieś go do katalogu **Applications**.
 
 ### Uruchom VS Code
 
 Naciśnij `Cmd+Space`, wpisz `Visual Studio Code`, naciśnij Enter.
 
 **Co powinieneś/aś zobaczyć:** otwiera się okno VS Code z zakładką
-powitalną i pustym panelem Explorer po lewej (puste jest normalne — nie
-otworzyłeś/aś jeszcze żadnego projektu).
+powitalną i pustym panelem Explorer po lewej. Panel jest pusty, ponieważ
+nie ma jeszcze otwartego projektu.
 
-## Część 4 — Otwórz terminal wewnątrz VS Code
+## Część 4: Otwórz terminal wewnątrz VS Code
 
 1. W menu VS Code kliknij **Terminal → New Terminal**.
 2. **Co powinieneś/aś zobaczyć:** panel terminala otwiera się na dole
-   okna, z tym samym rodzajem promptu, który widziałeś/aś w Części 1 —
-   terminal VS Code na macOS to domyślnie zsh, bez dodatkowej
-   konfiguracji (w przeciwieństwie do Windowsa).
+   okna, z promptem podobnym do tego z Części 1. VS Code domyślnie
+   korzysta z zsh, więc nie musisz niczego konfigurować.
 3. Potwierdź:
    ```bash
    pwd
    ```
    **Co powinieneś/aś zobaczyć:** ścieżka, prawdopodobnie kończąca się
-   na Twoim folderze domowym (coś jak `/Users/twojanazwa`).
+   na Twoim katalogu domowym (na przykład `/Users/twojanazwa`).
 
-## Część 5 — Orientacja: aktualny folder i dom
+## Część 5: Bieżący katalog i katalog domowy
 
-- `pwd` zawsze mówi Ci dokładnie, gdzie jesteś.
-- `ls` wylistowuje, co jest w aktualnym folderze.
+- `pwd` wyświetla bieżący katalog.
+- `ls` wyświetla zawartość bieżącego katalogu.
 - `cd` bez argumentów, albo `cd ~`, zawsze zabiera Cię z powrotem do
-  folderu domowego, niezależnie od tego, jak zagubiony/a się czujesz.
-- `cd ..` przenosi Cię jeden poziom folderów wyżej.
+  katalogu domowego.
+- `cd ..` przenosi Cię o jeden poziom wyżej.
 
 Jeśli w jakimkolwiek momencie wynik komendy wygląda nieznajomo, najpierw
-uruchom `pwd` — większość zamieszania wynika z bycia w nieoczekiwanym
-folderze.
+uruchom `pwd`. Wiele problemów wynika z pracy w innym katalogu niż
+oczekiwany.
 
-## Część 6 — Zrób fork, sklonuj i otwórz to repozytorium
+## Część 6: Zrób fork, sklonuj i otwórz repozytorium
 
 To jest faktyczny cel tej strony. Od teraz wszystko dzieje się albo w
 przeglądarce, albo w terminalu VS Code z Części 4.
 
 **Masz już fork albo lokalną kopię z wcześniejszej próby?** Nie
-powtarzaj tych kroków na ślepo — przejdź najpierw do
+powtarzaj tych kroków. Przejdź najpierw do
 [`already-have-a-fork.pl.md`](already-have-a-fork.pl.md).
 
-### 6.1 — Zrób fork repozytorium na GitHubie
+### 6.1: Zrób fork repozytorium na GitHubie
 
-1. Upewnij się, że jesteś zalogowany/a na GitHubie — otwórz
+1. Upewnij się, że konto GitHub jest zalogowane. Otwórz
    [github.com](https://github.com) w przeglądarce i sprawdź, czy
    prawy górny róg pokazuje Twój avatar konta, nie przycisk "Sign in".
    Jeśli nie masz jeszcze konta GitHub, najpierw je utwórz (jest
@@ -141,45 +139,44 @@ powtarzaj tych kroków na ślepo — przejdź najpierw do
    `https://github.com/michalmaj/software-engineering-in-practice`.
 3. Kliknij przycisk **Fork**, w prawym górnym rogu strony.
 4. Na stronie "Create a new fork" upewnij się, że **Owner** pokazuje
-   *Twoje* konto, nie prowadzącego — ten dropdown domyślnie ustawia się
-   na konto, na którym jesteś zalogowany/a, co powinno już być Tobą.
+   *Twoje* konto, a nie konto prowadzącego.
 5. Kliknij **Create fork**.
 
 **Co powinieneś/aś zobaczyć:** GitHub przenosi Cię na nową stronę,
 której URL to
-`https://github.com/<twój-username>/software-engineering-in-practice`
-— Twój własny username, nie `michalmaj`, jest teraz w adresie
-przeglądarki i w tytule strony, zaraz pod ikonką repozytorium, która
-pokazuje, że powstało jako fork `michalmaj/software-engineering-in-practice`.
+`https://github.com/<twój-username>/software-engineering-in-practice`.
+W adresie i tytule strony powinna znaleźć się Twoja nazwa użytkownika.
+GitHub pokazuje też, że repozytorium jest forkiem
+`michalmaj/software-engineering-in-practice`.
 
-**Skąd wiesz, że możesz kontynuować:** URL w adresie przeglądarki
-zawiera *Twój* username z GitHuba, nie `michalmaj`.
+**Skąd wiesz, że możesz kontynuować:** adres w przeglądarce zawiera
+*Twoją* nazwę użytkownika GitHuba, a nie `michalmaj`.
 
-### 6.2 — Skopiuj adres klonowania swojego forka
+### 6.2: Skopiuj adres klonowania swojego forka
 
 1. Na stronie swojego forka (z poprzedniego kroku) kliknij zielony
    przycisk **Code**.
-2. Upewnij się, że wybrana jest zakładka **HTTPS** (nie SSH, nie GitHub
-   CLI — ten kurs nie wymaga konfigurowania kluczy SSH).
+2. Upewnij się, że wybrana jest zakładka **HTTPS**, a nie SSH lub GitHub
+   CLI. Ten kurs nie wymaga konfigurowania kluczy SSH.
 3. Kliknij małą ikonkę kopiowania przy adresie, żeby go skopiować.
    Wygląda jak:
    ```text
    https://github.com/<twój-username>/software-engineering-in-practice.git
    ```
-   z Twoim rzeczywistym username zamiast `<twój-username>`.
+   z Twoją nazwą użytkownika zamiast `<twój-username>`.
 
-### 6.3 — Sklonuj je na swój komputer
+### 6.3: Sklonuj je na swój komputer
 
 Z powrotem w terminalu VS Code z Części 4:
 
-1. Zdecyduj, gdzie powinny żyć Twoje projekty, i utwórz ten folder,
-   jeśli jeszcze nie istnieje. Rozsądny, prosty wybór:
+1. Wybierz katalog na swoje projekty i utwórz go, jeśli jeszcze nie
+   istnieje. Możesz użyć na przykład takiej lokalizacji:
    ```bash
    mkdir -p ~/projects
    cd ~/projects
    ```
-2. Sklonuj swój fork — wklej adres, który skopiowałeś/aś w 6.2.
-   **Zastąp `<twój-username>` swoim rzeczywistym username z GitHuba**;
+2. Sklonuj swój fork przy użyciu adresu z punktu 6.2.
+   **Zastąp `<twój-username>` swoją nazwą użytkownika z GitHuba**;
    nie wklejaj poniższej linii dosłownie:
    ```bash
    git clone https://github.com/<twój-username>/software-engineering-in-practice.git
@@ -187,7 +184,7 @@ Z powrotem w terminalu VS Code z Części 4:
 3. **Co powinieneś/aś zobaczyć:** linie jak `Cloning into
    'software-engineering-in-practice'...`, potem `Receiving objects:
    100%`, kończące się bez błędu.
-4. Przejdź do nowego folderu:
+4. Przejdź do nowego katalogu:
    ```bash
    cd software-engineering-in-practice
    ```
@@ -197,9 +194,9 @@ Z powrotem w terminalu VS Code z Części 4:
    ls
    ```
    **Co powinieneś/aś zobaczyć:** `pwd` wypisuje coś kończące się na
-   `/projects/software-engineering-in-practice`; `ls` wylistowuje
-   foldery włącznie z `labs`, `examples`, `scripts`, i pliki włącznie z
-   `README.md` i `START-HERE.md`.
+   `/projects/software-engineering-in-practice`; `ls` pokazuje między
+   innymi katalogi `labs`, `examples`, `scripts` oraz pliki `README.md`
+   i `START-HERE.md`.
 6. Potwierdź, że sam Git jest zadowolony, i że wskazuje na *Twój* fork,
    nie prowadzącego:
    ```bash
@@ -209,30 +206,29 @@ Z powrotem w terminalu VS Code z Części 4:
    **Co powinieneś/aś zobaczyć:** `git status` mówi `On branch main` i
    `nothing to commit, working tree clean`. `git remote -v` pokazuje
    dwie linie (`origin` fetch i push), których adres zawiera **Twój
-   własny username z GitHuba** — jeśli widzisz tam `michalmaj` zamiast
-   swojego username, sklonowałeś/aś przez pomyłkę oryginalne
-   repozytorium, nie swój fork; zobacz
+   własną nazwę użytkownika z GitHuba**. Jeśli widzisz `michalmaj`, masz
+   klon oryginalnego repozytorium zamiast swojego forka. Zobacz
    [Sklonowałem/am repozytorium prowadzącego zamiast własnego forka](#sklonowałemam-repozytorium-prowadzącego-zamiast-własnego-forka)
    poniżej.
 
 **Skąd wiesz, że możesz kontynuować:** `git remote -v` pokazuje Twój
-własny username, a `ls` pokazuje `labs/`, `examples/` i `scripts/`.
+własny login, a `ls` pokazuje `labs/`, `examples/` i `scripts/`.
 
-### 6.4 — Otwórz je w VS Code
+### 6.4: Otwórz repozytorium w VS Code
 
 1. W VS Code kliknij **File → Open Folder…** (albo **File → Open…** w
-   niektórych wersjach VS Code — wciąż otwiera okno wyboru folderu na
+   niektórych wersjach VS Code. Nadal otwiera okno wyboru katalogu na
    macOS).
-2. Przejdź do folderu, który sklonowałeś/aś — jeśli podążyłeś/aś za 6.3
-   dokładnie, to `projects` → `software-engineering-in-practice`
-   wewnątrz Twojego folderu domowego.
+2. Przejdź do sklonowanego katalogu. Jeśli używasz lokalizacji z punktu
+   6.3, wybierz `projects` → `software-engineering-in-practice`
+   wewnątrz katalogu domowego.
 3. Kliknij **Open**.
 4. VS Code może zapytać "Do you trust the authors of the files in this
-   folder?" — kliknij **Yes, I trust the authors**.
+   folder?" Kliknij **Yes, I trust the authors**.
 
 **Co powinieneś/aś zobaczyć:** panel Explorer po lewej wylistowuje
-teraz `labs`, `examples`, `scripts`, `README.md` i więcej — to samo, co
-`ls` pokazał Ci w 6.3.
+teraz `labs`, `examples`, `scripts`, `README.md` i pozostałe elementy
+widoczne wcześniej w wyniku `ls`.
 
 5. Otwórz terminal wewnątrz tego okna (**Terminal → New Terminal**).
    Potwierdź, że jesteś we właściwym miejscu:
@@ -241,28 +237,27 @@ teraz `labs`, `examples`, `scripts`, `README.md` i więcej — to samo, co
    ```
    **Skąd wiesz, że możesz kontynuować:** ścieżka kończy się na
    `/software-engineering-in-practice`, a panel Explorer pokazuje
-   folder `labs/`.
+   katalog `labs/`.
 
-### 6.5 — Znajdź Lab 01
+### 6.5: Znajdź Lab 01
 
-1. W panelu Explorer po lewej kliknij, żeby rozwinąć folder `labs`.
+1. W panelu Explorer po lewej rozwiń katalog `labs`.
 2. Znajdź i kliknij `01-workstation`, potem kliknij `README.pl.md`
    wewnątrz niego.
 
 **Co powinieneś/aś zobaczyć:** otwiera się `Lab 01 — Witaj na swoim
 stanowisku pracy` jako czytelny dokument w edytorze.
 
-To wszystko — dotarłeś/aś do końca zadania tej strony. Przejdź do
-[Zanim skończysz](#zanim-skończysz), żeby wszystko podwójnie sprawdzić,
-a potem zacznij lab.
+Konfiguracja jest gotowa. Przejdź do sekcji
+[Zanim skończysz](#zanim-skończysz), sprawdź wszystkie punkty i zacznij
+lab.
 
 ## Pierwszy push do GitHuba
 
-Nie wypchniesz niczego do GitHuba aż do połowy Lab 03 albo Lab 04 —
-klonowanie i czytanie nie wymagają zalogowania do samego Gita, tylko
-Twojej sesji przeglądarki z 6.1. Gdy tam dotrzesz i `git push` zapyta o
-autoryzację, zobacz [`github-auth.pl.md`](github-auth.pl.md) — jest
-napisane właśnie na ten moment, więc nie musisz tego czytać teraz.
+Pierwszy push pojawi się dopiero w Labie 03 lub 04. Klonowanie i
+czytanie repozytorium nie wymaga uwierzytelnienia Gita. Gdy `git push`
+poprosi o zalogowanie, skorzystaj z
+[`github-auth.pl.md`](github-auth.pl.md).
 
 ## Zanim skończysz
 
@@ -273,7 +268,7 @@ Sprawdź każde z tych, zanim uznasz Lab 01 za gotowy do zaczęcia:
 - [ ] `pwd` wewnątrz terminala VS Code kończy się na
       `/software-engineering-in-practice`.
 - [ ] `git status` działa bez błędu.
-- [ ] `git remote -v` pokazuje **Twój własny** username z GitHuba.
+- [ ] `git remote -v` pokazuje **Twoją** nazwę użytkownika GitHuba.
 - [ ] Panel Explorer pokazuje `labs/`, `examples/` i `scripts/`.
 - [ ] `labs/01-workstation/README.pl.md` się otwiera.
 
@@ -285,17 +280,17 @@ i zaczynaj.
 
 ### `brew`, `git` albo `code` mówi "command not found"
 
-Zamknij Terminal całkowicie i otwórz nowy (Część 1) — nowo zainstalowany
+Zamknij Terminal i otwórz go ponownie zgodnie z Częścią 1. Nowo zainstalowany
 program, i własna konfiguracja `PATH` Homebrew, czasem nie zadziałają w
 oknie Terminala, które było już otwarte przed zakończeniem instalacji.
 Jeśli `brew` wciąż go nie ma po tym, sprawdź ponownie koniec wyniku
 instalacji Homebrew (Część 3) pod kątem dodatkowej komendy konfiguracji
-`PATH`, o którą prosił — ten krok łatwo przegapić.
+`PATH`, o którą poprosił. Ten krok łatwo przeoczyć.
 
 ### Sklonowałem/am repozytorium prowadzącego zamiast własnego forka
 
-Jeśli `git remote -v` pokazuje `michalmaj` zamiast Twojego username:
-folder, który sklonowałeś/aś, wskazuje na repozytorium, do którego nie
+Jeśli `git remote -v` pokazuje `michalmaj` zamiast Twojej nazwy
+użytkownika, sklonowany katalog wskazuje na repozytorium, do którego nie
 masz prawa push, co zablokuje Cię później (Lab 03–04). Napraw to bez
 utraty czegokolwiek:
 
@@ -304,15 +299,14 @@ cd ..
 mv software-engineering-in-practice software-engineering-in-practice.instructor-copy
 ```
 
-To zmienia nazwę źle sklonowanego folderu, odsuwając go z drogi, zamiast
-go usuwać, potem powtórz 6.1–6.4 tym razem z adresem *swojego* forka.
-Gdy Twoja prawdziwa kopia już działa, możesz usunąć przemianowany
-folder, jeśli chcesz, albo po prostu go zostawić — nie robi żadnej
-szkody, siedząc tam.
+W ten sposób zachowasz błędnie sklonowany katalog pod inną nazwą.
+Następnie powtórz punkty 6.1–6.4, tym razem z adresem *swojego* forka.
+Gdy poprawna kopia działa, możesz usunąć przemianowany katalog albo
+pozostawić go na dysku.
 
 ### Wszystko inne
 
 Zobacz wspólne [`troubleshooting.pl.md`](troubleshooting.pl.md) dla
 problemów niespecyficznych dla macOS (problemy z logowaniem do
 GitHuba, "repo już istnieje na dysku", VS Code otworzył niewłaściwy
-folder, problemy z pierwszym push i więcej).
+katalog czy problemy z pierwszym pushem).

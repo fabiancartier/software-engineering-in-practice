@@ -22,7 +22,7 @@ wymagałaby takiej operacji, zatrzymaj się i poproś o pomoc.
    Jeśli polecenie niczego nie wypisze, przejdź do kroku "Sklonuj swój
    fork" w przewodniku dla swojego systemu:
    ([Windows](windows.pl.md#63-sklonuj-repozytorium-na-swój-komputer),
-   [macOS](macos.pl.md#63--sklonuj-je-na-swój-komputer),
+   [macOS](macos.pl.md#63-sklonuj-je-na-swój-komputer),
    [Linux](linux.pl.md#63--sklonuj-je-na-swój-komputer)).
 
 ## "Mam już lokalną kopię"
