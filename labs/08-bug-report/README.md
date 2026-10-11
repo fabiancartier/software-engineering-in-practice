@@ -2,7 +2,7 @@
 
 ## Story
 
-An email arrives: "I ordered $60 of food and got the loyalty discount,
+An email arrives. "I ordered $60 of food and got the loyalty discount,
 but the tax on my receipt looks too high for the discounted amount."
 Your test suite is green. The customer is still right.
 
@@ -19,25 +19,23 @@ After this lab you should be able to:
 
 ## Before you start
 
-- Lab 07 complete, in whichever track you're following: your six (or
-  more) tests pass.
+- Lab 07 complete in your chosen track, with at least six passing tests.
 
 ### Python
 
-- Current directory: `examples/restaurant-bill/python/`.
+- Work from `examples/restaurant-bill/python/`.
 
 ### Go
 
-- Current directory: `examples/restaurant-bill/go/`.
+- Work from `examples/restaurant-bill/go/`.
 
 ### Java
 
-- Current directory: `examples/restaurant-bill/java/`.
+- Work from `examples/restaurant-bill/java/`.
 
 ## Your task
 
-Every track reproduces and fixes the exact same bug with the exact same
-numbers.
+Each track reproduces and fixes the same bug using the same numbers.
 
 1. Reproduce, by hand or in a scratch shell for your language, what the
    whole-bill calculation returns for an order whose subtotal is $60
@@ -50,8 +48,8 @@ numbers.
 3. Run the test suite and confirm this new test fails (red).
 4. Read the failure message. Locate the exact line responsible for
    computing tax inside the whole-bill calculation.
-5. Fix it — change what the tax calculation is given as its input, so
-   tax is computed on the amount *after* the discount, not before.
+5. Fix it by passing the amount *after* the discount to the tax
+   calculation instead of the original subtotal.
 6. Run the whole suite again and confirm everything passes (green),
    including every test from Lab 07.
 
@@ -80,7 +78,7 @@ Name the new test
 - The full test suite passes completely, with no fewer tests than
   before.
 - The fix changes only how tax is computed inside the whole-bill
-  calculation — no other function's (or method's) behavior changes.
+  calculation. No other function's or method's behavior changes.
 
 ## Verification
 
@@ -127,46 +125,45 @@ Expected: `BUILD SUCCESSFUL`, all tests passing, including the new one.
 
 ### Python
 
-- **Hint 1:** Compute the buggy tax by hand first — for the $60 order,
+- **Hint 1:** Compute the incorrect tax by hand first. For the $60 order,
   what does `calculate_tax(60.0)` return, versus
   `calculate_tax(60.0 - 6.0)`?
 - **Hint 2:** The failing assertion message from pytest shows you the
-  actual value your code produced. Compare it to what you expected — the
-  gap tells you exactly which input was wrong.
+  actual value your code produced. Compare it to what you expected; the
+  gap identifies the incorrect input.
 - **Hint 3:** The fix is one changed argument on one line inside
-  `calculate_bill` — resist the urge to restructure anything else.
+  `calculate_bill`. Do not restructure anything else.
 
 ### Go
 
-- **Hint 1:** Compute the buggy tax by hand first — for the $60 order,
+- **Hint 1:** Compute the incorrect tax by hand first. For the $60 order,
   what does `CalculateTax(60.0)` return, versus
   `CalculateTax(60.0 - 6.0)`?
 - **Hint 2:** The failing test's `t.Errorf` output shows you the actual
-  value your code produced. Compare it to what you expected — the gap
-  tells you exactly which input was wrong.
+  value your code produced. Compare it to what you expected; the gap
+  identifies the incorrect input.
 - **Hint 3:** The fix is one changed argument on one line inside
-  `CalculateBill` — resist the urge to restructure anything else.
+  `CalculateBill`. Do not restructure anything else.
 
 ### Java
 
-- **Hint 1:** Compute the buggy tax by hand first — for the $60 order,
+- **Hint 1:** Compute the incorrect tax by hand first. For the $60 order,
   what does `Calculator.calculateTax(60.0)` return, versus
   `Calculator.calculateTax(60.0 - 6.0)`?
 - **Hint 2:** JUnit 5's failure output shows you the actual value your
-  code produced, next to the expected one. The gap tells you exactly
-  which input was wrong.
+  code produced next to the expected one. The gap identifies the
+  incorrect input.
 - **Hint 3:** The fix is one changed argument on one line inside
-  `calculateBill` — resist the urge to restructure anything else.
+  `calculateBill`. Do not restructure anything else.
 
-Before moving on: commit and push everything from this lab
-(`git add -A && git commit -m "..."; git push`). Nothing later assumes
-a clean tree yet, but Act IV (starting at Lab 16) does — get in the
-habit now.
+Before moving on, commit and push everything from this lab with
+`git add -A && git commit -m "..."; git push`. The next labs do not
+require a clean tree, but Act IV, starting at Lab 16, does.
 
 ## What's next
 
-You have a green suite and a real fix behind it. Next, a different kind
-of check: not correctness, but whether the code is written the way the
-team agreed to write it.
+You now have a passing suite and a tested fix. Next, you will add a
+different kind of check: whether the code follows the team's agreed
+style.
 
 Continue to [Lab 09 — Machines can check boring things](../09-automated-checks/README.md).
