@@ -2,20 +2,20 @@
 
 ## Story
 
-Two developers independently built the discount-code feature from
-Lab 11's spec. Both versions behave identically today. You're about to
-find out they are not equally expensive to extend.
+Two developers independently built the discount-code feature specified
+in Lab 11. Both versions behave identically today, but extending them
+will take a different amount of work.
 
-This lab (and the next three) works the same way regardless of which
-language you picked back in Act II: read only your track's
-instructions wherever this page splits.
+This lab and the next three work the same way in every language. When
+the instructions split into tracks, read only the one you chose in
+Act II.
 
 ## Learning objectives
 
 After this lab you should be able to:
 
-- Identify which files a new requirement forces you to touch in a given
-  design.
+- Identify which files need to change when you add a requirement to a
+  given design.
 - Explain "coupling" and "cohesion" using a concrete example rather than
   a definition.
 - Judge a design by its cost of change, not just by whether it currently
@@ -23,10 +23,10 @@ After this lab you should be able to:
 
 ## Before you start
 
-- Labs 06-11 complete, in your chosen track.
+- Labs 06-11 complete in your chosen track.
 - Read both `version-a/<your-language>/` and `version-b/<your-language>/`
-  before doing anything else — see below for the exact files. Confirm
-  for yourself that both pass their tests and produce the same totals.
+  before doing anything else. The exact files are listed below. Check
+  that both versions pass their tests and calculate the same totals.
 
 ### Python
 
@@ -49,13 +49,14 @@ After this lab you should be able to:
 
 ## Your task
 
-The owner has added a third code: `SAVE20`, worth 20% off the amount
-remaining after the loyalty discount (same rule as `SAVE10`, different
-percentage). Add it to **both** versions, in your language.
+The owner has added a third code, `SAVE20`. It takes 20% off the amount
+remaining after the loyalty discount, just like `SAVE10` but with a
+different percentage. Add it to **both** versions in your language.
 
-Control numbers for the large order (two $30.00 steaks, 15% tip):
-subtotal `$60.00`, loyalty discount `$6.00`, `SAVE20` discount `$10.80`,
-total discount `$16.80`, expected total `$53.14`.
+Use the following figures to check the large order with two $30.00
+steaks and a 15% tip. The subtotal is `$60.00`, the loyalty discount is
+`$6.00`, the `SAVE20` discount is `$10.80`, the total discount is
+`$16.80`, and the expected total is `$53.14`.
 
 ### Python
 
@@ -95,17 +96,15 @@ total discount `$16.80`, expected total `$53.14`.
 
 ## All tracks
 
-3. For each version, write down: which file(s) did you have to change?
-   In that file, what *other* code sits right next to your
-   change — code responsible for something unrelated to discount
-   codes?
-4. Answer, in a notes file
-   `examples/discount-codes/COMPARISON.md`: if a bug in tax
-   calculation showed up right after this change, which version makes
-   it easier to convince yourself the discount-code change couldn't
-   possibly be the cause — just by looking at *where* the change was
-   made? This file is shared across every language — write it once, in
-   terms of your own track.
+3. For each version, note which files you had to change.
+   What *other* code sits next to your change in that file? Look for
+   code responsible for something unrelated to discount codes.
+4. Record your answer in `examples/discount-codes/COMPARISON.md`.
+   Imagine that a tax-calculation bug appears right after your change.
+   In which version is it easier to rule out the discount-code change
+   as the cause simply by looking at *where* you made it? All language
+   tracks share this file, so write it once from the perspective of
+   your track.
 
 ## Acceptance criteria
 
@@ -115,16 +114,16 @@ total discount `$16.80`, expected total `$53.14`.
 
 ### Python
 
-- Version A: 5 tests. Version B: 8 tests.
+- Five tests should pass in Version A and 8 in Version B.
 
 ### Go
 
-- Version A: 5 tests (4 existing `Test...` functions plus your new
-  one). Version B: 8 (7 existing plus your new one).
+- Five tests should pass in Version A (4 existing `Test...` functions
+  plus your new one) and 8 in Version B (7 existing plus your new one).
 
 ### Java
 
-- Version A: 5 tests. Version B: 8 tests.
+- Five tests should pass in Version A and 8 in Version B.
 
 ## Verification
 
@@ -136,8 +135,8 @@ cd examples/discount-codes/version-b/python && uv run pytest -v && cd - > /dev/n
 test -f examples/discount-codes/COMPARISON.md && echo "comparison notes exist"
 ```
 
-Expected: both suites green (5 tests in Version A, 8 in Version B), and
-the comparison notes exist.
+You should see 5 passing tests in Version A, 8 in Version B, and the
+comparison notes file.
 
 ### Go
 
@@ -147,8 +146,8 @@ cd examples/discount-codes/version-b/go && go test ./... -v && cd - > /dev/null
 test -f examples/discount-codes/COMPARISON.md && echo "comparison notes exist"
 ```
 
-Expected: both suites green (5 tests in Version A, 8 in Version B), and
-the comparison notes exist.
+You should see 5 passing tests in Version A, 8 in Version B, and the
+comparison notes file.
 
 ### Java
 
@@ -158,8 +157,8 @@ cd examples/discount-codes/version-b/java && ./gradlew test && cd - > /dev/null
 test -f examples/discount-codes/COMPARISON.md && echo "comparison notes exist"
 ```
 
-Expected: both builds green (5 tests in Version A, 8 in Version B), and
-the comparison notes exist.
+You should see successful builds with 5 tests in Version A and 8 in
+Version B, as well as the comparison notes file.
 
 ## Think about it
 
@@ -175,50 +174,49 @@ the comparison notes exist.
 
 ### Python
 
-- **Hint 1:** In Version A, your change is a new `elif` branch inside
+- **Hint 1.** In Version A, your change is a new `elif` branch inside
   `calculate_bill`. In Version B, it's a new entry in the
   `DISCOUNT_CODES` dictionary in `discount_codes.py`.
-- **Hint 2:** "20% off the amount remaining after the loyalty discount"
-  is the same shape as `SAVE10`, just a different rate.
-- **Hint 3:** For the large order ($60 subtotal, $6 loyalty discount,
-  15% tip): after-loyalty amount is $54; `SAVE20` off that is $10.80;
-  total discount is $16.80.
+- **Hint 2.** "20% off the amount remaining after the loyalty discount"
+  follows the same rule as `SAVE10`, but uses a different rate.
+- **Hint 3.** For the large order with a $60 subtotal, $6 loyalty
+  discount, and 15% tip, the amount after the loyalty discount is $54.
+  The `SAVE20` discount is $10.80, making the total discount $16.80.
 
 ### Go
 
-- **Hint 1:** In Version A, your change is a new `case` inside the
+- **Hint 1.** In Version A, your change is a new `case` inside the
   `switch` in `CalculateBill`. In Version B, it's a new entry in the
   `discountCodes` map in `discount_codes.go`.
-- **Hint 2:** "20% off the amount remaining after the loyalty discount"
-  is the same shape as `SAVE10`, just a different rate — the existing
-  `SAVE10` branch or map entry is a direct template.
-- **Hint 3:** For the large order ($60 subtotal, $6 loyalty discount,
-  15% tip): after-loyalty amount is $54; `SAVE20` off that is $10.80;
-  total discount is $16.80.
+- **Hint 2.** "20% off the amount remaining after the loyalty discount"
+  follows the same rule as `SAVE10`, but uses a different rate. The
+  existing `SAVE10` branch or map entry is a useful template.
+- **Hint 3.** For the large order with a $60 subtotal, $6 loyalty
+  discount, and 15% tip, the amount after the loyalty discount is $54.
+  The `SAVE20` discount is $10.80, making the total discount $16.80.
 
 ### Java
 
-- **Hint 1:** In Version A, your change is a new `case` inside the
+- **Hint 1.** In Version A, your change is a new `case` inside the
   `switch` in `calculateBill`. In Version B, it's a new entry in the
   `CODES` map in `DiscountCodes.java`.
-- **Hint 2:** "20% off the amount remaining after the loyalty discount"
-  is the same shape as `SAVE10`, just a different rate — the existing
-  `SAVE10` branch or map entry is a direct template.
-- **Hint 3:** For the large order ($60 subtotal, $6 loyalty discount,
-  15% tip): after-loyalty amount is $54; `SAVE20` off that is $10.80;
-  total discount is $16.80.
+- **Hint 2.** "20% off the amount remaining after the loyalty discount"
+  follows the same rule as `SAVE10`, but uses a different rate. The
+  existing `SAVE10` branch or map entry is a useful template.
+- **Hint 3.** For the large order with a $60 subtotal, $6 loyalty
+  discount, and 15% tip, the amount after the loyalty discount is $54.
+  The `SAVE20` discount is $10.80, making the total discount $16.80.
 
-Before moving on: commit and push everything from this lab
+Before moving on, commit and push everything from this lab
 (`git add -A && git commit -m "..."; git push`). Nothing later assumes
-a clean tree yet, but Act IV (starting at Lab 16) does — get in the
+a clean tree yet, but Act IV (starting at Lab 16) does. Get into the
 habit now.
 
 ## What's next
 
-You've felt the difference between a design that makes a new
-requirement cheap and one that makes it merely possible. Version A
-still has the coupled shape, and it still has tests. Next, you'll turn
-Version A into something closer to Version B, without breaking
-anything along the way.
+You've seen the difference between a design that makes a new
+requirement cheap and one that merely makes it possible. Version A is
+still tightly coupled, but it also has tests. Next, you'll bring it
+closer to Version B without breaking its behavior along the way.
 
 Continue to [Lab 13 — Refactoring with a safety net](../13-refactoring-safety-net/README.md).
