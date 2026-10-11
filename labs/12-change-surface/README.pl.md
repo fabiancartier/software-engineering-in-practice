@@ -2,32 +2,30 @@
 
 ## Sytuacja
 
-Dwóch developerów niezależnie zbudowało funkcję kodów rabatowych ze
-specyfikacji z Lab 11. Obie wersje zachowują się dziś identycznie.
-Właśnie masz się przekonać, że nie są jednakowo kosztowne w
-rozszerzaniu.
+Dwóch programistów niezależnie zaimplementowało kody rabatowe opisane
+w labie 11. Obie wersje zachowują się dziś identycznie, ale ich
+rozbudowa wymaga różnego nakładu pracy.
 
-Ten lab (i następne trzy) działa tak samo niezależnie od tego, który
-język wybrałeś/aś w Akcie II: czytaj tylko instrukcje swojej ścieżki,
-gdziekolwiek ta strona się rozdziela.
+Ten lab i trzy kolejne wyglądają tak samo w każdym języku. Gdy
+instrukcja dzieli się na ścieżki, czytaj tylko tę wybraną w Akcie II.
 
 ## Cele nauki
 
 Po tym labie potrafisz:
 
-- Zidentyfikować, które pliki musi dotknąć nowy wymóg w danym designie.
-- Wyjaśnić "sprzężenie" (coupling) i "spójność" (cohesion), używając
+- Wskazać, które pliki trzeba zmienić przy dodawaniu wymagania do danego
+  projektu.
+- Wyjaśnić „sprzężenie” (coupling) i „spójność” (cohesion), używając
   konkretnego przykładu, a nie definicji.
-- Oceniać design po koszcie zmiany, a nie tylko po tym, czy aktualnie
+- Oceniać projekt na podstawie kosztu zmian, a nie tylko tego, czy obecnie
   działa.
 
 ## Zanim zaczniesz
 
-- Laby 06-11 ukończone, w Twojej wybranej ścieżce.
+- Laby 06-11 ukończone w wybranej ścieżce.
 - Przeczytaj oba `version-a/<twój-język>/` i `version-b/<twój-język>/`,
-  zanim zrobisz cokolwiek innego — zobacz poniżej dokładne pliki.
-  Potwierdź sam/a, że obie wersje przechodzą swoje testy i produkują te
-  same sumy.
+  zanim zrobisz cokolwiek innego. Dokładne pliki znajdziesz poniżej.
+  Sprawdź, czy obie wersje przechodzą testy i wyliczają te same kwoty.
 
 ### Python
 
@@ -50,81 +48,81 @@ Po tym labie potrafisz:
 
 ## Twoje zadanie
 
-Właściciel dodał trzeci kod: `SAVE20`, warty 20% zniżki od kwoty
-pozostałej po rabacie lojalnościowym (ta sama zasada co `SAVE10`, inny
-procent). Dodaj go do **obu** wersji, w swoim języku.
+Właściciel dodał trzeci kod, `SAVE20`. Obniża on o 20% kwotę pozostałą
+po rabacie lojalnościowym, czyli działa tak samo jak `SAVE10`, ale ma
+inną wartość. Dodaj go do **obu** wersji w swoim języku.
 
-Dane kontrolne dla dużego zamówienia (dwa steki po $30.00, napiwek
-15%): subtotal `$60.00`, rabat lojalnościowy `$6.00`, rabat `SAVE20`
-`$10.80`, całkowity rabat `$16.80`, oczekiwany total `$53.14`.
+Do sprawdzenia dużego zamówienia z dwoma stekami po $30.00 i napiwkiem
+15% użyj następujących kwot. Suma częściowa to `$60.00`, rabat
+lojalnościowy `$6.00`, rabat `SAVE20` `$10.80`, łączny rabat `$16.80`,
+a oczekiwana kwota do zapłaty `$53.14`.
 
 ### Python
 
-1. Dodaj obsługę `SAVE20` do **Version A**
+1. Dodaj obsługę `SAVE20` do **wersji A**
    (`examples/discount-codes/version-a/python/`). Dodaj test w
-   `tests/test_calculator.py` asercjonujący, że dla dużego zamówienia,
+   `tests/test_calculator.py`, który dla dużego zamówienia sprawdza, że
    `bill["discount"] == 16.8` i `bill["total"] == 53.14`.
-2. Dodaj obsługę `SAVE20` do **Version B**
+2. Dodaj obsługę `SAVE20` do **wersji B**
    (`examples/discount-codes/version-b/python/`). Dodaj tam też
-   odpowiadający test.
+   analogiczny test.
 
 ### Go
 
-1. Dodaj branch `case "SAVE20":` do `switch` wewnątrz `CalculateBill`
-   w **Version A** (`examples/discount-codes/version-a/go/`), liczący
-   20% kwoty po rabacie lojalnościowym. Dodaj
+1. Dodaj gałąź `case "SAVE20":` do instrukcji `switch` w `CalculateBill`
+   w **wersji A** (`examples/discount-codes/version-a/go/`) i oblicz w
+   niej 20% kwoty po rabacie lojalnościowym. Dodaj
    `TestSave20AppliesAfterLoyaltyDiscount` do `calculator_test.go`,
-   asercjonujący `bill.Discount == 16.8` i `bill.Total == 53.14` dla
+   który sprawdza `bill.Discount == 16.8` i `bill.Total == 53.14` dla
    dużego zamówienia.
 2. Dodaj wpis `"SAVE20"` do mapy `discountCodes` w
-   `discount_codes.go` w **Version B**
+   `discount_codes.go` w **wersji B**
    (`examples/discount-codes/version-b/go/`). Dodaj tam też
-   odpowiadający test do `calculator_test.go`.
+   analogiczny test do `calculator_test.go`.
 
 ### Java
 
-1. Dodaj branch `case "SAVE20":` do `switch` wewnątrz `calculateBill`
-   w **Version A** (`examples/discount-codes/version-a/java/`),
-   liczący 20% kwoty po rabacie lojalnościowym. Dodaj
+1. Dodaj gałąź `case "SAVE20":` do instrukcji `switch` w `calculateBill`
+   w **wersji A** (`examples/discount-codes/version-a/java/`) i oblicz
+   w niej 20% kwoty po rabacie lojalnościowym. Dodaj
    `save20AppliesAfterLoyaltyDiscount` do `CalculatorTest.java`,
-   asercjonujący `bill.discount == 16.8` i `bill.total == 53.14` dla
+   który sprawdza `bill.discount == 16.8` i `bill.total == 53.14` dla
    dużego zamówienia.
 2. Dodaj wpis `"SAVE20"` do mapy `CODES` w `DiscountCodes.java` w
-   **Version B** (`examples/discount-codes/version-b/java/`). Dodaj
-   tam też odpowiadający test do `CalculatorTest.java`.
+   **wersji B** (`examples/discount-codes/version-b/java/`). Dodaj
+   tam też analogiczny test do `CalculatorTest.java`.
 
 ## Wszystkie ścieżki
 
-3. Dla każdej wersji zapisz: który plik(i) musiałeś/aś zmienić? W tym
-   pliku, jaki *inny* kod siedzi bezpośrednio obok Twojej zmiany — kod
-   odpowiedzialny za coś niezwiązanego z kodami rabatowymi?
-4. Odpowiedz, w pliku notatek
-   `examples/discount-codes/COMPARISON.md`: jeśli błąd w obliczeniu
-   podatku pojawiłby się tuż po tej zmianie, która wersja łatwiej
-   pozwala przekonać się, że zmiana kodu rabatowego nie mogła być
-   przyczyną — po samym spojrzeniu na *gdzie* zmiana została
-   wprowadzona? Ten plik jest wspólny dla każdego języka — napisz go
-   raz, w kategoriach swojej własnej ścieżki.
+3. Dla każdej wersji zapisz, które pliki trzeba było zmienić. Jaki
+   *inny* kod znajduje się obok Twojej zmiany? Poszukaj kodu
+   odpowiedzialnego za coś niezwiązanego z kodami rabatowymi.
+4. Zapisz odpowiedź w `examples/discount-codes/COMPARISON.md`. Wyobraź
+   sobie, że tuż po Twojej zmianie pojawia się błąd w obliczaniu podatku.
+   W której wersji łatwiej wykluczyć zmianę kodu rabatowego jako
+   przyczynę, patrząc tylko na *miejsce* jej wprowadzenia? Wszystkie
+   ścieżki językowe korzystają z tego samego pliku, więc opisz w nim
+   tylko swoją ścieżkę.
 
 ## Kryteria akceptacji
 
-- Zestawy testów obu wersji przechodzą, wliczając Twoje nowe testy
+- W obu wersjach przechodzą wszystkie testy, łącznie z nowymi testami
   `SAVE20`.
-- `COMPARISON.md` nazywa konkretny plik zmieniony w każdej wersji i
+- `COMPARISON.md` zawiera nazwę pliku zmienionego w każdej wersji i
   odpowiada na pytanie z kroku 4.
 
 ### Python
 
-- Version A: 5 testów. Version B: 8 testów.
+- W wersji A powinno przejść 5 testów, a w wersji B 8.
 
 ### Go
 
-- Version A: 5 testów (4 istniejące funkcje `Test...` plus Twoja nowa).
-  Version B: 8 (7 istniejących plus Twoja nowa).
+- W wersji A powinno przejść 5 testów (4 istniejące funkcje `Test...`
+  oraz nowa), a w wersji B 8 (7 istniejących oraz nowa).
 
 ### Java
 
-- Version A: 5 testów. Version B: 8 testów.
+- W wersji A powinno przejść 5 testów, a w wersji B 8.
 
 ## Weryfikacja
 
@@ -136,8 +134,8 @@ cd examples/discount-codes/version-b/python && uv run pytest -v && cd - > /dev/n
 test -f examples/discount-codes/COMPARISON.md && echo "comparison notes exist"
 ```
 
-Oczekiwane: obie wersje zielone (5 testów w Version A, 8 w Version B),
-i notatki porównawcze istnieją.
+Oczekiwany wynik to 5 zaliczonych testów w wersji A, 8 w wersji B oraz
+istniejący plik z notatkami porównawczymi.
 
 ### Go
 
@@ -147,8 +145,8 @@ cd examples/discount-codes/version-b/go && go test ./... -v && cd - > /dev/null
 test -f examples/discount-codes/COMPARISON.md && echo "comparison notes exist"
 ```
 
-Oczekiwane: obie wersje zielone (5 testów w Version A, 8 w Version B),
-i notatki porównawcze istnieją.
+Oczekiwany wynik to 5 zaliczonych testów w wersji A, 8 w wersji B oraz
+istniejący plik z notatkami porównawczymi.
 
 ### Java
 
@@ -158,67 +156,67 @@ cd examples/discount-codes/version-b/java && ./gradlew test && cd - > /dev/null
 test -f examples/discount-codes/COMPARISON.md && echo "comparison notes exist"
 ```
 
-Oczekiwane: obie wersje zielone (5 testów w Version A, 8 w Version B),
-i notatki porównawcze istnieją.
+Oczekiwany wynik to 5 zaliczonych testów w wersji A, 8 w wersji B oraz
+istniejący plik z notatkami porównawczymi.
 
 ## Zastanów się
 
 - Obie wersje wymagały od Ciebie zmiany dokładnie jednego pliku. Czy
-  "ta sama liczba zmienionych plików" znaczy "ten sam koszt zmiany"?
-  Co jest faktycznie inne między dwoma plikami, które dotknąłeś/aś?
-- W Version B, mógłbyś/mogłabyś dodać czwarty kod rabatowy bez
-  przeczytania ani jednej linii pliku kalkulatora? Co to mówi Ci o tym,
-  jak sprzężony jest plik kodów rabatowych z resztą logiki rachunku?
+  „ta sama liczba zmienionych plików” oznacza „ten sam koszt zmiany”?
+  Czym właściwie różnią się te dwa pliki?
+- Czy w wersji B da się dodać czwarty kod rabatowy bez czytania ani
+  jednej linii pliku kalkulatora? Co mówi to o sprzężeniu pliku z kodami
+  rabatowymi z resztą logiki rozliczeń?
 
 ## Jeśli utkniesz
 
 ### Python
 
-- **Podpowiedź 1:** W Version A, Twoja zmiana to nowy branch `elif`
-  wewnątrz `calculate_bill`. W Version B, to nowy wpis w dict
+- **Podpowiedź 1.** W wersji A dodajesz nową gałąź `elif` w
+  `calculate_bill`. W wersji B dodajesz nowy wpis do słownika
   `DISCOUNT_CODES` w `discount_codes.py`.
-- **Podpowiedź 2:** "20% zniżki od kwoty pozostałej po rabacie
-  lojalnościowym" ma tę samą formę co `SAVE10`, tylko inną stawkę.
-- **Podpowiedź 3:** Dla dużego zamówienia ($60 subtotal, $6 rabat
-  lojalnościowy, napiwek 15%): kwota po rabacie lojalnościowym to $54;
-  `SAVE20` od tego to $10.80; całkowity rabat to $16.80.
+- **Podpowiedź 2.** „20% zniżki od kwoty pozostałej po rabacie
+  lojalnościowym” działa tak samo jak `SAVE10`, ale korzysta z innej
+  stawki.
+- **Podpowiedź 3.** W dużym zamówieniu suma częściowa wynosi $60, rabat
+  lojalnościowy $6, a napiwek 15%. Po rabacie lojalnościowym pozostają
+  $54, więc `SAVE20` daje $10.80 rabatu. Łączny rabat wynosi $16.80.
 
 ### Go
 
-- **Podpowiedź 1:** W Version A, Twoja zmiana to nowy `case` wewnątrz
-  `switch` w `CalculateBill`. W Version B, to nowy wpis w mapie
+- **Podpowiedź 1.** W wersji A dodajesz nowy `case` do instrukcji
+  `switch` w `CalculateBill`. W wersji B dodajesz nowy wpis do mapy
   `discountCodes` w `discount_codes.go`.
-- **Podpowiedź 2:** "20% zniżki od kwoty pozostałej po rabacie
-  lojalnościowym" ma tę samą formę co `SAVE10`, tylko inną stawkę —
-  istniejący branch albo wpis mapy `SAVE10` jest bezpośrednim
-  szablonem.
-- **Podpowiedź 3:** Dla dużego zamówienia ($60 subtotal, $6 rabat
-  lojalnościowy, napiwek 15%): kwota po rabacie lojalnościowym to $54;
-  `SAVE20` od tego to $10.80; całkowity rabat to $16.80.
+- **Podpowiedź 2.** „20% zniżki od kwoty pozostałej po rabacie
+  lojalnościowym” działa tak samo jak `SAVE10`, ale korzysta z innej
+  stawki. Użyj istniejącej gałęzi lub wpisu mapy jako wzoru.
+- **Podpowiedź 3.** W dużym zamówieniu suma częściowa wynosi $60, rabat
+  lojalnościowy $6, a napiwek 15%. Po rabacie lojalnościowym pozostają
+  $54, więc `SAVE20` daje $10.80 rabatu. Łączny rabat wynosi $16.80.
 
 ### Java
 
-- **Podpowiedź 1:** W Version A, Twoja zmiana to nowy `case` wewnątrz
-  `switch` w `calculateBill`. W Version B, to nowy wpis w mapie
+- **Podpowiedź 1.** W wersji A dodajesz nowy `case` do instrukcji
+  `switch` w `calculateBill`. W wersji B dodajesz nowy wpis do mapy
   `CODES` w `DiscountCodes.java`.
-- **Podpowiedź 2:** "20% zniżki od kwoty pozostałej po rabacie
-  lojalnościowym" ma tę samą formę co `SAVE10`, tylko inną stawkę —
-  istniejący branch albo wpis mapy `SAVE10` jest bezpośrednim
-  szablonem.
-- **Podpowiedź 3:** Dla dużego zamówienia ($60 subtotal, $6 rabat
-  lojalnościowy, napiwek 15%): kwota po rabacie lojalnościowym to $54;
-  `SAVE20` od tego to $10.80; całkowity rabat to $16.80.
+- **Podpowiedź 2.** „20% zniżki od kwoty pozostałej po rabacie
+  lojalnościowym” działa tak samo jak `SAVE10`, ale korzysta z innej
+  stawki. Użyj istniejącej gałęzi lub wpisu mapy jako wzoru.
+- **Podpowiedź 3.** W dużym zamówieniu suma częściowa wynosi $60, rabat
+  lojalnościowy $6, a napiwek 15%. Po rabacie lojalnościowym pozostają
+  $54, więc `SAVE20` daje $10.80 rabatu. Łączny rabat wynosi $16.80.
 
-Przed przejściem dalej: zacommituj i wypchnij wszystko z tego laba
+Przed przejściem dalej utwórz commit ze wszystkim z tego laba i
+wypchnij go do repozytorium
 (`git add -A && git commit -m "..."; git push`). Nic później jeszcze
-nie zakłada czystego drzewa, ale Akt IV (zaczynający się od Lab 16)
-tak — przyzwyczajaj się już teraz.
+nie wymaga czystego drzewa roboczego, ale Akt IV (od labu 16) już tak.
+Warto od razu wyrobić sobie ten nawyk.
 
 ## Co dalej
 
-Poczułeś/aś różnicę między designem, który sprawia, że nowy wymóg jest
-tani, a tym, który sprawia tylko, że jest możliwy. Version A wciąż ma
-sprzężoną formę, i wciąż ma testy. Dalej zmienisz Version A w coś
-bliższego Version B, bez psucia czegokolwiek po drodze.
+Widać już różnicę między projektem, w którym nowe wymaganie jest tanie
+we wdrożeniu, a takim, który jedynie pozwala je wdrożyć. Wersja A nadal
+ma silnie sprzężoną strukturę, ale ma też testy. W następnym labie
+zbliżysz ją do wersji B, nie psując po drodze jej działania.
 
 Przejdź do [Lab 13 — Refaktoryzacja z siatką bezpieczeństwa](../13-refactoring-safety-net/README.pl.md).
