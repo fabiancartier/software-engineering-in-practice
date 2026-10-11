@@ -2,21 +2,19 @@
 
 [In English →](windows.md) · [← Wróć do Zacznij tutaj](../../START-HERE.pl.md)
 
-Ta strona prowadzi Cię od zupełnie nowego laptopa z Windows 11 do
-własnej kopii tego kursu, otwartej w VS Code, z działającym
-terminalem Git Bash wewnątrz. Podążaj za nią od samego początku, po
-kolei. Nie przeskakuj do przodu — kolejne kroki zakładają, że
-wcześniejsze faktycznie zadziałały, i każdy mówi dokładnie, jak to
-sprawdzić, zanim przejdziesz dalej.
+Ten przewodnik pomoże Ci przygotować komputer z Windows 11, pobrać
+własną kopię kursu i otworzyć ją w VS Code z terminalem Git Bash.
+Wykonuj części po kolei. Każda kończy się krótkim sprawdzeniem, zanim
+przejdziesz dalej.
 
-Jeśli gdzieś utkniesz, nie zgaduj — przejdź do
+Jeśli pojawi się problem, nie zgaduj. Przejdź do sekcji
 [Jeśli utkniesz](#jeśli-utkniesz) na dole tej strony, albo do
 wspólnego [`troubleshooting.pl.md`](troubleshooting.pl.md).
 
-## Część 1 — Otwórz PowerShell jako administrator
+## Część 1: Otwórz PowerShell jako administrator
 
-Uprawnienia administratora potrzebujesz tylko na kroki *instalacyjne*
-w Częściach 2–3. Nic innego w tym kursie ich nie wymaga.
+Uprawnienia administratora są potrzebne tylko podczas instalacji w
+Częściach 2 i 3. Pozostałe zadania wykonasz na zwykłym koncie.
 
 1. Naciśnij klawisz **Windows** (albo kliknij przycisk Start, w lewym
    dolnym rogu ekranu).
@@ -29,19 +27,18 @@ w Częściach 2–3. Nic innego w tym kursie ich nie wymaga.
 
 **Co powinieneś/aś zobaczyć:** okno terminala z niebieskim tłem, w
 którego tytule jest **Administrator: Windows PowerShell**. Słowo
-"Administrator" w tytule okna mówi Ci, że to sesja z podwyższonymi
-uprawnieniami — zwykłe okno PowerShell tego nie ma.
+"Administrator" w tytule oznacza sesję z podwyższonymi uprawnieniami.
+W zwykłym oknie PowerShell tego słowa nie będzie.
 
 **Jeśli widzisz coś innego:** jeśli w tytule okna nie ma słowa
-"Administrator", otworzyłeś/aś zwykłe okno PowerShell przez pomyłkę —
-zamknij je i powtórz kroki 1–4, pamiętając, żeby kliknąć prawym
-przyciskiem i wybrać **Uruchom jako administrator**, a nie po prostu
-nacisnąć Enter.
+"Administrator", zamknij je i powtórz kroki 1–4. Kliknij wynik prawym
+przyciskiem i wybierz **Uruchom jako administrator** zamiast naciskać
+Enter.
 
 **Skąd wiesz, że możesz kontynuować:** tytuł okna mówi
 **Administrator: Windows PowerShell**.
 
-## Część 2 — Zainstaluj Chocolatey (menedżer pakietów dla Windows)
+## Część 2: Zainstaluj Chocolatey
 
 Chocolatey pozwala zainstalować Gita i VS Code jedną komendą każdy,
 zamiast szukać instalatorów i klikać przez kreatory konfiguracji.
@@ -52,13 +49,13 @@ zamiast szukać instalatorów i klikać przez kreatory konfiguracji.
    choco --version
    ```
 2. **Co powinieneś/aś zobaczyć:** numer wersji (coś jak `2.3.0`).
-   Jeśli to widzisz, Chocolatey jest już zainstalowany — przejdź do
+   Jeśli go widzisz, Chocolatey jest już zainstalowany. Przejdź do
    Części 3.
 3. **Jeśli widzisz** `choco: The term 'choco' is not recognized...`,
    Chocolatey jeszcze nie jest zainstalowany. Uruchom oficjalną
-   komendę instalacyjną (to jest prawdziwa komenda ze strony
-   [chocolatey.org/install](https://chocolatey.org/install) —
-   wklej ją dokładnie tak, jak jest napisana):
+   oficjalne polecenie ze strony
+   [chocolatey.org/install](https://chocolatey.org/install). Wklej je
+   bez zmian:
    ```powershell
    Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
    ```
@@ -81,12 +78,10 @@ całkowicie i przejdź do [Brak uprawnień administratora?](#brak-uprawnień-adm
 poniżej, a potem wróć tutaj, gdy Git i VS Code będą już zainstalowane
 inną metodą.
 
-## Część 3 — Zainstaluj Git for Windows i VS Code
+## Część 3: Zainstaluj Git for Windows i VS Code
 
-Oba wymagają uprawnień administratora do instalacji przez Chocolatey —
-zrób je jedno po drugim, w tym samym oknie, zanim wrócisz do zwykłej
-(nieadministratorskiej) sesji do wszystkiego innego. Wciąż w
-**administratorskim** oknie PowerShell:
+Podczas instalacji przez Chocolatey oba programy wymagają uprawnień
+administratora. Zainstaluj je kolejno w tym samym oknie PowerShell.
 
 1. Zainstaluj Git:
    ```powershell
@@ -102,9 +97,8 @@ zrób je jedno po drugim, w tym samym oknie, zanim wrócisz do zwykłej
    **Co powinieneś/aś zobaczyć:** wynik instalacji kończący się
    komunikatem sukcesu.
 3. Zamknij to **administratorskie** okno PowerShell całkowicie. Nie
-   będziesz już potrzebować uprawnień administratora w resztce tego
-   kursu — wszystko od teraz, włącznie z pierwszym otwarciem samego VS
-   Code, dzieje się w zwykłym oknie.
+   będziesz już potrzebować uprawnień administratora podczas tego
+   kursu. Od tego miejsca korzystaj ze zwykłych okien.
 4. Otwórz **zwykłe** (nieadministratorskie) okno PowerShell: naciśnij
    klawisz Windows, wpisz `powershell`, tym razem naciśnij **Enter**
    (bez prawego przycisku).
@@ -126,18 +120,16 @@ zrób je jedno po drugim, w tym samym oknie, zanim wrócisz do zwykłej
    `code`, kliknij **Visual Studio Code**.
 
 **Co powinieneś/aś zobaczyć:** otwiera się okno VS Code, z zakładką
-powitalną i pustym panelem Explorer po lewej (nic do pokazania jeszcze
-— to normalne, nie otworzyłeś/aś jeszcze żadnego projektu).
+powitalną i pustym panelem Explorer po lewej. Panel jest pusty, ponieważ
+nie ma jeszcze otwartego projektu.
 
 **Skąd wiesz, że możesz kontynuować:** `git --version` i `code
---version` oba wypisują prawdziwe informacje o wersji, i VS Code się
-otworzył.
+--version` wypisują numery wersji, a VS Code się otwiera.
 
-## Część 4 — Znajdź Git Bash
+## Część 4: Znajdź Git Bash
 
-Instalacja Git for Windows instaluje też **Git Bash** — osobny program
-terminalowy, który rozumie polecenia w stylu Unix (`ls`, `pwd`, `cat`
-i podobne), w przeciwieństwie do PowerShell.
+Git for Windows zawiera także **Git Bash**. Ten terminal obsługuje
+polecenia używane w kursie, takie jak `ls`, `pwd` i `cat`.
 
 1. Naciśnij klawisz **Windows**.
 2. Wpisz `git bash`.
@@ -145,35 +137,31 @@ i podobne), w przeciwieństwie do PowerShell.
 
 **Co powinieneś/aś zobaczyć:** okno terminala z czarnym albo ciemnym
 tłem i promptem wyglądającym jak `ty@TWÓJKOMPUTER MINGW64 ~`. Właśnie
-`MINGW64` mówi Ci, że to Git Bash, nie PowerShell ani stary Wiersz
-polecenia.
+Napis `MINGW64` oznacza Git Bash, a nie PowerShell lub Wiersz polecenia.
 
-Możesz zamknąć to okno na razie — do Git Bash wrócisz przez VS Code w
-Części 5. Celem tego kroku było tylko potwierdzenie, że on tam
-rzeczywiście jest.
+Możesz teraz zamknąć to okno. W Części 5 otworzysz Git Bash wewnątrz
+VS Code.
 
-### PowerShell kontra Git Bash kontra terminal VS Code — jaka jest różnica?
+### Czym różnią się PowerShell, Git Bash i terminal VS Code?
 
-- **PowerShell** to własny terminal Windows. Użyłeś/aś go w Częściach
-  1–3 tylko do *instalowania* rzeczy. Instrukcje tego kursu (`ls`,
-  `cat`, `grep` i podobne) nie działają w nim tak samo — nie używaj go
-  do labów.
+- **PowerShell** to terminal systemu Windows. W Częściach 1–3 służył do
+  instalacji. Polecenia kursu, takie jak `ls`, `cat` i `grep`, działają
+  w nim inaczej, dlatego nie używaj go podczas labów.
 - **Git Bash** to terminal w stylu Unix, który przychodzi z Git for
-  Windows. To właśnie zakłada każda instrukcja tego kursu — gdy lab
+  Windows. Tego terminala dotyczą instrukcje kursu. Gdy lab
   mówi "uruchom to w swoim terminalu", oznacza Git Bash.
 - **Terminal VS Code** to po prostu panel terminala *wewnątrz* okna VS
-  Code. Domyślnie na Windowsie otwiera PowerShell — Część 5 poniżej
-  zmienia ten domyślny wybór na Git Bash, raz, żeby każdy terminal,
-  który otworzysz wewnątrz VS Code od teraz, był już właściwy.
+  Code. W Windows domyślnie otwiera PowerShell. W Części 5 zmienisz
+  domyślny profil na Git Bash.
 
-## Część 5 — Ustaw Git Bash jako domyślny terminal w VS Code
+## Część 5: Ustaw Git Bash jako domyślny terminal w VS Code
 
-Zrób to raz, teraz, żebyś nigdy więcej nie musiał/a o tym myśleć.
+Tę konfigurację wystarczy wykonać raz.
 
 1. W VS Code otwórz menu **Terminal → New Terminal**.
 2. **Co powinieneś/aś zobaczyć:** panel terminala otwiera się na dole
-   okna. Na świeżej instalacji to zwykle PowerShell — to normalne,
-   właśnie to zmienisz.
+   okna. Po nowej instalacji zwykle jest to PowerShell. Za chwilę
+   zmienisz ten profil.
 3. Kliknij małą **strzałkę rozwijania** przy ikonie `+` w prawym
    górnym rogu panelu terminala. Jeśli nie widzisz tam strzałki
    rozwijania, otwórz Command Palette (**View → Command Palette…**,
@@ -186,33 +174,30 @@ Zrób to raz, teraz, żebyś nigdy więcej nie musiał/a o tym myśleć.
    ikonę koszyka, albo kliknij w niego i naciśnij `Ctrl+D`).
 6. Otwórz nowy: **Terminal → New Terminal** jeszcze raz.
 7. **Co powinieneś/aś zobaczyć:** prompt wyglądający jak
-   `ty@TWÓJKOMPUTER MINGW64 ~` — ten sam styl, który widziałeś/aś w
-   Części 4, teraz wewnątrz VS Code.
+   `ty@TWÓJKOMPUTER MINGW64 ~`, podobny do promptu z Części 4.
 8. Potwierdź, że to naprawdę Bash, nie PowerShell w przebraniu:
    ```bash
    echo "$BASH_VERSION"
    ```
    **Skąd wiesz, że możesz kontynuować:** wypisuje się prawdziwy numer
-   wersji (coś jak `5.2.26(1)-release`). PowerShell wcale nie rozumie
-   `$BASH_VERSION` i pokazałby nic albo błąd — jeśli to właśnie
-   widzisz, zmiana domyślnego profilu z kroku 4 nie zadziałała; zobacz
-   następną sekcję.
+   wersji, na przykład `5.2.26(1)-release`. Pusty wynik lub błąd oznacza,
+   że nadal działa PowerShell. W takim przypadku przejdź do następnej
+   sekcji.
 
 ### Nie widzę Git Bash w VS Code
 
 Jeśli **Git Bash** nigdy nie pojawił się na liście w kroku 4, albo
 nowy terminal wciąż jest PowerShellem po przejściu kroków 1–7:
 
-1. **Zrestartuj VS Code całkowicie** — zamknij każde okno, otwórz
+1. **Uruchom ponownie VS Code.** Zamknij wszystkie okna, otwórz
    ponownie i spróbuj Część 5 od kroku 1. VS Code skanuje profile
-   terminala takie jak Git Bash tylko przy starcie, więc może
-   przegapić instalację, która zdarzyła się, gdy był już otwarty.
+   terminala podczas uruchamiania i mógł nie zauważyć nowej instalacji.
 2. Jeśli wciąż go nie ma, wskaż VS Code na Git Bash ręcznie:
    - Otwórz Command Palette (`Ctrl+Shift+P`) i uruchom
      **Preferences: Open User Settings (JSON)**.
-   - Dodaj to (scal z istniejącym `{ }` — zapytaj w
-     [Jeśli utkniesz](#jeśli-utkniesz), jeśli nie jesteś pewien/pewna,
-     jak scalić JSON, nie zgaduj):
+   - Dodaj poniższy fragment do istniejącego obiektu `{ }`. Jeśli nie
+     wiesz, jak połączyć ustawienia JSON, przejdź do
+     [Jeśli utkniesz](#jeśli-utkniesz):
      ```json
      "terminal.integrated.profiles.windows": {
        "Git Bash": {
@@ -227,32 +212,29 @@ nowy terminal wciąż jest PowerShellem po przejściu kroków 1–7:
      ```powershell
      (Get-Command git).Source
      ```
-     To wypisuje ścieżkę samego `git.exe` — zwykle wewnątrz folderu
-     `cmd\`, jak `C:\Program Files\Git\cmd\git.exe`. Nie zakładaj, że
-     `bash.exe` jest w tym samym folderze; nie jest — jest w
-     sąsiednim folderze `bin\`, jeden poziom wyżej. Żeby dostać
-     dokładną ścieżkę do użycia powyżej, uruchom:
+     Polecenie wypisze ścieżkę do `git.exe`, zwykle w katalogu `cmd\`,
+     na przykład `C:\Program Files\Git\cmd\git.exe`. `bash.exe` znajduje
+     się poziom wyżej, w sąsiednim katalogu `bin\`. Jego ścieżkę
+     uzyskasz poleceniem:
      ```powershell
      Join-Path (Split-Path (Split-Path (Get-Command git).Source)) "bin\bash.exe"
      ```
      Zanim wkleisz tę ścieżkę do `settings.json`, potwierdź, że plik
-     faktycznie tam istnieje — otwórz ten folder w Eksploratorze
-     Windows i sprawdź, albo uruchom `Test-Path` na ścieżce, którą
-     wypisał PowerShell; powinno pokazać `True`.
+     istnieje. Otwórz katalog w Eksploratorze Windows albo uruchom dla
+     tej ścieżki `Test-Path`. Wynikiem powinno być `True`.
 
-## Część 6 — Zrób fork, sklonuj i otwórz to repozytorium
+## Część 6: Zrób fork, sklonuj i otwórz repozytorium
 
-To jest faktyczny cel całej tej strony. Od teraz każdy krok dzieje się
-albo w przeglądarce, albo w terminalu Git Bash wewnątrz VS Code z
-Części 5.
+Od tego miejsca będziesz pracować w przeglądarce oraz terminalu Git
+Bash wewnątrz VS Code.
 
 **Masz już fork albo lokalną kopię z wcześniejszej próby?** Nie
-powtarzaj tych kroków na ślepo — przejdź najpierw do
+nie powtarzaj tych kroków. Przejdź najpierw do
 [`already-have-a-fork.pl.md`](already-have-a-fork.pl.md).
 
-### 6.1 — Zrób fork repozytorium na GitHubie
+### 6.1: Zrób fork repozytorium na GitHubie
 
-1. Upewnij się, że jesteś zalogowany/a na GitHubie — otwórz
+1. Upewnij się, że konto GitHub jest zalogowane. Otwórz
    [github.com](https://github.com) w przeglądarce i sprawdź, czy
    prawy górny róg pokazuje Twój avatar konta, nie przycisk "Sign in".
    Jeśli nie masz jeszcze konta GitHub, najpierw je utwórz (jest
@@ -261,27 +243,25 @@ powtarzaj tych kroków na ślepo — przejdź najpierw do
    `https://github.com/michalmaj/software-engineering-in-practice`.
 3. Kliknij przycisk **Fork**, w prawym górnym rogu strony.
 4. Na stronie "Create a new fork" upewnij się, że **Owner** pokazuje
-   *Twoje* konto, nie prowadzącego — ten dropdown domyślnie ustawia
-   się na konto, na którym jesteś zalogowany/a, co powinno już być
-   Tobą.
+   *Twoje* konto, a nie konto prowadzącego.
 5. Kliknij **Create fork**.
 
 **Co powinieneś/aś zobaczyć:** GitHub przenosi Cię na nową stronę,
 której URL to
-`https://github.com/<twój-username>/software-engineering-in-practice`
-— Twój własny username, nie `michalmaj`, jest teraz w adresie
-przeglądarki i w tytule strony, zaraz pod ikonką repozytorium, która
-pokazuje, że powstało jako fork `michalmaj/software-engineering-in-practice`.
+`https://github.com/<twój-username>/software-engineering-in-practice`.
+W adresie i tytule strony powinna znaleźć się Twoja nazwa użytkownika,
+a pod nazwą repozytorium informacja o forku
+`michalmaj/software-engineering-in-practice`.
 
 **Skąd wiesz, że możesz kontynuować:** URL w adresie przeglądarki
 zawiera *Twój* username z GitHuba, nie `michalmaj`.
 
-### 6.2 — Skopiuj adres klonowania swojego forka
+### 6.2: Skopiuj adres klonowania swojego forka
 
 1. Na stronie swojego forka (z poprzedniego kroku) kliknij zielony
    przycisk **Code**.
 2. Upewnij się, że wybrana jest zakładka **HTTPS** (nie SSH, nie
-   GitHub CLI — ten kurs nie wymaga konfigurowania kluczy SSH).
+   GitHub CLI). Ten kurs nie wymaga konfigurowania kluczy SSH.
 3. Kliknij małą ikonkę kopiowania przy adresie, żeby go skopiować.
    Wygląda jak:
    ```text
@@ -289,18 +269,18 @@ zawiera *Twój* username z GitHuba, nie `michalmaj`.
    ```
    z Twoim rzeczywistym username zamiast `<twój-username>`.
 
-### 6.3 — Sklonuj je na swój komputer
+### 6.3: Sklonuj repozytorium na swój komputer
 
 Z powrotem w terminalu Git Bash wewnątrz VS Code (Część 5):
 
-1. Zdecyduj, gdzie powinny żyć Twoje projekty, i utwórz ten folder,
-   jeśli jeszcze nie istnieje. Rozsądny, prosty wybór:
+1. Wybierz katalog na projekty i utwórz go, jeśli jeszcze nie istnieje.
+   Możesz użyć poniższej lokalizacji:
    ```bash
    mkdir -p ~/projects
    cd ~/projects
    ```
-2. Sklonuj swój fork — wklej adres, który skopiowałeś/aś w 6.2.
-   **Zastąp `<twój-username>` swoim rzeczywistym username z GitHuba**;
+2. Sklonuj swój fork, używając adresu z punktu 6.2.
+   **Zastąp `<twój-username>` swoją nazwą użytkownika z GitHuba**;
    nie wklejaj poniższej linii dosłownie:
    ```bash
    git clone https://github.com/<twój-username>/software-engineering-in-practice.git
@@ -330,30 +310,29 @@ Z powrotem w terminalu Git Bash wewnątrz VS Code (Część 5):
    **Co powinieneś/aś zobaczyć:** `git status` mówi `On branch main`
    i `nothing to commit, working tree clean`. `git remote -v` pokazuje
    dwie linie (`origin` fetch i push), których adres zawiera **Twój
-   własny username z GitHuba** — jeśli widzisz tam `michalmaj` zamiast
-   swojego username, sklonowałeś/aś przez pomyłkę oryginalne
-   repozytorium, nie swój fork; zobacz
+   własną nazwę użytkownika z GitHuba**. Jeśli widzisz `michalmaj`, masz
+   klon oryginalnego repozytorium zamiast swojego forka. Zobacz
    [Sklonowałem/am repozytorium prowadzącego zamiast własnego forka](#sklonowałemam-repozytorium-prowadzącego-zamiast-własnego-forka)
    poniżej.
 
 **Skąd wiesz, że możesz kontynuować:** `git remote -v` pokazuje Twój
 własny username, a `ls` pokazuje `labs/`, `examples/` i `scripts/`.
 
-### 6.4 — Otwórz je w VS Code
+### 6.4: Otwórz repozytorium w VS Code
 
 1. W VS Code otwórz menu **File → Open Folder…**
-2. Przejdź do folderu, który sklonowałeś/aś — jeśli podążyłeś/aś za
-   6.3 dokładnie, to `projects` → `software-engineering-in-practice`
+2. Przejdź do sklonowanego katalogu. Jeśli używasz lokalizacji z
+   punktu 6.3, wybierz `projects` → `software-engineering-in-practice`
    wewnątrz Twojego folderu użytkownika Windows.
 3. Kliknij **Select Folder**.
 4. VS Code może zapytać "Do you trust the authors of the files in
-   this folder?" — kliknij **Yes, I trust the authors**.
+   this folder?". Kliknij **Yes, I trust the authors**.
 
 **Co powinieneś/aś zobaczyć:** panel Explorer po lewej wylistowuje
-teraz `labs`, `examples`, `scripts`, `README.md` i więcej — to samo,
-co `ls` pokazał Ci w 6.3.
+teraz `labs`, `examples`, `scripts`, `README.md` i pozostałe elementy
+widoczne wcześniej w wyniku `ls`.
 
-5. Otwórz terminal wewnątrz tego okna (**Terminal → New Terminal**) —
+5. Otwórz terminal wewnątrz tego okna (**Terminal → New Terminal**).
    powinien już domyślnie być Git Bash, bo ustawiłeś/aś to w Części 5.
    Potwierdź, że jesteś we właściwym miejscu:
    ```bash
@@ -363,7 +342,7 @@ co `ls` pokazał Ci w 6.3.
    `/software-engineering-in-practice`, a panel Explorer pokazuje
    folder `labs/`.
 
-### 6.5 — Znajdź Lab 01
+### 6.5: Znajdź Lab 01
 
 1. W panelu Explorer po lewej kliknij, żeby rozwinąć folder `labs`.
 2. Znajdź i kliknij `01-workstation`, potem kliknij `README.pl.md`
@@ -372,18 +351,16 @@ co `ls` pokazał Ci w 6.3.
 **Co powinieneś/aś zobaczyć:** otwiera się `Lab 01 — Witaj na swoim
 stanowisku pracy` jako czytelny dokument w edytorze.
 
-To wszystko — dotarłeś/aś do końca zadania tej strony. Przejdź do
-[Zanim skończysz](#zanim-skończysz), żeby wszystko podwójnie
-sprawdzić, a potem zacznij lab.
+Konfiguracja jest gotowa. Przejdź do sekcji
+[Zanim skończysz](#zanim-skończysz), sprawdź wszystkie punkty i zacznij
+lab.
 
 ## Pierwszy push do GitHuba
 
-Nie wypchniesz niczego do GitHuba aż do połowy Lab 03 albo Lab 04 —
-klonowanie i czytanie nie wymagają zalogowania do samego Gita, tylko
-Twojej sesji przeglądarki z 6.1. Gdy tam dotrzesz i `git push`
-zapyta o autoryzację, zobacz
-[`github-auth.pl.md`](github-auth.pl.md) — jest napisane właśnie na
-ten moment, więc nie musisz tego czytać teraz.
+Pierwszy push pojawi się dopiero w Labie 03 lub 04. Klonowanie i
+czytanie repozytorium nie wymaga uwierzytelnienia Gita. Gdy `git push`
+poprosi o zalogowanie, skorzystaj z
+[`github-auth.pl.md`](github-auth.pl.md).
 
 ## Zanim skończysz
 
@@ -407,9 +384,9 @@ i zaczynaj.
 
 Jeśli Części 1–2 nie są możliwe na tym komputerze (częste na
 komputerach uczelnianych), możesz wciąż zainstalować wszystko przez
-oficjalne instalatory zamiast Chocolatey — nie wymagają tych samych
-podwyższonych uprawnień, a niektóre pozwalają zainstalować do
-własnego folderu użytkownika konkretnie:
+oficjalne instalatory zamiast Chocolatey. Niektóre pozwalają
+zainstalować program w katalogu użytkownika bez podwyższonych
+uprawnień:
 
 - **Git for Windows**: pobierz instalator ze strony
   [git-scm.com/download/win](https://git-scm.com/download/win).
@@ -418,16 +395,15 @@ własnego folderu użytkownika konkretnie:
   zamiast `C:\Program Files`, jeśli nie masz tam prawa zapisu.
   Zachowaj każdą inną domyślną opcję bez zmian.
 - **VS Code**: pobierz **User Installer** (nie "System Installer") ze
-  strony [code.visualstudio.com](https://code.visualstudio.com/) —
-  User Installer jest zaprojektowany specjalnie, żeby instalować do
+  strony [code.visualstudio.com](https://code.visualstudio.com/).
+  User Installer instaluje program w
   własnego folderu użytkownika bez potrzeby uprawnień administratora.
 
-Gdy oba są zainstalowane w ten sposób, wznów od Części 4 powyżej —
-wszystko od tego miejsca działa tak samo, niezależnie od tego, jak Git
-i VS Code trafiły na Twój komputer.
+Po zainstalowaniu obu programów wróć do Części 4. Dalsze kroki są takie
+same niezależnie od metody instalacji.
 
 Jeśli żaden instalator nie może się uruchomić na tym komputerze w
-ogóle, nie potrzebujesz lokalnej konfiguracji — zobacz
+ogóle, użyj środowiska zdalnego. Zobacz
 [GitHub Codespaces](../../START-HERE.pl.md#github-codespaces-opcja-bez-instalacji)
 w Zacznij tutaj.
 
@@ -435,11 +411,10 @@ w Zacznij tutaj.
 
 ### `choco`, `git` albo `code` mówi "not recognized"
 
-Zamknij *każde* okno terminala i VS Code i otwórz świeże — nowo
+Zamknij wszystkie okna terminala oraz VS Code i otwórz je ponownie. Nowo
 zainstalowany program często nie pojawia się w oknach, które były już
 otwarte przed zakończeniem instalacji. Jeśli wciąż go nie ma po tym,
-sprawdź podwójnie, czy odpowiadająca Część powyżej faktycznie
-zakończyła się bez błędu w połowie.
+sprawdź, czy odpowiednia część instalacji zakończyła się bez błędu.
 
 ### Sklonowałem/am repozytorium prowadzącego zamiast własnego forka
 
@@ -455,9 +430,8 @@ mv software-engineering-in-practice software-engineering-in-practice.instructor-
 
 To zmienia nazwę źle sklonowanego folderu, odsuwając go z drogi,
 zamiast go usuwać, potem powtórz 6.1–6.4 tym razem z adresem *swojego*
-forka. Gdy Twoja prawdziwa kopia już działa, możesz usunąć
-przemianowany folder, jeśli chcesz, albo po prostu go zostawić — nie
-robi żadnej szkody, siedząc tam.
+forka. Gdy poprawna kopia działa, możesz usunąć przemianowany katalog
+albo pozostawić go na dysku.
 
 ### Wszystko inne
 
