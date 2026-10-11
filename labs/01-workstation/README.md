@@ -2,10 +2,9 @@
 
 ## Story
 
-You just joined a software project. Someone handed you a laptop — the one
-in front of you right now, freshly set up. Before you can change a single
-line of code, you need to know where you are, what's around you, and how
-to move.
+You have just joined a software project and received a freshly configured
+laptop. Before changing any code, you need to know your way around the
+machine.
 
 ## Learning objectives
 
@@ -20,9 +19,9 @@ After this lab you should be able to:
 ## Before you start
 
 - You have your own copy of this repository open in VS Code, with a
-  working terminal inside it — if you're not there yet, follow
+  working terminal inside it. If you are not there yet, follow
   [`START-HERE.md`](../../START-HERE.md) first.
-- No previous lab is required — this is the first one.
+- No previous lab is required. This is the first one.
 
 ## Your task
 
@@ -33,17 +32,15 @@ Working only in the terminal:
 2. List the contents of your home directory, including hidden files.
 3. Create a directory called `lab01-notes` inside your home directory.
 4. Inside it, create a file called `findings.txt`.
-5. Run `echo "$SHELL"` and read what it prints: it shows your
-   configured login shell.
+5. Run `echo "$SHELL"`. The output shows your configured login shell.
 6. Write into `findings.txt` the output of these five commands, one per
    line, labeled: `whoami`, `uname -a`, `echo "$HOME"`, `echo "$PATH"`,
    `echo "$SHELL"`. You haven't learned a text editor yet, so use this
-   one small trick: `>>` appends a line of command output to a file
-   without opening anything —
+   one small trick. `>>` appends a line of command output to a file
+   without opening it:
    `echo "whoami: $(whoami)" >> ~/lab01-notes/findings.txt` adds one
-   labeled line. Repeat for each of the five commands. (You'll learn
-   `>>` properly, alongside `>` and `|`, in Lab 02 — this is the one
-   piece you need early to finish this lab.)
+   labeled line. Repeat this for each command. You will learn more about
+   `>>`, `>`, and `|` in Lab 02.
 7. Use `which` to find out where the `git` and `code` executables
    live on disk.
 8. Open `findings.txt` with `less` and confirm its contents.
@@ -80,16 +77,16 @@ reachable from your shell.
 - **Hint 1:** Every one of these tasks corresponds to exactly one short
   command. You don't need any flags you haven't seen before except `-la`
   for listing hidden files and `-a` for `uname`.
-- **Hint 2:** The commands you need are: `pwd`, `cd`, `ls -la`, `mkdir`,
+- **Hint 2:** You need `pwd`, `cd`, `ls -la`, `mkdir`,
   `touch`, `cat`, `whoami`, `uname -a`, `echo`, `which`, `less`.
 - **Hint 3:** If you're unsure the `>>` trick worked, run `cat
   ~/lab01-notes/findings.txt` afterward and confirm all five lines are
-  there — each append should add exactly one new line.
+  there. Each append should add one new line.
 
 ## What's next
 
 You can now move around and inspect your environment. Next, the terminal
-stops being just a place to run one command at a time: you'll start
+becomes more than a place to run one command at a time. You will start
 combining commands and managing running processes.
 
 Continue to [Lab 02 — The terminal is a development tool](../02-terminal/README.md).

@@ -2,9 +2,8 @@
 
 ## Story
 
-You've been handed access to this very repository. Before you change
-anything, you need to know how to see what state it's in, and how to
-record a change of your own without losing anything.
+You now have access to this repository. Before changing anything, you
+need to inspect its state and learn how to record your own work safely.
 
 ## Learning objectives
 
@@ -20,27 +19,27 @@ After this lab you should be able to:
 
 - Lab 02 complete.
 - You are inside your own clone of this repository (you set this up in
-  [`START-HERE.md`](../../START-HERE.md) — or, if you're using
+  [`START-HERE.md`](../../START-HERE.md); if you're using
   Codespaces instead, it's already provided for you).
-- Current directory: the repository root.
+- Your current directory is the repository root.
 
 ## Your task
 
 1. Run `git status` and `git log` in the repository root. Read the output
    before doing anything else.
 2. Create a new file `labs/03-inherited-repository/notes/my-observations.txt`
-   containing at least two sentences: one describing what `git status`
-   showed you, one describing what `git log` showed you.
-3. Run `git status` again and explain, in your own words (write it in the
-   same file, as a third line), why the new file shows up the way it does.
+   containing at least two sentences. Describe what `git status` showed
+   you in one and what `git log` showed you in the other.
+3. Run `git status` again. Add a third line to the same file explaining
+   in your own words why the new file appears as it does.
 4. Stage only that file with `git add`.
 5. Run `git diff --staged` and observe what it shows compared to plain
    `git diff`.
 6. Commit the staged change with a clear, English, present-tense message,
-   e.g. `docs: add lab 03 observations`. If this is the first commit
+   for example `docs: add lab 03 observations`. If this is the first commit
    you've ever made on this machine, Git may stop you with "Please tell
-   me who you are" instead of committing — it needs a name and email to
-   attach to every commit you make here. Run these two commands once
+   me who you are" instead of committing. It needs a name and email for
+   every commit you make. Run these two commands once
    (use the email tied to your GitHub account), then repeat the commit:
    ```bash
    git config --global user.name "Your Name"
@@ -80,13 +79,12 @@ wc -l < labs/03-inherited-repository/notes/my-observations.txt  # expect >= 3
 - **Hint 3:** A commit needs a message. Use `git commit -m "your message
   here"` rather than opening an editor, unless you're comfortable with one.
 - **Hint 4:** "Please tell me who you are" means Git has no `user.name`
-  or `user.email` configured yet on this machine — see step 6 above for
-  the two `git config --global` commands that fix this once, for good.
+  or `user.email` configured yet on this machine. Step 6 contains the
+  two `git config --global` commands that complete this setup.
 
 ## What's next
 
-Your commit exists — but only on this machine, in this local repository.
-Nobody else can see it yet. Next you'll find out what "remote" actually
-means.
+Your commit exists only on this machine, in the local repository. Nobody
+else can see it yet. Next you will learn what a remote repository is.
 
 Continue to [Lab 04 — Local is not remote](../04-local-vs-remote/README.md).
