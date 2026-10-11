@@ -5,10 +5,10 @@
 You and a teammate both need to add a warning feature to the kitchen
 inventory script, today, without waiting for each other. Branches are
 how you both start from the same place and work at the same time
-without touching each other's work yet.
+while keeping the unfinished changes separate.
 
-This is the first lab in Act IV, and like Act II and Act III, Python,
-Go, and Java are all real, complete tracks here — read only your own.
+This is the first lab in Act IV. As in Acts II and III, Python, Go, and
+Java are complete tracks. Read only the instructions for your track.
 
 ## Learning objectives
 
@@ -23,39 +23,39 @@ After this lab you should be able to:
 - Labs 06-15 complete, in your chosen track.
 - Git commands in this lab (`git switch`, `git branch`, `git merge`,
   `git commit`) operate on the **whole course repository's** history,
-  not on a separate repository inside your language's folder — a
-  branch you create is a branch of the whole repo, even though you'll
+  not on a separate repository inside your language's folder. A
+  branch you create belongs to the whole repository, even though you'll
   only touch files under your own track's directory.
 
 ### Python
 
-- Current directory: `examples/team-inventory/python/`.
-- Confirm the starter works: `uv run pytest -v` and `uv run python
+- Work in `examples/team-inventory/python/`.
+- Confirm the starter works with `uv run pytest -v` and `uv run python
   inventory.py`.
 
 ### Go
 
-- Current directory: `examples/team-inventory/go/`.
-- Confirm the starter works: `go test ./...` and `go run .`.
+- Work in `examples/team-inventory/go/`.
+- Confirm the starter works with `go test ./...` and `go run .`.
 
 ### Java
 
-- Current directory: `examples/team-inventory/java/`.
-- Confirm the starter works: `./gradlew test` and `./gradlew run
+- Work in `examples/team-inventory/java/`.
+- Confirm the starter works with `./gradlew test` and `./gradlew run
   --console=plain`.
 
 ## Your task
 
 You'll play both "teammates" yourself, one branch at a time. The
 starting point, the branch names, and the order are the same for every
-track — only the file contents differ.
+track. Only the file contents differ.
 
-1. Confirm you're starting from a clean `main`: `git switch main` then
+1. Confirm you're starting from a clean `main`. Run `git switch main`, then
    `git status --short`. If that prints anything, commit or stash it
-   first — both branches below need to start from the same clean
+   first. Both branches below need to start from the same clean
    point.
 
-**Teammate A — low stock warning:**
+**Teammate A, low-stock warning**
 
 2. From `main`, create and switch to a new branch:
    `git switch -c feature/low-stock-warning`.
@@ -92,7 +92,7 @@ track — only the file contents differ.
    `func LowStockItems(inventory []Item, threshold int) []string`,
    returning the names of items whose `Quantity` is below `threshold`
    (there's no default-argument syntax in Go, so `threshold` is always
-   passed explicitly — you'll pass `5` from `Summarize`). Insert it
+   passed explicitly; you'll pass `5` from `Summarize`). Insert it
    **immediately above `Summarize`**.
 4. In `Summarize`, right after the `for` loop and before the `return`
    line, add:
@@ -148,9 +148,9 @@ track — only the file contents differ.
    ```
 6. Run `./gradlew test`, then commit everything on this branch.
 
-**Teammate B — expiry warning:**
+**Teammate B, expiry warning**
 
-7. Switch back to `main` — **do not merge `feature/low-stock-warning`
+7. Switch back to `main`. **Do not merge `feature/low-stock-warning`
    yet.**
 8. From `main`, create and switch to a new branch:
    `git switch -c feature/expiry-warning`.
@@ -160,7 +160,7 @@ track — only the file contents differ.
 9. In `inventory.py`, add
    `expiring_items(inventory: list[dict], days: int = 3) -> list[str]`,
    returning the names of items whose `expires_in_days` is `<=` `days`.
-   Insert it **immediately above `summarize`** — the same location as
+   Insert it **immediately above `summarize`**, in the same location as
    step 3, since you're starting from the same `main` teammate A did.
 10. In `summarize`, at the **same location** as step 4 (right after the
     `for` loop, before `return`), add:
@@ -171,7 +171,7 @@ track — only the file contents differ.
     ```
 11. In `tests/test_inventory.py`, change the import on the first line to
     `from inventory import expiring_items, summarize`, then add a test
-    directly after `test_summarize_lists_each_item_with_quantity` —
+    directly after `test_summarize_lists_each_item_with_quantity`,
     the same location as step 5:
     ```python
     def test_expiring_items_lists_items_within_days():
@@ -188,7 +188,7 @@ track — only the file contents differ.
 9. In `inventory.go`, add
    `func ExpiringItems(inventory []Item, days int) []string`, returning
    the names of items whose `ExpiresInDays` is `<=` `days`. Insert it
-   **immediately above `Summarize`** — the same location as step 3.
+   **immediately above `Summarize`**, in the same location as step 3.
 10. In `Summarize`, at the **same location** as step 4 (right after the
     `for` loop, before `return`), add:
     ```go
@@ -198,7 +198,7 @@ track — only the file contents differ.
     	}
     ```
 11. In `inventory_test.go`, add a test directly after
-    `TestSummarizeListsEachItemWithQuantity` — the same location as
+    `TestSummarizeListsEachItemWithQuantity`, in the same location as
     step 5:
     ```go
     func TestExpiringItemsListsItemsWithinDays(t *testing.T) {
@@ -219,7 +219,7 @@ track — only the file contents differ.
 9. In `Inventory.java`, add
    `public static List<String> expiringItems(List<Item> inventory, int days)`,
    returning the names of items whose `expiresInDays` is `<=` `days`.
-   Insert it **immediately above `summarize`** — the same location as
+   Insert it **immediately above `summarize`**, in the same location as
    step 3.
 10. In `summarize`, at the **same location** as step 4 (right after the
     `for` loop, before `return`), add:
@@ -230,7 +230,7 @@ track — only the file contents differ.
             }
     ```
 11. In `InventoryTest.java`, add a test directly after
-    `summarizeListsEachItemWithQuantity` — the same location as step 5
+    `summarizeListsEachItemWithQuantity`, in the same location as step 5
     (the `assertEquals` import from teammate A's branch doesn't exist
     here, since you branched from `main`; add it the same way):
     ```java
@@ -319,7 +319,7 @@ still has neither feature (that's Lab 17's job).
   in one step. Plain `git switch <name>` switches to a branch that
   already exists.
 - **Hint 2:** Make sure you're on `main` (`git branch` shows a `*` next
-  to your current branch) before creating each new feature branch —
+  to your current branch) before creating each new feature branch.
   if you branch B from A by mistake, B will already contain A's work.
 - **Hint 3:** Both the new helper function (immediately above
   `summarize`) and the two inserted blocks inside `summarize` (right
@@ -332,7 +332,7 @@ still has neither feature (that's Lab 17's job).
   in one step. Plain `git switch <name>` switches to a branch that
   already exists.
 - **Hint 2:** Make sure you're on `main` (`git branch` shows a `*` next
-  to your current branch) before creating each new feature branch —
+  to your current branch) before creating each new feature branch.
   if you branch B from A by mistake, B will already contain A's work.
 - **Hint 3:** Both the new helper function (immediately above
   `Summarize`) and the two inserted lines inside `Summarize` (right
@@ -345,7 +345,7 @@ still has neither feature (that's Lab 17's job).
   in one step. Plain `git switch <name>` switches to a branch that
   already exists.
 - **Hint 2:** Make sure you're on `main` (`git branch` shows a `*` next
-  to your current branch) before creating each new feature branch —
+  to your current branch) before creating each new feature branch.
   if you branch B from A by mistake, B will already contain A's work.
 - **Hint 3:** Both the new helper method (immediately above
   `summarize`) and the two inserted lines inside `summarize` (right
@@ -354,7 +354,7 @@ still has neither feature (that's Lab 17's job).
 
 ## What's next
 
-Both features exist. Neither knows about the other. Next, you bring
-them together — and discover they don't just merge quietly.
+Both features exist, but neither knows about the other. Next, you'll
+bring them together and see why Git needs your help.
 
 Continue to [Lab 17 — The merge conflict](../17-merge-conflict/README.md).

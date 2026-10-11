@@ -218,4 +218,4 @@ zakończony. W następnym przestajesz pracować w pojedynkę, a „u mnie
 działa” musi zmienić się w „działa także wtedy, gdy kod zmienia ktoś
 inny”.
 
-Przejdź do [Lab 16 — Branche istnieją, bo praca dzieje się równolegle](../16-parallel-branches/README.pl.md).
+Przejdź do [Lab 16 — Gałęzie istnieją, bo praca toczy się równolegle](../16-parallel-branches/README.pl.md).
