@@ -2,63 +2,59 @@
 
 ## Sytuacja
 
-Inna część systemu kuchni musi tworzyć zamówienia i sprawdzać ich
-status — nie przez importowanie Twojego kodu, ale przez sieć, z
-programu, który może nawet nie być napisany w tym samym języku.
-Potrzebujesz granicy, na którą obie strony mogą się zgodzić bez
-czytania kodu źródłowego drugiej strony.
+Inna część systemu kuchennego musi tworzyć zamówienia i sprawdzać ich
+stan przez sieć. Może być napisana w innym języku i nie może importować
+Twojego kodu. Obie strony potrzebują interfejsu, który mogą uzgodnić bez
+czytania nawzajem swojego kodu źródłowego.
 
 ## Cele nauki
 
 Po tym labie potrafisz:
 
-- Opisać kontrakt endpointu HTTP: formę requestu, formę response,
-  kody statusu, i format błędów.
-- Wyjaśnić, czemu kontrakt musi określać zachowanie błędów, nie tylko
-  happy path.
+- Opisać kontrakt endpointu HTTP, w tym strukturę żądań i odpowiedzi,
+  kody statusu oraz format błędów.
+- Wyjaśnić, dlaczego kontrakt musi opisywać błędy, a nie tylko udane
+  przypadki.
 - Dodać nową regułę walidacji do istniejącego endpointu bez zmiany
-  jego kontraktu dla klientów, którzy już go przestrzegali poprawnie.
+  zachowania dla klientów, którzy już przestrzegają kontraktu.
 
 ## Zanim zaczniesz
 
-- Laby 06-20 ukończone, w Twojej wybranej ścieżce.
-- Jeśli już zacząłeś/aś ten projekt w jego starej lokalizacji
+- Ukończ laby 06-20 w wybranej ścieżce.
+- Jeśli projekt został już rozpoczęty w starej lokalizacji
   (`examples/order-api/api.py`, bez podfolderu `python/`), nic nie
-  jest stracone: przenieś to, co już stworzyłeś/aś, do
-  `examples/order-api/python/` samodzielnie (na przykład
+  jest stracone. Przenieś utworzone pliki do
+  `examples/order-api/python/`, na przykład poleceniem
   `mkdir -p examples/order-api/python && git mv examples/order-api/api.py examples/order-api/python/`,
-  dopasowując do plików, które sam/a dodałeś/aś), potem kontynuuj od
-  tego miejsca. Nie uruchamiaj `git reset --hard` ani `git clean`,
-  żeby "zacząć od nowa" — każda z nich wyrzuciłaby pracę, której
-  nigdzie jeszcze nie wypchnąłeś/aś.
+  dostosowanym do dodanych plików. Następnie kontynuuj od tego miejsca.
+  Nie używaj `git reset --hard` ani `git clean`, aby „zacząć od nowa”.
+  Oba polecenia usunęłyby pracę, która nie została jeszcze wypchnięta.
 
 ### Python
 
-- Bieżący katalog: `examples/order-api/python/`.
-- Potwierdź, że starter działa: `uv run pytest -v`.
+- Pracuj w `examples/order-api/python/`.
+- Sprawdź działanie projektu poleceniem `uv run pytest -v`.
 
 ### Go
 
-- Bieżący katalog: `examples/order-api/go/`.
-- Potwierdź, że starter działa: `go test ./...`.
+- Pracuj w `examples/order-api/go/`.
+- Sprawdź działanie projektu poleceniem `go test ./...`.
 
 ### Java
 
-- Bieżący katalog: `examples/order-api/java/`.
-- Potwierdź, że starter działa: `./gradlew test`.
+- Pracuj w `examples/order-api/java/`.
+- Sprawdź działanie projektu poleceniem `./gradlew test`.
 
 ## Twoje zadanie
 
-### Krok 1 — uruchom serwer i zbadaj go ręcznie
+### Krok 1. Uruchom serwer i sprawdź go ręcznie
 
-Będziesz potrzebować dwóch otwartych terminali naraz: jeden
-uruchamiający serwer, jeden uruchamiający `curl` wobec niego. W VS
-Code otwórz pierwszy terminal normalnie (**Terminal → New Terminal**),
-potem kliknij ikonkę **split terminal** w tym panelu (albo uruchom
-**Terminal → New Terminal** jeszcze raz), żeby dostać drugi — oba
-zostają wewnątrz tego samego okna VS Code.
+Otwórz dwa terminale, jeden dla serwera i drugi dla poleceń `curl`.
+W VS Code utwórz pierwszy przez **Terminal → New Terminal**, a następnie
+kliknij ikonę **split terminal** lub ponownie wybierz **Terminal → New
+Terminal**. Oba pozostaną w tym samym oknie programu.
 
-**Terminal A** — uruchom serwer, i zostaw go działającego:
+W **Terminalu A** uruchom serwer i pozostaw go włączonego.
 
 #### Python
 
@@ -79,21 +75,21 @@ go run .
 ```
 
 Pierwsze uruchomienie pobiera dystrybucję Gradle i zależności, jeśli
-nie są jeszcze w cache — to może zająć minutę lub dwie; każde kolejne
-uruchomienie jest szybkie.
+nie ma ich jeszcze w pamięci podręcznej. Może to potrwać minutę lub
+dwie. Kolejne uruchomienia będą szybsze.
 
-**Wszystkie trzy ścieżki** wypisują tę samą linię, gdy są gotowe:
+**Wszystkie trzy ścieżki** po uruchomieniu wypisują tę samą linię.
 
 ```text
 order-api listening on http://localhost:8000
 ```
 
-Ta linia jest Twoim sygnałem, że serwer faktycznie działa — nie
-przechodź do Terminala B, zanim jej nie zobaczysz.
+Ta linia potwierdza, że serwer działa. Zaczekaj na nią przed przejściem
+do Terminala B.
 
-**Terminal B** — z serwerem wciąż działającym w Terminalu A, zbadaj go
-ręcznie. Te trzy polecenia są identyczne dla każdej ścieżki, bo mówią
-tylko HTTP:
+W **Terminalu B** ręcznie sprawdź serwer działający w Terminalu A.
+Poniższe polecenia są takie same w każdej ścieżce, ponieważ korzystają
+wyłącznie z HTTP.
 
 ```bash
 curl -i -X POST http://localhost:8000/orders \
@@ -103,63 +99,57 @@ curl -i http://localhost:8000/orders/1
 curl -i http://localhost:8000/orders/999
 ```
 
-Przeczytaj linię statusu i body każdej odpowiedzi, zanim przejdziesz
-do następnego polecenia.
+Przed przejściem do kolejnego polecenia przeczytaj linię statusu i ciało
+każdej odpowiedzi.
 
-**Jeśli `curl` mówi** `curl: (7) Failed to connect to localhost port
-8000... Couldn't connect to server`: serwer w Terminalu A nie działa,
-albo się wywalił, albo jesteś wskazany/a na niewłaściwy port. Sprawdź
-Terminal A pod kątem błędu, i potwierdź, że widziałeś/aś linię
-"listening", zanim spróbujesz `curl` jeszcze raz.
+**Jeśli `curl` zgłasza** `curl: (7) Failed to connect to localhost port
+8000... Couldn't connect to server`, serwer w Terminalu A nie działa,
+zakończył się błędem albo korzysta z innego portu. Sprawdź komunikaty w
+Terminalu A i zaczekaj na linię „listening”, zanim spróbujesz ponownie.
 
-**Jeśli uruchomienie serwera w Terminalu A failuje błędem
-address-already-in-use**: coś już słucha na porcie 8000 — najczęściej
-serwer, który uruchomiłeś/aś wcześniej i zapomniałeś/aś zatrzymać.
-Znajdź go:
+**Jeśli Terminal A zgłasza, że adres jest już używany**, inny proces
+nasłuchuje na porcie 8000. Najczęściej jest to wcześniej uruchomiony
+serwer. Znajdź go w jeden z poniższych sposobów.
 
-- Poszukaj wcześniejszej karty/panelu terminala, który wciąż ma
-  uruchomiony serwer.
-- Albo uruchom `lsof -i :8000` (macOS/Linux) albo, w Git Bash na
-  Windows, sprawdź Menedżera Zadań pod kątem pozostałego procesu
-  `python`, `go` albo `java`, i zatrzymaj ten proces.
-- Jako ostatnią opcję, serwer każdej ścieżki też honoruje zmienną
-  środowiskową `PORT`, więc możesz całkowicie obejść konflikt bez
-  szukania drugiego procesu: `PORT=8001 uv run python api.py` (albo
-  odpowiadające polecenie `go run .` / `./gradlew run`), potem użyj
-  `http://localhost:8001` w swoich poleceniach `curl` zamiast tego.
+- Poszukaj wcześniejszej karty lub panelu terminala, w którym nadal
+  działa serwer.
+- Na macOS lub Linuksie uruchom `lsof -i :8000`. W systemie Windows
+  sprawdź w Menedżerze zadań, czy pozostał proces `python`, `go` lub
+  `java`, i go zatrzymaj.
+- W ostateczności użyj zmiennej środowiskowej `PORT`, którą obsługuje
+  serwer w każdej ścieżce. Uruchom na przykład
+  `PORT=8001 uv run python api.py` albo dodaj tę samą zmienną do polecenia
+  `go run .` lub `./gradlew run`. Następnie w poleceniach `curl` użyj
+  adresu `http://localhost:8001`.
 
 Gdy skończysz badanie, zatrzymaj serwer w Terminalu A przez `Ctrl+C`.
 
 #### Python
 
-Zobaczysz wypisany traceback `KeyboardInterrupt` w Terminalu A — to
-jest oczekiwane i niegroźne; to normalny sposób Pythona na
-zraportowanie, że `Ctrl+C` przerwał blokujące wywołanie. Serwer i tak
-się zatrzymał.
+Terminal A wyświetli traceback `KeyboardInterrupt`. To oczekiwany i
+niegroźny sposób informowania, że `Ctrl+C` przerwał blokujące wywołanie.
+Serwer został zatrzymany.
 
 #### Go
 
-Proces po prostu się kończy, bez dalszego komunikatu — to normalne,
-niewyróżniające się zachowanie Go na `Ctrl+C` dla programu bez
-specjalnej obsługi zamykania.
+Proces zakończy się bez dodatkowego komunikatu. To normalne zachowanie
+programu Go bez specjalnej obsługi zamykania.
 
 #### Java
 
-Proces się kończy; Gradle może wypisać linię odnotowującą, że build
-został przerwany. Tak czy inaczej, serwer się zatrzymał.
+Proces zakończy się, a Gradle może poinformować o przerwaniu kompilacji.
+W obu przypadkach serwer został zatrzymany.
 
-### Krok 2 — zdokumentuj kontrakt
+### Krok 2. Opisz kontrakt
 
-Napisz `examples/order-api/CONTRACT.md` dokumentujący, dla każdego
-endpointu: metodę HTTP i path, formę body requestu (jeśli jakaś),
-każdą odpowiedź, którą może wyprodukować (kod statusu + forma body), i
-co powoduje każdą odpowiedź błędu. Ten plik opisuje kontrakt HTTP na
-poziomie wire — jest wspólny dla wszystkich trzech ścieżek, bo sam
-kontrakt nie zależy od tego, który język go implementuje.
+Utwórz `examples/order-api/CONTRACT.md`. Dla każdego endpointu opisz
+metodę i ścieżkę HTTP, ciało żądania, jeśli występuje, wszystkie możliwe
+odpowiedzi wraz z kodem statusu i ciałem oraz przyczynę każdego błędu.
+Kontrakt jest wspólny dla wszystkich trzech ścieżek, ponieważ nie zależy
+od języka implementacji.
 
-Żeby zacząć, tutaj jest forma dla jednego endpointu — resztę wypełnij
-sam/a na podstawie tego, co faktycznie zaobserwowałeś/aś w Kroku 1, nie
-zgadując:
+Poniższy przykład pokazuje strukturę opisu jednego endpointu. Pozostałe
+uzupełnij na podstawie obserwacji z kroku 1, zamiast zgadywać.
 
 ```markdown
 ### `POST /orders`
@@ -177,77 +167,71 @@ Creates a new order.
   `{"error": "invalid JSON"}`
 ```
 
-Zrób to samo dla `GET /orders/{id}` (oba przypadki: znaleziony i
-nieznaleziony) i dla nieznanej ścieżki. Nie przepisuj po prostu tego
-szablonu — potwierdź każdy przypadek wobec prawdziwej odpowiedzi
-najpierw.
+Zrób to samo dla `GET /orders/{id}`, zarówno dla istniejącego, jak i
+nieznanego identyfikatora, oraz dla nieznanej ścieżki. Przed opisaniem
+każdego przypadku sprawdź prawdziwą odpowiedź serwera.
 
-### Krok 3 — dodaj regułę walidacji
+### Krok 3. Dodaj regułę walidacji
 
-Właściciel ma nowy wymóg: **każdy element w `items` musi być
-niepustym stringiem**. Liczba, pusty string, albo `null` na liście
-powinny być odrzucone w ten sam sposób, co już odrzucana brakująca
-lista `items`.
+Pojawia się nowy wymóg. **Każdy element w `items` musi być niepustym
+napisem.** Liczba, pusty napis lub `null` na liście mają zostać odrzucone
+tak samo jak brakująca lista `items`.
 
 #### Python
 
-W `do_POST` w `api.py`, zaraz po istniejącym checku "musi być
-niepustą listą" i przed utworzeniem zamówienia, dodaj check, który
-odrzuca request `400 {"error": "each item must be a non-empty
-string"}`, jeśli jakikolwiek element w `items` nie jest niepustym
-stringiem.
+W metodzie `do_POST` w `api.py`, zaraz po sprawdzeniu, czy `items` jest
+niepustą listą, i przed utworzeniem zamówienia dodaj kolejną walidację.
+Jeśli którykolwiek element nie jest niepustym napisem, odpowiedz
+`400 {"error": "each item must be a non-empty string"}`.
 
 #### Go
 
-W `handleCreateOrder` w `api.go`, zaraz po istniejącym checku "musi
-być niepustą listą" (check `len(items) == 0`) i przed utworzeniem
-zamówienia, dodaj pętlę, która odrzuca request `400 {"error": "each
-item must be a non-empty string"}` w momencie znalezienia elementu,
-który nie jest niepustym stringiem. Każdy element wychodzi ze
-zdekodowanego JSON jako `any`, więc będziesz potrzebować type
-assertion, żeby sprawdzić, że faktycznie jest `string`, zanim
-sprawdzisz, że jest niepusty.
+W `handleCreateOrder` w `api.go`, zaraz po sprawdzeniu
+`len(items) == 0` i przed utworzeniem zamówienia, dodaj pętlę po
+elementach. Gdy znajdzie element, który nie jest niepustym napisem,
+powinna odpowiedzieć `400 {"error": "each item must be a non-empty
+string"}`. Elementy zdekodowanego JSON-u mają typ `any`, dlatego przed
+sprawdzeniem zawartości potrzebna będzie asercja typu `string`.
 
 #### Java
 
-W `handleCreateOrder` w `ApiServer.java`, zaraz po istniejącym checku
-"musi być niepustą listą" (check `items.isEmpty()`) i przed
-utworzeniem zamówienia, dodaj pętlę, która odrzuca request `400
-{"error": "each item must be a non-empty string"}` w momencie
-znalezienia elementu, który nie jest niepustym stringiem. Każdy
-element wychodzi ze sparsowanego JSON jako `Object`, więc będziesz
-potrzebować checka `instanceof`, zanim sprawdzisz, że jest niepusty.
+W `handleCreateOrder` w `ApiServer.java`, zaraz po sprawdzeniu
+`items.isEmpty()` i przed utworzeniem zamówienia, dodaj pętlę po
+elementach. Gdy znajdzie element, który nie jest niepustym napisem,
+powinna odpowiedzieć `400 {"error": "each item must be a non-empty
+string"}`. Elementy przetworzonego JSON-u mają typ `Object`, dlatego
+przed sprawdzeniem zawartości użyj `instanceof`.
 
-### Krok 4 — dodaj test
+### Krok 4. Dodaj test
 
 #### Python
 
-Dodaj test do `tests/test_api.py` potwierdzający, że `POST /orders` z
-`{"items": ["Burger", ""]}` (albo jakimkolwiek innym elementem
-nie-stringiem) zwraca `400`.
+Dodaj do `tests/test_api.py` test potwierdzający, że `POST /orders` z
+`{"items": ["Burger", ""]}` lub innym niepoprawnym elementem zwraca
+`400`.
 
 #### Go
 
-Dodaj test do `api_test.go` potwierdzający, że `POST /orders` z
-`{"items": ["Burger", ""]}` zwraca `400`. Podążaj za formą
+Dodaj do `api_test.go` test potwierdzający, że `POST /orders` z
+`{"items": ["Burger", ""]}` zwraca `400`. Wzoruj się na
 `TestPostWithoutItemsReturns400`.
 
 #### Java
 
-Dodaj test do `ApiServerTest.java` potwierdzający, że `POST /orders`
-z `{"items": ["Burger", ""]}` zwraca `400`. Podążaj za formą
+Dodaj do `ApiServerTest.java` test potwierdzający, że `POST /orders`
+z `{"items": ["Burger", ""]}` zwraca `400`. Wzoruj się na
 `postWithoutItemsReturns400`.
 
-### Krok 5 — zaktualizuj kontrakt
+### Krok 5. Zaktualizuj kontrakt
 
 Dodaj nowy przypadek błędu do `CONTRACT.md`, pod listą odpowiedzi
 `POST /orders`.
 
-### Krok 6 — skonfiguruj CI
+### Krok 6. Skonfiguruj CI
 
-Utwórz `.github/workflows/order-api-ci.yml` (ten sam wzorzec co
-`team-inventory-ci.yml` z Lab 19), wyzwalany przez `[push,
-pull_request]`.
+Utwórz `.github/workflows/order-api-ci.yml` na podstawie
+`team-inventory-ci.yml` z laba 19. Nowy przepływ ma być uruchamiany przez
+`[push, pull_request]`.
 
 #### Python
 
@@ -327,37 +311,35 @@ jobs:
         run: ./gradlew test
 ```
 
-Ten workflow uruchamia tylko Twoją własną ścieżkę — nie ma powodu,
-żeby konfigurować Pythona, Go *i* Javę tylko, żeby przetestować jeden
-projekt. To jest inna rzecz niż własny workflow maintainera tego
-repozytorium (`.github/workflows/course-health.yml`), który konfiguruje
-wszystkie trzy, bo sprawdza cały kurs, nie jeden projekt studenta.
+Ten przepływ uruchamia testy tylko w wybranej ścieżce. Nie musi
+konfigurować Pythona, Go *i* Javy dla jednego projektu. Przepływ
+utrzymaniowy repozytorium, `.github/workflows/course-health.yml`,
+konfiguruje wszystkie trzy języki, ponieważ sprawdza cały kurs.
 
-### Krok 7 — branch, PR, review, merge
+### Krok 7. Otwórz i scal pull request
 
-Zrób pracę tego laba na branchu (na przykład `feature/api-contract`),
-wypchnij go, i otwórz pull request — ten sam proces co w Lab 18: web
-UI GitHuba najpierw, sprawdzając dwa razy base repository i base
-branch, zanim go utworzysz. Potwierdź, że nowy check CI jest zielony
-na PR (otwórz zakładkę **Checks** na stronie PR, i potwierdź, że to
-workflow `order-api CI`, który właśnie dodałeś/aś, się uruchomił, nie
-tylko już istniejący `team-inventory CI` z Lab 19). Potem zmergeuj, i
-pobierz zmergowaną zmianę do swojego lokalnego `main`.
+Wykonaj pracę z tego laba na osobnej gałęzi, na przykład
+`feature/api-contract`. Wypchnij ją i otwórz pull request tak jak w labie
+18. Zacznij w interfejsie GitHuba i przed utworzeniem pull requesta
+sprawdź repozytorium oraz gałąź docelową. W zakładce **Checks** upewnij
+się, że nowy przepływ `order-api CI` zakończył się powodzeniem. Sam
+zielony wynik istniejącego `team-inventory CI` z laba 19 nie wystarczy.
+Następnie scal pull request i pobierz zmianę do lokalnego `main`.
 
 ## Kryteria akceptacji
 
 - `examples/order-api/CONTRACT.md` istnieje i dokumentuje każdy
   endpoint, każdy kod statusu, który może zwrócić, i co wyzwala
-  każdy — wliczając nowy przypadek błędu walidacji elementów.
+  każdy z nich, w tym nowy błąd walidacji elementów.
 - Nowa reguła walidacji elementów jest zaimplementowana i ma
   przechodzący test.
 - Komenda testowa Twojej ścieżki przechodzi z oryginalnymi trzema
   testami plus Twoim nowym (4 łącznie).
-- `.github/workflows/order-api-ci.yml` istnieje, wyzwala się przy
-  push i pull request, i uruchamia testy Twojej ścieżki w
+- `.github/workflows/order-api-ci.yml` istnieje, uruchamia się po
+  wypchnięciu zmian oraz dla pull requestów i wykonuje testy w
   `examples/order-api/<twój-język>`.
-- Zmiany tego laba zostały zmergowane przez pull request z zielonym
-  checkiem CI, nie zacommitowane bezpośrednio na `main`.
+- Zmiany z tego laba zostały scalone przez pull request z zielonym
+  wynikiem CI, a nie zapisane bezpośrednio na `main`.
 
 ## Weryfikacja
 
@@ -391,71 +373,63 @@ test -f examples/order-api/CONTRACT.md && echo "contract documented"
 test -f .github/workflows/order-api-ci.yml && echo "CI workflow exists"
 ```
 
-Oczekiwane: `4 passed` (albo odpowiednik Java/Gradle), `contract
-documented`, i `CI workflow exists` — plus zielony check na pull
-requeście, który zmergował pracę tego laba.
+Oczekuj `4 passed` lub odpowiednika w Gradle, komunikatów `contract
+documented` i `CI workflow exists` oraz zielonego wyniku na pull
+requeście użytym do scalenia zmian.
 
 ## Zastanów się
 
-- Jeśli zmieniłbyś/abyś odpowiedź dla udanego `POST`, żeby zagnieździć
-  `items` wewnątrz nowego klucza `"order"` zamiast na najwyższym
-  poziomie, czy to złamałoby klienta napisanego wobec Twojego
-  obecnego `CONTRACT.md`? Czy dodanie nowego, opcjonalnego pola do
-  response by go złamało?
+- Czy przeniesienie `items` w odpowiedzi na udany `POST` pod nowy klucz
+  `"order"` zepsułoby klienta napisanego według obecnego `CONTRACT.md`?
+  Czy taki sam skutek miałoby dodanie nowego, opcjonalnego pola?
 - Twoja reguła walidacji dla elementów `items` jest nowa. Czy klient,
-  który już wysyłał poprawne dane (niepuste stringi), nawet
-  zauważyłby, że ta zmiana się stała?
+  który już wysyłał poprawne dane, zauważyłby tę zmianę?
 
 ## Jeśli utkniesz
 
 ### Python
 
-- **Podpowiedź 1:** `curl -i` pokazuje Ci linię statusu odpowiedzi i
-  headery, nie tylko body — przydatne do potwierdzania kodów statusu
-  ręcznie.
-- **Podpowiedź 2:** Nowa walidacja idzie do `do_POST`, sprawdzana
-  zaraz po istniejącym checku "musi być niepustą listą", przed
-  utworzeniem zamówienia.
-- **Podpowiedź 3:** `all(isinstance(item, str) and item.strip() for
-  item in items)` to jeden sposób sprawdzenia, że każdy element jest
-  niepustym stringiem.
+- **Podpowiedź 1.** `curl -i` pokazuje linię statusu i nagłówki
+  odpowiedzi, a nie tylko jej ciało. Użyj ich do ręcznego sprawdzenia
+  kodów statusu.
+- **Podpowiedź 2.** Nową walidację umieść w `do_POST`, zaraz po
+  sprawdzeniu, czy `items` jest niepustą listą, i przed utworzeniem
+  zamówienia.
+- **Podpowiedź 3.** Jednym ze sposobów sprawdzenia, czy każdy element
+  jest niepustym napisem, jest `all(isinstance(item, str) and
+  item.strip() for item in items)`.
 
 ### Go
 
-- **Podpowiedź 1:** `curl -i` pokazuje Ci linię statusu odpowiedzi i
-  headery, nie tylko body — przydatne do potwierdzania kodów statusu
-  ręcznie.
-- **Podpowiedź 2:** Nowa walidacja idzie do `handleCreateOrder`,
-  sprawdzana zaraz po istniejącym checku `len(items) == 0`, przed
-  utworzeniem zamówienia.
-- **Podpowiedź 3:** `item.(string)` to type assertion — w parze z
-  jego dwuwartościową formą (`s, ok := item.(string)`), mówi Ci i
-  czy element jest stringiem, i, jeśli tak, daje Ci go do sprawdzenia
-  przez `strings.TrimSpace(s) == ""`.
+- **Podpowiedź 1.** `curl -i` pokazuje linię statusu i nagłówki
+  odpowiedzi, a nie tylko jej ciało. Użyj ich do ręcznego sprawdzenia
+  kodów statusu.
+- **Podpowiedź 2.** Nową walidację umieść w `handleCreateOrder`, zaraz
+  po sprawdzeniu `len(items) == 0` i przed utworzeniem zamówienia.
+- **Podpowiedź 3.** `item.(string)` jest asercją typu. Jej
+  dwuwartościowa postać, `s, ok := item.(string)`, informuje, czy element
+  jest napisem, i udostępnia go do sprawdzenia przez
+  `strings.TrimSpace(s) == ""`.
 
 ### Java
 
-- **Podpowiedź 1:** `curl -i` pokazuje Ci linię statusu odpowiedzi i
-  headery, nie tylko body — przydatne do potwierdzania kodów statusu
-  ręcznie.
-- **Podpowiedź 2:** Nowa walidacja idzie do `handleCreateOrder`,
-  sprawdzana zaraz po istniejącym checku `items.isEmpty()`, przed
-  utworzeniem zamówienia.
-- **Podpowiedź 3:** Pattern-matching `instanceof` Javy (`if (item
-  instanceof String s)`) jednocześnie sprawdza typ i daje Ci użytkowy
-  `String` w jednym kroku — użyj go z `s.trim().isEmpty()`.
+- **Podpowiedź 1.** `curl -i` pokazuje linię statusu i nagłówki
+  odpowiedzi, a nie tylko jej ciało. Użyj ich do ręcznego sprawdzenia
+  kodów statusu.
+- **Podpowiedź 2.** Nową walidację umieść w `handleCreateOrder`, zaraz
+  po sprawdzeniu `items.isEmpty()` i przed utworzeniem zamówienia.
+- **Podpowiedź 3.** Dopasowanie wzorca `instanceof` w Javie, na przykład
+  `if (item instanceof String s)`, jednocześnie sprawdza typ i tworzy
+  zmienną `String`. Następnie możesz użyć `s.trim().isEmpty()`.
 
-Przed przejściem dalej: zacommituj i wypchnij wszystko z tego laba
-(`git add -A && git commit -m "..."; git push`). Pętla Aktu IV
-branch → PR → zielone CI → merge nie zatrzymuje się tylko, bo Akt V
-zmienił, w którym projekcie pracujesz — od tego miejsca przez resztę
-Aktu V, każda zmiana w labie przechodzi przez nią, teraz obejmując
-`order-api`.
+Przed przejściem dalej utwórz commit ze wszystkimi zmianami z tego laba
+i wypchnij go (`git add -A && git commit -m "..."; git push`). Nadal
+stosuj proces z Aktu IV: gałąź, pull request, zielone CI i scalenie.
+Każda zmiana w Akcie V przechodzi tę drogę, tym razem w `order-api`.
 
 ## Co dalej
 
-Twoje API działa — dopóki go nie zrestartujesz i każde zamówienie,
-które stworzyłeś/aś, zniknie. Dalej dane muszą przetrwać — w Pythonie,
-Go i Javie.
+API działa do chwili restartu, po którym znikają wszystkie zamówienia.
+W kolejnym labie dane mają przetrwać w Pythonie, Go i Javie.
 
 Przejdź do [Lab 22 — Kod się zmienił, stare dane zostały](../22-data-outlives-code/README.pl.md).
