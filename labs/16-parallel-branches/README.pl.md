@@ -362,4 +362,4 @@ połączenie jest zadaniem w labie 17.
 Obie funkcje istnieją, ale żadna nie wie o drugiej. W następnym labie
 połączysz je i zobaczysz, dlaczego Git potrzebuje Twojej pomocy.
 
-Przejdź do [Lab 17 — Konflikt merge'a](../17-merge-conflict/README.pl.md).
+Przejdź do [Lab 17 — Konflikt scalania](../17-merge-conflict/README.pl.md).
