@@ -2,52 +2,50 @@
 
 ## Sytuacja
 
-Za każdym razem, gdy restartujesz `order-api`, wszystkie zamówienia
-znikają — istniały tylko w pamięci. Co gorsza: kuchnia właśnie
-poprosiła o pole `notes` przy zamówieniach ("extra chrupiące", "bez
-cebuli"), a Ty zaraz zmienisz schemat danych, które już istnieją.
+Każdy restart `order-api` usuwa wszystkie zamówienia, ponieważ istnieją
+tylko w pamięci. Teraz kuchnia potrzebuje pola `notes` na uwagi takie
+jak „mocno wysmażone” lub „bez cebuli”. Trzeba zmienić schemat bez
+utraty istniejących danych.
 
 ## Cele nauki
 
 Po tym labie potrafisz:
 
-- Zastąpić stan w pamięci trwałym magazynem opartym na SQLite, nie
-  zmieniając zewnętrznego kontraktu API.
-- Napisać migrację, która dodaje kolumnę, nie niszcząc ani nie
-  wywalając się na wierszach utworzonych przed istnieniem tej kolumny.
-- Testować trwałość danych z właściwą izolacją bazy testowej, żeby
-  testy nigdy nie dotykały Twoich prawdziwych danych i nigdy nie
-  przeciekały stanu między uruchomieniami.
-- Wyjaśnić, dlaczego "kod nadal działa" to nie to samo co "dane nadal
-  są poprawne".
+- Zastąpić stan w pamięci trwałym magazynem SQLite bez zmiany
+  zewnętrznego kontraktu API.
+- Napisać migrację dodającą kolumnę bez uszkadzania starszych wierszy
+  ani błędów podczas ich odczytu.
+- Odizolować bazy testowe, aby testy nie korzystały z prawdziwych danych
+  i nie przenosiły stanu między uruchomieniami.
+- Wyjaśnić, dlaczego działający kod nie gwarantuje poprawności danych.
 
 ## Zanim zaczniesz
 
 ### Python
 
-- Lab 21 ukończony: `CONTRACT.md` istnieje, walidacja pozycji działa,
-  `uv run pytest` przechodzi z 4 testami.
-- Bieżący katalog: `examples/order-api/python/`.
+- Ukończ lab 21. `CONTRACT.md` powinien istnieć, walidacja elementów
+  powinna działać, a `uv run pytest` przechodzić wszystkie 4 testy.
+- Pracuj w `examples/order-api/python/`.
 
 ### Go
 
-- Lab 21 ukończony: `CONTRACT.md` istnieje, walidacja pozycji działa,
-  `go test ./...` przechodzi z 4 testami.
-- Bieżący katalog: `examples/order-api/go/`.
+- Ukończ lab 21. `CONTRACT.md` powinien istnieć, walidacja elementów
+  powinna działać, a `go test ./...` przechodzić wszystkie 4 testy.
+- Pracuj w `examples/order-api/go/`.
 
 ### Java
 
-- Lab 21 ukończony: `CONTRACT.md` istnieje, walidacja pozycji działa,
-  `./gradlew test` przechodzi z 4 testami.
-- Bieżący katalog: `examples/order-api/java/`.
+- Ukończ lab 21. `CONTRACT.md` powinien istnieć, walidacja elementów
+  powinna działać, a `./gradlew test` przechodzić wszystkie 4 testy.
+- Pracuj w `examples/order-api/java/`.
 
 ## Twoje zadanie
 
-**Część 1 — trwałość danych (zachowująca zachowanie):**
+**Część 1. Dodaj trwałość danych bez zmiany zachowania**
 
-### Krok 1 — dodaj warstwę przechowywania SQLite
+### Krok 1. Dodaj warstwę przechowywania SQLite
 
-Od teraz każdy track używa tego samego minimalnego schematu:
+Wszystkie trzy ścieżki korzystają z tego samego minimalnego schematu.
 
 ```sql
 CREATE TABLE IF NOT EXISTS orders (
@@ -57,22 +55,23 @@ CREATE TABLE IF NOT EXISTS orders (
 )
 ```
 
-`items` przechowywane jest jako string JSON — SQLite nie musi wiedzieć,
-że to lista. Nie ma jeszcze kolumny `notes` — to Część 2.
+Zapisuj `items` jako tekst zawierający JSON. SQLite nie musi wiedzieć,
+że reprezentuje on listę. Nie dodawaj jeszcze kolumny `notes`; pojawi
+się w części 2.
 
 #### Python
 
-Utwórz `db.py` z:
+Utwórz `db.py` z poniższymi elementami.
 
-- `DB_PATH = os.environ.get("ORDER_DB_PATH", "orders.db")` na poziomie
-  modułu.
-- `init_db()` — tworzy tabelę `orders` powyżej, jeśli nie istnieje,
-  używając `sqlite3` z biblioteki standardowej.
-- `create_order(items: list) -> dict` — wstawia wiersz i zwraca nowe
-  zamówienie jako dict (`order_id` jako string, `status` jako
+- Na poziomie modułu zdefiniuj
+  `DB_PATH = os.environ.get("ORDER_DB_PATH", "orders.db")`.
+- `init_db()` tworzy tabelę `orders`, jeśli jeszcze nie istnieje,
+  korzystając z `sqlite3` z biblioteki standardowej.
+- `create_order(items: list) -> dict` wstawia wiersz i zwraca nowe
+  zamówienie jako słownik (`order_id` jako napis, `status` jako
   `"received"`).
-- `get_order(order_id: str) -> dict | None` — wyszukuje wiersz po id,
-  zwracając `None`, jeśli nie istnieje.
+- `get_order(order_id: str) -> dict | None` wyszukuje wiersz po
+  identyfikatorze i zwraca `None`, jeśli go nie znajdzie.
 
 #### Go
 
@@ -82,33 +81,31 @@ Dodaj sterownik SQLite. Z `examples/order-api/go/` uruchom:
 go get modernc.org/sqlite@v1.60.1
 ```
 
-To sterownik napisany w czystym Go — bez kompilatora C, bez
-instalowania systemowego SQLite, bez CGO — więc zachowuje się
-identycznie na Windows, Linuksie i macOS. Komenda aktualizuje `go.mod`
-i tworzy/aktualizuje `go.sum`; zacommituj oba. Pierwsze uruchomienie
-pobiera moduł i jego zależności, co może zająć od kilku sekund do
-minuty, zależnie od Twojego połączenia.
+Sterownik jest napisany w całości w Go i nie wymaga kompilatora C,
+systemowej instalacji SQLite ani CGO. Działa tak samo w systemach
+Windows, Linux i macOS. Polecenie aktualizuje `go.mod` oraz tworzy lub
+aktualizuje `go.sum`; zapisz oba pliki w commicie. Pierwsze pobranie
+modułu i zależności może potrwać do minuty.
 
-Utwórz `db.go` z:
+Utwórz `db.go` z poniższymi elementami.
 
-- Importem spod znaku podkreślenia, żeby sterownik się zarejestrował:
-  `_ "modernc.org/sqlite"`.
-- `dbPath() string` — zwraca `os.Getenv("ORDER_DB_PATH")`, jeśli jest
-  ustawiona, inaczej `"orders.db"`.
-- `openDB() (*sql.DB, error)` — wywołuje `sql.Open("sqlite", dbPath())`
+- Dodaj pusty import `_ "modernc.org/sqlite"`, aby sterownik się
+  zarejestrował.
+- `dbPath() string` zwraca `os.Getenv("ORDER_DB_PATH")`, jeśli zmienna
+  jest ustawiona, a w przeciwnym razie `"orders.db"`.
+- `openDB() (*sql.DB, error)` wywołuje `sql.Open("sqlite", dbPath())`
   i zapisuje wynik w zmiennej `*sql.DB` na poziomie pakietu (`*sql.DB`
-  jest własnym poolem połączeń — jest już bezpieczny do współbieżnego
-  użycia, więc nie będziesz potrzebować `sync.Mutex`, tak jak mapa w
-  pamięci).
-- `initDB() error` — uruchamia powyższe `CREATE TABLE IF NOT EXISTS`
+  zarządza pulą połączeń i jest bezpieczny przy współbieżnym użyciu,
+  dlatego nie potrzebuje `sync.Mutex` używanego przez mapę w pamięci).
+- `initDB() error` wykonuje powyższe `CREATE TABLE IF NOT EXISTS`
   przez `Exec`.
-- `createOrder(items []any) (Order, error)` — serializuje `items` do
+- `createOrder(items []any) (Order, error)` serializuje `items` do
   JSON, wstawia wiersz i odczytuje wygenerowane id przez
   `result.LastInsertId()`.
-- `getOrder(id string) (Order, bool, error)` — wyszukuje po id,
-  zwracając `false` dla "nie znaleziono" (id nienumeryczne, takie jak
-  `"does-not-exist"`, po prostu nie trafia w żaden wiersz — SQLite nie
-  wywali się na niezgodności typu).
+- `getOrder(id string) (Order, bool, error)` wyszukuje wiersz po
+  identyfikatorze i zwraca `false`, jeśli go nie znajdzie. Wartość
+  nienumeryczna, taka jak `"does-not-exist"`, po prostu nie pasuje do
+  żadnego wiersza; SQLite nie zgłosi błędu typu.
 
 #### Java
 
@@ -119,89 +116,87 @@ istniejącego bloku `dependencies { ... }`, zaraz po linii z Gson:
 implementation 'org.xerial:sqlite-jdbc:3.53.4.0'
 ```
 
-Ten jar zawiera natywne biblioteki SQLite dla Windows, Linuksa i macOS
-(włącznie z Apple Silicon) — nie trzeba niczego instalować osobno.
-Następna komenda `./gradlew` pobiera go automatycznie, tak jak Gson i
-JUnit zostały pobrane w wcześniejszych labach.
+Ten plik jar zawiera natywne biblioteki SQLite dla systemów Windows,
+Linux i macOS, w tym komputerów z Apple Silicon. Nie trzeba instalować
+niczego więcej. Następne polecenie `./gradlew` pobierze go automatycznie,
+tak jak wcześniej Gson i JUnit.
 
-Utwórz `OrderDb.java` ze statycznymi metodami:
+Utwórz `OrderDb.java` z poniższymi metodami statycznymi.
 
-- `dbPath() -> String` — zwraca `System.getenv("ORDER_DB_PATH")`,
+- `dbPath() -> String` zwraca `System.getenv("ORDER_DB_PATH")`,
   jeśli jest ustawiona, inaczej `"orders.db"`.
-- `connect() -> Connection` — `DriverManager.getConnection("jdbc:sqlite:" +
+- `connect() -> Connection` wywołuje
+  `DriverManager.getConnection("jdbc:sqlite:" +
   dbPath())`.
-- `initDb() throws SQLException` — uruchamia powyższe `CREATE TABLE IF
+- `initDb() throws SQLException` wykonuje powyższe `CREATE TABLE IF
   NOT EXISTS`.
-- `createOrder(List<Object> items, String notes) -> Order` — wstawia
+- `createOrder(List<Object> items, String notes) -> Order` wstawia
   wiersz przez `PreparedStatement`, używając
-  `Statement.RETURN_GENERATED_KEYS`, żeby odczytać nowe `order_id`.
-  Zignoruj na razie parametr `notes` (nie przechowuj go) — tabela z
-  Części 1 nie ma jeszcze kolumny `notes`; podłączysz to poprawnie w
-  Części 2.
-- `getOrder(String id) -> Order` (albo `null`, jeśli nie znaleziono) —
-  wyszukuje po id przez `PreparedStatement`.
+  `Statement.RETURN_GENERATED_KEYS` do odczytania nowego `order_id`.
+  Na razie zignoruj parametr `notes`, ponieważ tabela z części 1 nie ma
+  takiej kolumny. Obsłużysz go w części 2.
+- `getOrder(String id) -> Order` wyszukuje wiersz przez
+  `PreparedStatement` i zwraca `null`, jeśli go nie znajdzie.
 
 Używaj `try-with-resources` dla każdego otwartego `Connection`,
 `PreparedStatement` i `ResultSet`.
 
-### Krok 2 — podłącz handlery HTTP do nowego magazynu
+### Krok 2. Połącz obsługę HTTP z magazynem
 
 #### Python
 
-Przepisz `api.py`, żeby wywoływało `db.create_order`/`db.get_order`
-zamiast używać słownika `ORDERS`. Wywołaj `db.init_db()` raz, przy
-starcie serwera, w `run()`.
+Zmień `api.py`, aby wywoływał `db.create_order` i `db.get_order`
+zamiast korzystać ze słownika `ORDERS`. Wywołaj `db.init_db()` raz w
+`run()`, podczas uruchamiania serwera.
 
 #### Go
 
-Przepisz `handleCreateOrder`/`handleGetOrder` w `api.go`, żeby
-wywoływały nowe `createOrder`/`getOrder` zamiast mapy `orders` — i
-usuń całkowicie teraz-nieużywane zmienne pakietu `mu sync.Mutex`,
-`orders map[string]Order` i `nextID`; `*sql.DB` zastępuje wszystkie
-trzy. W `main()` wywołaj `openDB()`, a potem `initDB()`, przed
-`http.ListenAndServe`, obsługując ewentualny błąd tak samo, jak
-`main()` już obsługuje błąd własnego `ListenAndServe`.
+Zmień `handleCreateOrder` i `handleGetOrder` w `api.go`, aby wywoływały
+`createOrder` i `getOrder` zamiast korzystać z mapy `orders`. Usuń
+nieużywane zmienne pakietu `mu sync.Mutex`, `orders map[string]Order`
+oraz `nextID`; `*sql.DB` zastępuje wszystkie trzy. W `main()` wywołaj
+`openDB()`, a następnie `initDB()` przed `http.ListenAndServe`. W razie
+błędu wypisz go i zakończ program, tak jak robi to już obsługa błędu
+`ListenAndServe`.
 
 #### Java
 
-Przepisz `handleCreateOrder`/`handleGetOrder` w `ApiServer.java`, żeby
-wywoływały `OrderDb.createOrder`/`OrderDb.getOrder` zamiast pól
-`ConcurrentHashMap`/`AtomicInteger` — usuń te dwa pola. Przechwyć
-`SQLException` wokół wywołań bazy i odpowiedz `500` w razie awarii. W
-`Main.java` wywołaj `OrderDb.initDb()` przed `server.start()` i dodaj
+Zmień `handleCreateOrder` i `handleGetOrder` w `ApiServer.java`, aby
+wywoływały `OrderDb.createOrder` i `OrderDb.getOrder` zamiast korzystać
+z pól `ConcurrentHashMap` oraz `AtomicInteger`. Usuń oba pola. Obsłuż
+`SQLException` wokół wywołań bazy i w razie błędu odpowiedz kodem `500`.
+W `Main.java` wywołaj `OrderDb.initDb()` przed `server.start()` i dodaj
 `throws SQLException` do sygnatury `main`.
 
-### Krok 3 — odizoluj testy od prawdziwej bazy danych
+### Krok 3. Odizoluj testy od prawdziwej bazy danych
 
-Testy nigdy nie mogą dotykać Twojego prawdziwego `orders.db` i nigdy
-nie mogą przeciekać stanu między uruchomieniami testów. Każdy track
-używa tej samej konwencji: ścieżka bazy danych jest normalnie
-kontrolowana zmienną środowiskową `ORDER_DB_PATH` (domyślnie
-`orders.db`, jeśli nieustawiona), a testy wskazują ją na świeży plik w
+Testy nie mogą korzystać z prawdziwego `orders.db` ani przenosić stanu
+między uruchomieniami. Wszystkie trzy ścieżki zwykle odczytują ścieżkę
+bazy ze zmiennej środowiskowej `ORDER_DB_PATH`, a przy jej braku używają
+`orders.db`. Każdy test powinien zamiast tego otrzymać nowy plik w
 katalogu tymczasowym.
 
 #### Python
 
-W `tests/test_api.py` użyj fixture'ów `tmp_path` i `monkeypatch` z
-pytest, żeby ustawić `db.DB_PATH` na plik wewnątrz `tmp_path` przed
+W `tests/test_api.py` użyj mechanizmów `tmp_path` i `monkeypatch` z
+pytesta, aby ustawić `db.DB_PATH` na plik wewnątrz `tmp_path` przed
 wywołaniem `db.init_db()` i uruchomieniem testowanego serwera.
 
 #### Go
 
 W `api_test.go`, na początku `newTestServer`, wywołaj
 `os.Setenv("ORDER_DB_PATH", filepath.Join(t.TempDir(), "test.db"))`
-przed wywołaniem `openDB()` i `initDB()` — `dbPath()` odczytuje
-zmienną środowiskową na nowo każdym razem, więc to wystarczy, żeby
-wskazać test na jego własny jednorazowy plik. Zmień `newTestServer`,
-żeby przyjmowało `t *testing.T` (potrzebne do `t.TempDir()`), i
-zaktualizuj każde istniejące miejsce wywołania, żeby przekazywało `t`.
+przed wywołaniem `openDB()` i `initDB()`. Funkcja `dbPath()` za każdym
+razem ponownie odczytuje zmienną, więc test użyje własnego pliku
+tymczasowego. Zmień `newTestServer`, aby przyjmowało `t *testing.T`,
+potrzebne do `t.TempDir()`, i przekaż `t` we wszystkich wywołaniach.
 
 #### Java
 
-JVM nie może odznaczyć zmiennej środowiskowej, którą już odczytała,
-więc `ApiServerTest.java` używa property systemowej jako testowego
-nadpisania, które ma priorytet nad `ORDER_DB_PATH`. Zmień
-`OrderDb.dbPath()`, żeby sprawdzało najpierw
+JVM nie może wyczyścić odczytanej zmiennej środowiskowej. W
+`ApiServerTest.java` użyj właściwości systemowej jako testowego
+nadpisania z pierwszeństwem przed `ORDER_DB_PATH`. Zmień
+`OrderDb.dbPath()`, aby sprawdzało najpierw
 `System.getProperty("order.db.path")`, potem
 `System.getenv("ORDER_DB_PATH")`, a na końcu wracało do
 `"orders.db"`. W klasie testowej dodaj pole `@TempDir Path tempDir` i w
@@ -210,10 +205,10 @@ nadpisania, które ma priorytet nad `ORDER_DB_PATH`. Zmień
 a potem `OrderDb.initDb()`. W `@AfterEach` (po `stopServer()`) wywołaj
 `System.clearProperty("order.db.path")`.
 
-### Krok 4 — uruchom cały zestaw testów
+### Krok 4. Uruchom cały zestaw testów
 
-Wszystkie testy z Lab 21 muszą nadal przechodzić — ta część jest
-zachowująca zachowanie, dokładnie jak refaktor z Lab 06.
+Wszystkie testy z laba 21 muszą nadal przechodzić. Ten refaktoring ma
+zachować zachowanie, tak jak w labie 06.
 
 #### Python
 
@@ -233,20 +228,18 @@ go test ./... -v
 ./gradlew test
 ```
 
-Oczekiwane: 4 testy przechodzą, tak jak na koniec Lab 21.
+Oczekuj 4 przechodzących testów, tak jak na końcu laba 21.
 
-**Teraz udowodnij, że problem "starych danych" jest prawdziwy, zanim go
+**Teraz potwierdź istnienie problemu starych danych, zanim go
 rozwiążesz.**
 
-Nigdy nie symuluj tej części ręcznie napisanym plikiem JSON udającym
-stary wiersz — cały sens polega na zobaczeniu zmiany schematu
-lądującej na wierszu, który naprawdę utworzyła wcześniejsza wersja
-Twojego kodu. **Nie usuwaj pliku bazy danych w żadnym momencie między
-tym miejscem a końcem Części 2.**
+Nie zastępuj tego ćwiczenia ręcznie napisanym plikiem JSON udającym
+stary wiersz. Trzeba zastosować zmianę schematu do danych utworzonych
+przez wcześniejszą wersję kodu. **Zachowaj plik bazy do końca części 2.**
 
-### Krok 5 — stwórz prawdziwe zamówienie, potem zatrzymaj serwer
+### Krok 5. Utwórz prawdziwe zamówienie i zatrzymaj serwer
 
-Uruchom serwer naprawdę, w Terminalu A:
+Uruchom serwer w Terminalu A.
 
 #### Python
 
@@ -266,43 +259,40 @@ go run .
 ./gradlew run --console=plain
 ```
 
-W Terminalu B utwórz jedno zamówienie:
+Utwórz jedno zamówienie w Terminalu B.
 
 ```bash
 curl -s -X POST http://localhost:8000/orders \
   -H "Content-Type: application/json" -d '{"items": ["Burger"]}'
 ```
 
-Zapisz `order_id`, który zwróci — będziesz go potrzebować w dwóch
-następnych krokach, a potem jeszcze raz w Części 2. Zatrzymaj serwer w
-Terminalu A (`Ctrl+C`), ale zostaw plik bazy danych na miejscu.
+Zapisz zwrócony `order_id`. Będzie potrzebny w dwóch kolejnych krokach
+i ponownie w części 2. Zatrzymaj serwer w Terminalu A przez `Ctrl+C`,
+ale zachowaj plik bazy danych.
 
-### Krok 6 — zrestartuj i potwierdź, że zamówienie przetrwało
+### Krok 6. Uruchom ponownie i sprawdź, czy zamówienie przetrwało
 
-Uruchom serwer jeszcze raz, tak samo jak w Kroku 5 — ta sama komenda,
-ten sam katalog, ten sam plik bazy danych. W Terminalu B pobierz
-zamówienie, które właśnie utworzyłeś/aś. Poniższy przykład używa `1`;
-zastąp go swoim rzeczywistym id zamówienia z Kroku 5, jeśli jest inne:
+Uruchom serwer ponownie tym samym poleceniem, w tym samym katalogu i z
+tym samym plikiem bazy. W Terminalu B pobierz nowe zamówienie. Przykład
+używa `1`; w razie potrzeby zastąp je identyfikatorem zwróconym w kroku
+5.
 
 ```bash
 curl -s http://localhost:8000/orders/1
 ```
 
-Musi wrócić z `status: "received"` i tymi samymi `items`, które
-wysłałeś/aś — to ten restart, który dowodzi, że Część 1 naprawdę
-działa, nie tylko że testy przechodzą. Zatrzymaj serwer jeszcze raz,
-wciąż zachowując plik bazy danych.
+Odpowiedź musi zawierać `status: "received"` i te same `items`, które
+zostały wysłane. Ten restart potwierdza działanie części 1 poza zestawem
+testów. Ponownie zatrzymaj serwer i zachowaj plik bazy.
 
-### Krok 7 — zabezpiecz plik bazy danych w Git
+### Krok 7. Nie zapisuj pliku bazy w Git
 
-Sprawdź `.gitignore` w katalogu głównym repozytorium: `*.db` (i pliki
-pomocnicze SQLite: `*.db-journal`/`*.db-wal`/`*.db-shm`) powinny już
-być ignorowane. Jeśli nie są — na przykład bo zforkowałeś/aś to
-repozytorium przed dodaniem tej ochrony — dodaj te cztery linie
-samodzielnie. W każdym przypadku potwierdź przez `git status`, że Twój
-plik bazy danych nie pojawia się jako nieśledzony. To stan
-uruchomieniowy, który generuje Twój serwer, nie kod źródłowy, i nigdy
-nie powinien być commitowany.
+Sprawdź główny `.gitignore`. Powinien już ignorować `*.db` oraz pliki
+pomocnicze SQLite `*.db-journal`, `*.db-wal` i `*.db-shm`. Jeśli tych
+czterech wzorców brakuje, na przykład w starszym forku, dodaj je.
+Polecenie `git status` nie powinno pokazywać bazy jako pliku
+nieśledzonego. Jest to stan tworzony podczas działania serwera, a nie
+kod źródłowy, więc nie należy zapisywać go w repozytorium.
 
 **Część 2 — ewolucja schematu:**
 

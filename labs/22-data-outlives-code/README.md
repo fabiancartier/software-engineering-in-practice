@@ -2,10 +2,10 @@
 
 ## Story
 
-Every time you restart `order-api`, all the orders vanish — they were
-only ever living in memory. Worse: the kitchen just asked for a
-`notes` field on orders ("extra crispy", "no onions"), and you're
-about to change the schema of data that already exists.
+Every restart of `order-api` erases all orders because they exist only
+in memory. Now the kitchen wants a `notes` field for requests such as
+"extra crispy" or "no onions." You need to change the schema without
+losing data that already exists.
 
 ## Learning objectives
 
@@ -13,10 +13,10 @@ After this lab you should be able to:
 
 - Replace in-memory state with a persistent SQLite-backed store without
   changing the API's external contract.
-- Write a migration that adds a column without destroying or crashing
-  on rows created before that column existed.
-- Test persistence with proper test-database isolation, so tests never
-  touch your real data and never leak state between runs.
+- Write a migration that adds a column without damaging old rows or
+  crashing when it reads them.
+- Isolate test databases so tests never touch real data or carry state
+  from one run to the next.
 - Explain why "the code still runs" is not the same as "the data is
   still correct."
 
@@ -24,29 +24,29 @@ After this lab you should be able to:
 
 ### Python
 
-- Lab 21 complete: `CONTRACT.md` exists, item validation works, `uv
-  run pytest` passes with 4 tests.
-- Current directory: `examples/order-api/python/`.
+- Complete Lab 21. `CONTRACT.md` should exist, item validation should
+  work, and `uv run pytest` should pass all 4 tests.
+- Work in `examples/order-api/python/`.
 
 ### Go
 
-- Lab 21 complete: `CONTRACT.md` exists, item validation works, `go
-  test ./...` passes with 4 tests.
-- Current directory: `examples/order-api/go/`.
+- Complete Lab 21. `CONTRACT.md` should exist, item validation should
+  work, and `go test ./...` should pass all 4 tests.
+- Work in `examples/order-api/go/`.
 
 ### Java
 
-- Lab 21 complete: `CONTRACT.md` exists, item validation works,
-  `./gradlew test` passes with 4 tests.
-- Current directory: `examples/order-api/java/`.
+- Complete Lab 21. `CONTRACT.md` should exist, item validation should
+  work, and `./gradlew test` should pass all 4 tests.
+- Work in `examples/order-api/java/`.
 
 ## Your task
 
-**Part 1 — persistence (behavior-preserving):**
+**Part 1. Add persistence without changing behavior**
 
-### Step 1 — add a SQLite storage layer
+### Step 1. Add a SQLite storage layer
 
-Every track uses the same minimal schema from here on:
+All three tracks use the same minimal schema.
 
 ```sql
 CREATE TABLE IF NOT EXISTS orders (
@@ -56,21 +56,21 @@ CREATE TABLE IF NOT EXISTS orders (
 )
 ```
 
-`items` is stored as a JSON string — nothing in SQLite needs to know
-it's a list. There's no `notes` column yet; that's Part 2.
+Store `items` as a JSON string. SQLite does not need to know that it
+represents a list. Do not add a `notes` column yet; that comes in Part 2.
 
 #### Python
 
-Create `db.py` with:
+Create `db.py` with the following elements.
 
-- `DB_PATH = os.environ.get("ORDER_DB_PATH", "orders.db")` at module
-  level.
-- `init_db()` — creates the `orders` table above if it doesn't exist,
-  using `sqlite3` from the standard library.
-- `create_order(items: list) -> dict` — inserts a row and returns the
+- Define `DB_PATH = os.environ.get("ORDER_DB_PATH", "orders.db")` at
+  module level.
+- `init_db()` creates the `orders` table if it does not exist, using
+  `sqlite3` from the standard library.
+- `create_order(items: list) -> dict` inserts a row and returns the
   new order as a dict (`order_id` as a string, `status` as
   `"received"`).
-- `get_order(order_id: str) -> dict | None` — looks up a row by id,
+- `get_order(order_id: str) -> dict | None` looks up a row by id,
   returning `None` if it doesn't exist.
 
 #### Go
@@ -81,32 +81,31 @@ Add the SQLite driver. From `examples/order-api/go/`, run:
 go get modernc.org/sqlite@v1.60.1
 ```
 
-This is a pure-Go driver — no C compiler, no system SQLite install, no
-CGO — so it behaves identically on Windows, Linux, and macOS. The
-command updates `go.mod` and creates/updates `go.sum`; commit both.
-The first run downloads the module and its dependencies, which can
-take anywhere from a few seconds to a minute depending on your
-connection.
+This driver is written entirely in Go and does not require a C
+compiler, a system installation of SQLite, or CGO. It behaves the same
+on Windows, Linux, and macOS. The command updates `go.mod` and creates
+or updates `go.sum`; commit both files. Downloading the module and its
+dependencies may take up to a minute on the first run.
 
-Create `db.go` with:
+Create `db.go` with the following elements.
 
-- A blank import so the driver registers itself:
-  `_ "modernc.org/sqlite"`.
-- `dbPath() string` — returns `os.Getenv("ORDER_DB_PATH")` if set,
+- Add the blank import `_ "modernc.org/sqlite"` so the driver registers
+  itself.
+- `dbPath() string` returns `os.Getenv("ORDER_DB_PATH")` if set,
   otherwise `"orders.db"`.
-- `openDB() (*sql.DB, error)` — calls `sql.Open("sqlite", dbPath())`
+- `openDB() (*sql.DB, error)` calls `sql.Open("sqlite", dbPath())`
   and stores the result in a package-level `*sql.DB` variable (`*sql.DB`
-  is its own connection pool — it's already safe for concurrent use,
-  so you won't need a `sync.Mutex` the way the in-memory map did).
-- `initDB() error` — runs the `CREATE TABLE IF NOT EXISTS` statement
+  manages a connection pool and is safe for concurrent use, so it does
+  not need the `sync.Mutex` used by the in-memory map).
+- `initDB() error` runs the `CREATE TABLE IF NOT EXISTS` statement
   above via `Exec`.
-- `createOrder(items []any) (Order, error)` — marshals `items` to JSON,
+- `createOrder(items []any) (Order, error)` marshals `items` to JSON,
   inserts a row, and reads the generated id back with
   `result.LastInsertId()`.
-- `getOrder(id string) (Order, bool, error)` — queries by id, returning
-  `false` for "not found" (a non-numeric `id` like `"does-not-exist"`
-  just fails to match any row — SQLite won't error on the type
-  mismatch).
+- `getOrder(id string) (Order, bool, error)` queries by id and returns
+  `false` when no row exists. A non-numeric value such as
+  `"does-not-exist"` simply matches no row; SQLite does not report a
+  type error.
 
 #### Java
 
@@ -117,65 +116,62 @@ existing `dependencies { ... }` block, right after the Gson line:
 implementation 'org.xerial:sqlite-jdbc:3.53.4.0'
 ```
 
-This jar bundles native SQLite libraries for Windows, Linux, and macOS
-(including Apple Silicon) — there's nothing extra to install. The next
-`./gradlew` command downloads it automatically, the same way Gson and
-JUnit were downloaded in earlier labs.
+This jar includes native SQLite libraries for Windows, Linux, and macOS,
+including Apple Silicon. There is nothing else to install. The next
+`./gradlew` command downloads it automatically, just as it downloaded
+Gson and JUnit in earlier labs.
 
-Create `OrderDb.java` with static methods:
+Create `OrderDb.java` with these static methods.
 
-- `dbPath() -> String` — returns `System.getenv("ORDER_DB_PATH")` if
+- `dbPath() -> String` returns `System.getenv("ORDER_DB_PATH")` if
   set, otherwise `"orders.db"`.
-- `connect() -> Connection` — `DriverManager.getConnection("jdbc:sqlite:" +
+- `connect() -> Connection` calls `DriverManager.getConnection("jdbc:sqlite:" +
   dbPath())`.
-- `initDb() throws SQLException` — runs the `CREATE TABLE IF NOT
+- `initDb() throws SQLException` runs the `CREATE TABLE IF NOT
   EXISTS` statement above.
-- `createOrder(List<Object> items, String notes) -> Order` — inserts a
+- `createOrder(List<Object> items, String notes) -> Order` inserts a
   row with a `PreparedStatement`, using
   `Statement.RETURN_GENERATED_KEYS` to read back the new `order_id`.
-  Ignore the `notes` parameter for now (don't store it) — Part 1's
-  table has no `notes` column yet; you'll wire this up properly in
-  Part 2.
-- `getOrder(String id) -> Order` (or `null` if not found) — queries by
-  id with a `PreparedStatement`.
+  Ignore the `notes` parameter for now because the Part 1 table has no
+  such column. You will connect it in Part 2.
+- `getOrder(String id) -> Order` queries by id with a
+  `PreparedStatement` and returns `null` when no row exists.
 
 Use `try-with-resources` for every `Connection`, `PreparedStatement`,
 and `ResultSet` you open.
 
-### Step 2 — wire the HTTP handlers to the new storage
+### Step 2. Connect the HTTP handlers to storage
 
 #### Python
 
-Rewrite `api.py` to call `db.create_order`/`db.get_order` instead of
-using the `ORDERS` dict. Call `db.init_db()` once, at server startup,
-in `run()`.
+Rewrite `api.py` to call `db.create_order` and `db.get_order` instead of
+using the `ORDERS` dict. Call `db.init_db()` once from `run()` when the
+server starts.
 
 #### Go
 
-Rewrite `api.go`'s `handleCreateOrder`/`handleGetOrder` to call your
-new `createOrder`/`getOrder` instead of the `orders` map — and delete
-the now-unused `mu sync.Mutex`, `orders map[string]Order`, and
-`nextID` package variables entirely; `*sql.DB` replaces all three. In
-`main()`, call `openDB()` then `initDB()` before `http.ListenAndServe`,
-handling any error by printing it and exiting (same pattern `main()`
-already uses for the server's own `ListenAndServe` error).
+Rewrite `handleCreateOrder` and `handleGetOrder` in `api.go` to call
+`createOrder` and `getOrder` instead of using the `orders` map. Delete
+the unused package variables `mu sync.Mutex`, `orders map[string]Order`,
+and `nextID`; `*sql.DB` replaces all three. In `main()`, call `openDB()`
+and then `initDB()` before `http.ListenAndServe`. Print any error and
+exit, following the existing handling of the `ListenAndServe` error.
 
 #### Java
 
-Rewrite `ApiServer.java`'s `handleCreateOrder`/`handleGetOrder` to call
-`OrderDb.createOrder`/`OrderDb.getOrder` instead of the
-`ConcurrentHashMap`/`AtomicInteger` fields — delete those two fields.
-Catch `SQLException` around the database calls and respond with `500`
-on failure. In `Main.java`, call `OrderDb.initDb()` before
-`server.start()`, and add `throws SQLException` to `main`'s signature.
+Rewrite `handleCreateOrder` and `handleGetOrder` in `ApiServer.java` to
+call `OrderDb.createOrder` and `OrderDb.getOrder` instead of using the
+`ConcurrentHashMap` and `AtomicInteger` fields. Delete both fields.
+Catch `SQLException` around database calls and respond with `500` on
+failure. In `Main.java`, call `OrderDb.initDb()` before `server.start()`
+and add `throws SQLException` to the `main` signature.
 
-### Step 3 — isolate your tests from your real database
+### Step 3. Isolate tests from the real database
 
-Tests must never touch your real `orders.db`, and must never leak
-state between test runs. Every track uses the same convention: the
-database path is normally controlled by the `ORDER_DB_PATH`
-environment variable (defaulting to `orders.db` when unset), and tests
-point it at a fresh file in a temporary directory instead.
+Tests must never touch the real `orders.db` or carry state between
+runs. All three tracks normally read the database path from the
+`ORDER_DB_PATH` environment variable and default to `orders.db`. Each
+test should instead use a new file in a temporary directory.
 
 #### Python
 
@@ -187,17 +183,17 @@ calling `db.init_db()` and starting the server under test.
 
 In `api_test.go`, at the top of `newTestServer`, call
 `os.Setenv("ORDER_DB_PATH", filepath.Join(t.TempDir(), "test.db"))`
-before calling `openDB()` and `initDB()` — `dbPath()` reads the
-environment variable fresh each time, so this is enough to point a
-test at its own throwaway file. Change `newTestServer` to take
+before calling `openDB()` and `initDB()`. Because `dbPath()` reads the
+environment variable each time, this points the test to its own
+temporary file. Change `newTestServer` to take
 `t *testing.T` (it needs it for `t.TempDir()`), and update every
 existing call site to pass `t`.
 
 #### Java
 
-A JVM can't un-set an environment variable it already read, so
-`ApiServerTest.java` uses a system property as a test-only override
-that takes priority over `ORDER_DB_PATH`. Change `OrderDb.dbPath()` to
+A JVM cannot clear an environment variable it has already read. Use a
+system property in `ApiServerTest.java` as a test-only override with
+priority over `ORDER_DB_PATH`. Change `OrderDb.dbPath()` to
 check `System.getProperty("order.db.path")` first, then
 `System.getenv("ORDER_DB_PATH")`, then fall back to `"orders.db"`. In
 the test class, add a `@TempDir Path tempDir` field, and in
@@ -206,10 +202,10 @@ the test class, add a `@TempDir Path tempDir` field, and in
 followed by `OrderDb.initDb()`. In `@AfterEach` (after `stopServer()`),
 call `System.clearProperty("order.db.path")`.
 
-### Step 4 — run the full suite
+### Step 4. Run the full suite
 
-All of Lab 21's tests must still pass — this part is behavior-
-preserving, exactly like Lab 06's refactor.
+All tests from Lab 21 must still pass. This refactor should preserve
+behavior, just like the one in Lab 06.
 
 #### Python
 
@@ -229,18 +225,18 @@ go test ./... -v
 ./gradlew test
 ```
 
-Expected: 4 passed, same as at the end of Lab 21.
+Expect 4 passing tests, the same as at the end of Lab 21.
 
 **Now prove the "old data" problem is real, before you solve it.**
 
-Never fake this part with a hand-written JSON file pretending to be an
-old record — the whole point is seeing a schema change land on a row
-that a genuinely earlier version of your code created. **Don't delete
-your database file at any point between here and the end of Part 2.**
+Do not replace this exercise with a hand-written JSON file that
+pretends to be an old record. You need to apply a schema change to a
+row created by an earlier version of the code. **Keep the database file
+until the end of Part 2.**
 
-### Step 5 — create a real order, then stop the server
+### Step 5. Create a real order and stop the server
 
-Start the server for real, in Terminal A:
+Start the server in Terminal A.
 
 #### Python
 
@@ -260,42 +256,40 @@ go run .
 ./gradlew run --console=plain
 ```
 
-In Terminal B, create one order:
+Create one order in Terminal B.
 
 ```bash
 curl -s -X POST http://localhost:8000/orders \
   -H "Content-Type: application/json" -d '{"items": ["Burger"]}'
 ```
 
-Write down the `order_id` it returns — you'll need it in the next two
-steps, and again in Part 2. Stop the server in Terminal A (`Ctrl+C`),
-but leave the database file in place.
+Write down the returned `order_id`. You will need it in the next two
+steps and again in Part 2. Stop the server in Terminal A with `Ctrl+C`,
+but keep the database file.
 
-### Step 6 — restart, and confirm the order survived
+### Step 6. Restart and confirm that the order survived
 
-Start the server again, the same way you did in Step 5 — same command,
-same directory, same database file. In Terminal B, fetch the order you
-just created. The example below uses `1`; replace it with your own
-order's actual id from Step 5 if it's different:
+Start the server again with the same command, from the same directory,
+and with the same database file. Fetch the new order in Terminal B.
+The example uses `1`; replace it with the id returned in Step 5 if
+needed.
 
 ```bash
 curl -s http://localhost:8000/orders/1
 ```
 
-It must come back with `status: "received"` and the same `items` you
-posted — this is the restart that proves Part 1 actually works, not
-just that the tests pass. Stop the server again, still keeping the
-database file.
+The response must contain `status: "received"` and the same `items` you
+sent. This restart proves that Part 1 works outside the test suite.
+Stop the server again and keep the database file.
 
-### Step 7 — protect the database file in Git
+### Step 7. Keep the database file out of Git
 
-Check the repository's root `.gitignore`: `*.db` (and SQLite's sidecar
-files, `*.db-journal`/`*.db-wal`/`*.db-shm`) should already be ignored.
-If it isn't — for example because you forked this repository before
-this protection was added — add those four lines yourself. Either way,
-confirm with `git status` that your database file doesn't show up as
-untracked. It's runtime state your server generates, not source code,
-and it should never be committed.
+Check the root `.gitignore`. It should already ignore `*.db` and the
+SQLite sidecar files `*.db-journal`, `*.db-wal`, and `*.db-shm`. Add
+these four patterns if they are missing, for example in an older fork.
+Use `git status` to confirm that the database is not listed as an
+untracked file. It is runtime state generated by the server, not source
+code, and must not be committed.
 
 **Part 2 — schema evolution:**
 
