@@ -40,13 +40,13 @@ After this lab you should be able to:
 
 1. Confirm you're on `main`: `git switch main`.
 2. Merge the first feature: `git merge feature/low-stock-warning`. This
-   should complete without any conflict — read the message Git prints
+   should complete without any conflict. Read the message Git prints
    (likely a fast-forward, since `main` hasn't moved since you
    branched).
 3. Run your track's test command to confirm `main` now has the
    low-stock feature and still passes.
-4. Merge the second feature: `git merge feature/expiry-warning`. This
-   **will** conflict — in **two files**: your source file and your
+4. Merge the second feature with `git merge feature/expiry-warning`.
+   This **will** conflict in **two files**, your source file and your
    test file.
 5. Open your source file (see your track's exact conflict shape
    below). Read both sides of each block before touching anything.
@@ -54,14 +54,14 @@ After this lab you should be able to:
    conflict marker.
 7. Open your test file (see your track's exact conflict shape below).
    Resolve it by keeping **both** additions.
-8. Run your track's test command. All tests — the original, the
-   low-stock one, and the expiry one — must pass.
+8. Run your track's test command. The original, low-stock, and expiry
+   tests must all pass.
 9. Stage both resolved files and complete the merge (Git pre-fills a
    merge commit message; you don't need `-m`).
 10. Run `git log --oneline --graph -5` and confirm both features are
     now part of `main`'s history.
 
-### Python — the exact conflict you'll see
+### Python conflict details
 
 Two blocks in `inventory.py`: one where each branch added its own new
 function (the whole function body differs, since the two filters are
@@ -69,19 +69,19 @@ written differently), one inside `summarize` where each branch
 appended its own two lines. Two blocks in `tests/test_inventory.py`:
 the `import` line (each branch imported a different new name), and the
 new test function each branch added (each named differently and
-calling a different function — this is one conflict block because the
+calling a different function. This is one conflict block because the
 two test functions sit on directly adjacent lines).
 
-### Go — the exact conflict you'll see
+### Go conflict details
 
 This is **not** the same shape as Python's, and that's expected, not a
-mistake on your part: Go has no `import` line to conflict on (calling
+mistake on your part. Go has no `import` line to conflict on (calling
 another function in the same package needs no import), so
-`inventory_test.go` conflicts in exactly **one** block — the two test
+`inventory_test.go` conflicts in exactly **one** block containing the two test
 functions, adjacent, each named differently and calling a different
 function. In `inventory.go`, the first conflict block covers four
-lines on each side — the function signature, the `var names []string`
-line, the `for` loop line, and the `if` condition — even though the
+lines on each side: the function signature, the `var names []string`
+line, the `for` loop line, and the `if` condition. Even though the
 middle two of those four lines are textually identical between
 branches; Git still includes them inside the markers. Only the
 five-line tail after that (`names = append(names, item.Name)`, two
@@ -91,17 +91,18 @@ markers. The second conflict, inside `Summarize`, covers the two
 inserted blocks in full, since neither side shares a matching tail
 there.
 
-### Java — the exact conflict you'll see
+### Java conflict details
 
-Same shape as Go, for the same reason: no import-line conflict (both
+The conflict has the same shape as in Go, for the same reason. There is
+no import-line conflict (both
 branches call a static method on the same class), so
-`InventoryTest.java` conflicts in exactly **one** block — the two
+`InventoryTest.java` conflicts in exactly **one** block containing the two
 `@Test` methods, adjacent (the `@Test` annotation line itself sits
 just *before* the conflict and matches on both sides, so it's not
 part of the marked block). In `Inventory.java`, like Go, the first
-conflict block covers four lines on each side — the method signature,
+conflict block covers four lines on each side: the method signature,
 the `List<String> names = new ArrayList<>();` line, the `for` loop
-line, and the `if` condition — even though the middle two are
+line, and the `if` condition. Even though the middle two are
 textually identical between branches. Only the five-line tail after
 that (`names.add(item.name);`, two closing braces, `return names;`,
 and the method's closing brace) merges automatically, outside the
@@ -165,72 +166,72 @@ git log --oneline -4
 cd -
 ```
 
-Expected: `No conflict markers remain.`, every test passed, and the
-merge commit visible in the log. Note the `exit 1` inside the `if` —
-without it, this check would print "Conflict markers remain." and
+You should see `No conflict markers remain.`, all tests should pass,
+and the merge commit should be visible in the log. Note the `exit 1`
+inside the `if`. Without it, this check would print "Conflict markers remain." and
 still exit successfully, which defeats the point of a check. Try it
 both ways on a file you know still has markers in it, and on one that
 doesn't, to see the difference for yourself.
 
 ## Think about it
 
-- Neither branch edited a line the other branch also edited — both only
+- Neither branch edited a line the other branch also edited. Both only
   *added* new lines, at the same location, in the same two files. Why
   did Git still treat both files as conflicts instead of quietly
   keeping both additions?
 - A teammate says "just take mine, delete theirs" without reading the
   other side of a conflict. What's the concrete risk in doing that here
-  — in either file?
+  in either file?
 
 ## If you get stuck
 
 ### Python
 
-- **Hint 1:** `<<<<<<< HEAD` marks the start of *your current branch's*
+- **Hint 1.** `<<<<<<< HEAD` marks the start of *your current branch's*
   version; `=======` divides the two sides; `>>>>>>> feature/expiry-warning`
   marks the end of the *incoming* branch's version.
-- **Hint 2:** `inventory.py` has two separate conflict blocks; the test
-  file also has two — one on the import line, one spanning the new test
-  function's name and body. Resolve every block you find — don't stop
+- **Hint 2.** `inventory.py` has two separate conflict blocks; the test
+  file also has two, one on the import line and one spanning the new test
+  function's name and body. Resolve every block you find; don't stop
   after the first file.
-- **Hint 3:** After editing, both files should contain zero
-  `<<<<<<<`, `=======`, or `>>>>>>>` lines — if `grep` finds any in
+- **Hint 3.** After editing, both files should contain zero
+  `<<<<<<<`, `=======`, or `>>>>>>>` lines. If `grep` finds any in
   either file, you're not done.
 
 ### Go
 
-- **Hint 1:** `<<<<<<< HEAD` marks the start of *your current branch's*
+- **Hint 1.** `<<<<<<< HEAD` marks the start of *your current branch's*
   version; `=======` divides the two sides; `>>>>>>>
   feature/expiry-warning` marks the end of the *incoming* branch's
   version.
-- **Hint 2:** `inventory.go` has two conflict blocks, but the first one
-  is shorter than the whole function — it stops before the closing
+- **Hint 2.** `inventory.go` has two conflict blocks, but the first one
+  is shorter than the whole function. It stops before the closing
   lines both functions share (`names = append(...)` through the final
   `}`), which aren't marked at all. Don't assume you need to rewrite
   the whole function from the markers; read what's actually between
   them.
-- **Hint 3:** After editing, both files should contain zero
-  `<<<<<<<`, `=======`, or `>>>>>>>` lines — if `grep` finds any in
+- **Hint 3.** After editing, both files should contain zero
+  `<<<<<<<`, `=======`, or `>>>>>>>` lines. If `grep` finds any in
   either file, you're not done.
 
 ### Java
 
-- **Hint 1:** `<<<<<<< HEAD` marks the start of *your current branch's*
+- **Hint 1.** `<<<<<<< HEAD` marks the start of *your current branch's*
   version; `=======` divides the two sides; `>>>>>>>
   feature/expiry-warning` marks the end of the *incoming* branch's
   version.
-- **Hint 2:** `Inventory.java` has two conflict blocks, but the first
-  one is shorter than the whole method — it stops before the closing
+- **Hint 2.** `Inventory.java` has two conflict blocks, but the first
+  one is shorter than the whole method. It stops before the closing
   lines both methods share (`names.add(...)` through the final `}`),
   which aren't marked at all. Don't assume you need to rewrite the
   whole method from the markers; read what's actually between them.
-- **Hint 3:** After editing, both files should contain zero
-  `<<<<<<<`, `=======`, or `>>>>>>>` lines — if `grep` finds any in
+- **Hint 3.** After editing, both files should contain zero
+  `<<<<<<<`, `=======`, or `>>>>>>>` lines. If `grep` finds any in
   either file, you're not done.
 
-Before moving on: commit and push everything from this lab
+Before moving on, commit and push everything from this lab
 (`git add -A && git commit -m "..."; git push`). Nothing later assumes
-a clean tree yet, but Act IV (starting at Lab 16) does — get in the
+a clean tree yet, but Act IV (starting at Lab 16) does. Get into the
 habit now.
 
 ## What's next
