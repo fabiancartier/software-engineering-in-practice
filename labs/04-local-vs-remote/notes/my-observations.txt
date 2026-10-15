@@ -1,0 +1,3 @@
+origin to lokalna nazwa (alias) zdalnego repozytorium pod adresem https://github.com/fabiancartier/software-engineering-in-practice.git.
+Repozytorium lokalne przechowuje commity na mojej maszynie, a repozytorium zdalne przechowuje ich kopię na serwerze GitHub.
+Git jest narzędziem do kontroli wersji, a GitHub jest usługą hostującą repozytoria Git.
