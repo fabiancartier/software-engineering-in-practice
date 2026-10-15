@@ -1,0 +1,4 @@
+Pierwsze uruchomienie `python3 main.py` nie powiodło się, ponieważ używało systemowego interpretera poza środowiskiem projektu i nie zapewniało jego zależności `cowsay`.
+`uv sync` utworzył katalog `.venv` oraz plik `uv.lock`; środowisko zawiera przypięte zależności projektu, a lockfile zapisuje ich konkretne wersje.
+Kolega, który uruchomiłby tylko `python3 main.py` bez `uv sync`, nie miałby gwarancji zainstalowanego `cowsay`, więc program mógłby zakończyć się błędem importu.
+Konfiguracja devcontainera dostarcza Python 3.13, Go 1.27 i Javę 21.
