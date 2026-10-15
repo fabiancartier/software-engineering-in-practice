@@ -1,0 +1,3 @@
+git status pokazał stan katalogu roboczego oraz informację o plikach, których Git jeszcze nie śledzi.
+git log pokazał historię commitów repozytorium, z najnowszym commitem na szczycie.
+Nowy plik jest nieśledzony, ponieważ znajduje się w katalogu roboczym, ale nie został jeszcze dodany do stagingu.
