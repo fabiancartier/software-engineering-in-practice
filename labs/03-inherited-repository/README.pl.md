@@ -2,9 +2,8 @@
 
 ## Sytuacja
 
-Masz dostęp do tego właśnie repozytorium. Zanim cokolwiek zmienisz,
-musisz wiedzieć, jak sprawdzić, w jakim jest stanie, i jak zapisać własną
-zmianę, niczego nie tracąc.
+Masz już dostęp do repozytorium. Zanim cokolwiek zmienisz, sprawdź jego
+stan i naucz się bezpiecznie zapisywać swoją pracę.
 
 ## Cele nauki
 
@@ -19,10 +18,10 @@ Po tym labie potrafisz:
 ## Zanim zaczniesz
 
 - Lab 02 ukończony.
-- Jesteś wewnątrz własnego klona tego repozytorium (skonfigurowałeś/aś to
-  w [`START-HERE.pl.md`](../../START-HERE.pl.md) — albo, jeśli używasz
-  Codespaces, jest już dla Ciebie przygotowany).
-- Bieżący katalog: katalog główny repozytorium.
+- Pracujesz we własnej lokalnej kopii repozytorium przygotowanej według
+  [`START-HERE.pl.md`](../../START-HERE.pl.md). W Codespaces jest już
+  dostępna.
+- Bieżącym katalogiem jest katalog główny repozytorium.
 
 ## Twoje zadanie
 
@@ -30,27 +29,26 @@ Po tym labie potrafisz:
    Przeczytaj wynik, zanim zrobisz cokolwiek innego.
 2. Utwórz nowy plik
    `labs/03-inherited-repository/notes/my-observations.txt` zawierający co
-   najmniej dwa zdania: jedno opisujące, co pokazał `git status`, drugie
-   opisujące, co pokazał `git log`.
-3. Uruchom ponownie `git status` i wyjaśnij własnymi słowami (zapisz to w
-   tym samym pliku, jako trzecią linię), dlaczego nowy plik pokazuje się
-   właśnie w taki sposób.
+   najmniej dwa zdania. W jednym opisz wynik `git status`, a w drugim
+   wynik `git log`.
+3. Ponownie uruchom `git status`. W trzeciej linii tego samego pliku
+   wyjaśnij własnymi słowami, dlaczego nowy plik ma taki status.
 4. Dodaj do stagingu tylko ten plik poleceniem `git add`.
 5. Uruchom `git diff --staged` i zaobserwuj, co pokazuje w porównaniu do
    zwykłego `git diff`.
 6. Zacommituj zmianę ze stagingu z jasnym, angielskim komunikatem w czasie
    teraźniejszym, np. `docs: add lab 03 observations`. Jeśli to Twój
    pierwszy commit na tej maszynie, Git może zatrzymać Cię komunikatem
-   "Please tell me who you are" zamiast zacommitować — potrzebuje
-   imienia i e-maila do podpisywania każdego Twojego commita tutaj.
-   Uruchom te dwie komendy raz (użyj e-maila przypisanego do Twojego
+   "Please tell me who you are" zamiast utworzyć commit. Git zapisuje
+   imię i adres e-mail autora przy każdym commicie. Uruchom te dwa
+   polecenia raz (użyj adresu e-mail przypisanego do swojego
    konta GitHub), potem powtórz commit:
    ```bash
    git config --global user.name "Your Name"
    git config --global user.email "you@example.com"
    ```
-7. Uruchom `git log` jeszcze raz i potwierdź, że Twój commit jest na
-   szczycie.
+7. Uruchom `git log` jeszcze raz i potwierdź, że Twój commit jest
+   pierwszy na liście.
 
 ## Kryteria akceptacji
 
@@ -73,28 +71,28 @@ wc -l < labs/03-inherited-repository/notes/my-observations.txt  # expect >= 3
 
 - `git diff` i `git diff --staged` pokazały różne rzeczy. Dlaczego Git w
   ogóle rozróżnia te dwa stany?
-- Gdyby `git commit` poszedł bez wcześniejszego `git add`, co stałoby
-  się z Twoim nowym plikiem?
+- Co stałoby się z nowym plikiem, gdyby polecenie `git commit` zostało
+  uruchomione bez wcześniejszego `git add`?
 
 ## Jeśli utkniesz
 
 - **Podpowiedź 1:** Potrzebujesz dokładnie pięciu poleceń Gita: `status`,
   `log`, `diff`, `add`, `commit`.
 - **Podpowiedź 2:** `git diff` (bez argumentów) pokazuje zmiany poza
-  stagingiem; `git diff --staged` pokazuje, co faktycznie trafi do
+  stagingiem; `git diff --staged` pokazuje, co trafi do
   następnego commita.
 - **Podpowiedź 3:** Commit potrzebuje komunikatu. Użyj `git commit -m
   "twoja wiadomość"` zamiast otwierać edytor, chyba że czujesz się z nim
   swobodnie.
 - **Podpowiedź 4:** "Please tell me who you are" znaczy, że Git nie ma
-  jeszcze skonfigurowanego `user.name` ani `user.email` na tej maszynie
-  — zobacz krok 6 powyżej, dwie komendy `git config --global`, które
-  naprawiają to raz na zawsze.
+  jeszcze skonfigurowanego `user.name` ani `user.email` na tej maszynie.
+  W kroku 6 znajdziesz dwa polecenia `git config --global`, które
+  uzupełniają tę konfigurację.
 
 ## Co dalej
 
-Twój commit istnieje — ale tylko na tej maszynie, w tym lokalnym
-repozytorium. Nikt inny go jeszcze nie widzi. Dalej dowiesz się, co
-naprawdę oznacza "remote".
+Twój commit istnieje tylko na tej maszynie, w lokalnym repozytorium.
+Nikt inny go jeszcze nie widzi. W następnym labie poznasz repozytorium
+zdalne.
 
 Przejdź do [Lab 04 — Lokalne to nie zdalne](../04-local-vs-remote/README.pl.md).

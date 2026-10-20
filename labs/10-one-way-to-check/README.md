@@ -2,10 +2,10 @@
 
 ## Story
 
-A new contributor asks: "how do I run the tests again? And was it
+A new contributor asks, "How do I run the tests again? And was it
 the formatter or the analyzer first?" You've typed these commands so
-many times you don't think about them anymore — which is exactly why a
-newcomer shouldn't have to ask.
+many times that you no longer think about the sequence. A newcomer
+should not have to memorize it.
 
 ## Learning objectives
 
@@ -19,8 +19,8 @@ After this lab you should be able to:
 
 ## Before you start
 
-- Lab 09 complete, in whichever track you're following: your
-  formatter, your analyzer, and your tests all succeed individually.
+- Lab 09 complete in your chosen track. The formatter, analyzer, and
+  tests all succeed individually.
 - **A note for Windows:** this course runs on Git Bash on Windows, not
   WSL and not Docker. Git doesn't store a Unix executable bit the same
   way Linux and macOS do, so a script that works when you type
@@ -31,25 +31,23 @@ After this lab you should be able to:
   bash scripts/check.sh
   ```
   That always works, because it never relies on the file's own
-  executable bit — you're just telling `bash` to run a file, the same
-  way you'd tell it to run any other script. Still mark the scripts
-  executable (`chmod +x scripts/*.sh`) below; where direct execution
-  does work on your system, it's a convenient shortcut, not the only
-  supported way.
+  executable bit. You are explicitly telling `bash` to run the file.
+  Still mark the scripts executable with `chmod +x scripts/*.sh` below.
+  Direct execution is a convenient shortcut on systems that support it.
 
 ### Python
 
-- Current directory: `examples/restaurant-bill/python/`.
+- Work from `examples/restaurant-bill/python/`.
 
 ### Go
 
-- Current directory: `examples/restaurant-bill/go/`.
+- Work from `examples/restaurant-bill/go/`.
 
 ### Java
 
-- Current directory: `examples/restaurant-bill/java/`. Your scripts
-  wrap the committed `./gradlew`, never a globally installed `gradle` —
-  this project doesn't assume one exists.
+- Work from `examples/restaurant-bill/java/`. Your scripts use the
+  committed `./gradlew`, never a globally installed `gradle`. The
+  project does not assume a global installation exists.
 
 ## Your task
 
@@ -57,17 +55,16 @@ Create a `scripts/` directory with four scripts, each runnable from
 anywhere (they `cd` to the project root themselves, so your current
 directory when you invoke them doesn't matter):
 
-1. `scripts/test.sh` — runs the test suite.
-2. `scripts/check.sh` — runs the formatter check and the static
+1. `scripts/test.sh` runs the test suite.
+2. `scripts/check.sh` runs the formatter check and the static
    analyzer (in that order), then the test suite.
-3. `scripts/format.sh` — actually reformats the code (not just a
+3. `scripts/format.sh` reformats the code (not just a
    check).
-4. `scripts/run.sh` — runs the application.
+4. `scripts/run.sh` runs the application.
 
 Make all four executable (`chmod +x scripts/*.sh`). Each script should
 be short enough that reading it, top to bottom, tells you exactly what
-it does — no separate documentation should be required to understand
-one.
+it does. No separate documentation should be required.
 
 ### Python
 
@@ -152,7 +149,7 @@ echo "== tests =="
 ```
 
 (The exported variable just silences a harmless PMD warning from
-Lab 09 — it doesn't change what gets checked.)
+Lab 09. It doesn't change what gets checked.)
 
 ## Acceptance criteria
 
@@ -160,8 +157,8 @@ Lab 09 — it doesn't change what gets checked.)
   `bash scripts/<name>.sh` from a different starting directory (e.g.
   your home directory).
 - `scripts/check.sh` exits with a non-zero status if formatting,
-  static analysis, or tests fail — a newcomer should see one clear
-  failure, not silently continue.
+  static analysis, or tests fail. A newcomer should see one clear
+  failure instead of a script that silently continues.
 - Reading any one script takes less than thirty seconds to understand.
 
 ## Verification
@@ -213,7 +210,7 @@ three complete successfully with no manual `cd` on your part.
 ### Python
 
 - **Hint 1:** Start every script with `#!/usr/bin/env bash` and `set
-  -euo pipefail` — the second line stops the script immediately on the
+  -euo pipefail`. The second line stops the script immediately on the
   first failing command.
 - **Hint 2:** To make a script work regardless of the caller's current
   directory, put `cd "$(dirname "$0")/.."` near the top, right after
@@ -222,11 +219,11 @@ three complete successfully with no manual `cd` on your part.
 
 ### Go
 
-- **Hint 1:** The same `set -euo pipefail` habit applies here — without
+- **Hint 1:** The same `set -euo pipefail` habit applies here. Without
   it, `scripts/check.sh` would keep running `go vet` even if `gofmt`
-  found something, which defeats the point.
+  found something. That would defeat the purpose of the check.
 - **Hint 2:** `unformatted="$(gofmt -l .)"` captures the command's
-  output into a variable instead of printing it immediately — `[ -n
+  output into a variable instead of printing it immediately. `[ -n
   "$unformatted" ]` then checks whether that variable is non-empty.
 - **Hint 3:** If `scripts/run.sh` can't find `main.go` when called from
   another directory, double check the `cd "$(dirname "$0")/.."` line
@@ -235,14 +232,14 @@ three complete successfully with no manual `cd` on your part.
 ### Java
 
 - **Hint 1:** `--console=plain` keeps Gradle's output simple and
-  script-friendly — without it, Gradle's fancier terminal output can
+  script-friendly. Without it, Gradle's fancier terminal output can
   look strange when piped or logged.
 - **Hint 2:** If `scripts/run.sh` seems to hang the first time from a
-  fresh checkout, that's Gradle downloading its distribution again —
-  same as the very first run back in Lab 06.
+  fresh checkout, Gradle is probably downloading its distribution,
+  just as it did on the first run in Lab 06.
 - **Hint 3:** All four scripts call `./gradlew`, never a bare `gradle`
-  — if you typed `gradle` by mistake in one of them, that's almost
-  certainly the bug.
+  command. If you used `gradle` in one of them, that is probably the
+  problem.
 
 Before moving on: commit and push everything from this lab
 (`git add -A && git commit -m "..."; git push`). Act IV (starting at
@@ -250,10 +247,9 @@ Lab 16) assumes a clean tree from here on.
 
 ## What's next
 
-You've taken a one-file monolith and turned it into a small,
-well-tested, consistently-checked project, in your language of choice.
-Act II is done — for all three tracks, and so is everything through
-Act VI: Go and Java keep going all the way to the capstone now, in the
-same language you've been using since this act.
+You have turned a one-file monolith into a small, well-tested project
+with consistent checks. Act II is complete in all three tracks. The
+remaining course through Act VI also supports them: Go and Java now
+continue all the way to the capstone alongside Python.
 
 Continue to [Lab 11 — The client changed their mind](../11-changed-requirements/README.md).

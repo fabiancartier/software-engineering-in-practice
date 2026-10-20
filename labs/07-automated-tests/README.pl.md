@@ -2,66 +2,66 @@
 
 ## Sytuacja
 
-Twój zrefaktoryzowany kod `billing` zachowuje się tak samo, jak
-oryginalny monolit — sprawdziłeś/aś to raz, ręcznie, przez `diff`. To
-się nie skaluje: nie możesz ponownie uruchamiać ręcznego diffa każdy
-raz, gdy dotkniesz jednej linii. Potrzebujesz testów, które sam się
-uruchamiają.
+Po refaktoryzacji kod `billing` nadal działa tak samo jak pierwotny
+monolit. Sprawdziłeś/aś to ręcznie za pomocą `diff`, ale powtarzanie
+takiej kontroli po każdej zmianie byłoby uciążliwe. Czas ją
+zautomatyzować.
 
 ## Cele nauki
 
 Po tym labie potrafisz:
 
-- Napisać test jednostkowy, używając Arrange-Act-Assert.
+- Napisać test jednostkowy według schematu Arrange-Act-Assert.
 - Wyjaśnić, czym jest "jednostka" w "teście jednostkowym", w kontekście
   tego projektu.
-- Wybrać przypadki testowe pokrywające odrębne zachowania funkcji
-  (albo metody), nie tylko jedną happy path.
-- Uruchomić zestaw testów i przeczytać raport pass/fail, we własnym
-  test runnerze Twojego języka.
+- Wybrać przypadki testowe, które obejmują różne zachowania funkcji lub
+  metody, a nie tylko scenariusz bez błędów.
+- Uruchomić zestaw testów i odczytać jego wynik za pomocą narzędzi
+  dostępnych w wybranym języku.
 
 ## Zanim zaczniesz
 
-- Lab 06 ukończony, w którejkolwiek ścieżce realizujesz.
+- Ukończony Lab 06 w wybranej ścieżce językowej.
 
 ### Python
 
 - Bieżący katalog: `examples/restaurant-bill/python/`.
-- `billing/calculator.py` istnieje z pięcioma funkcjami z Lab 06.
+- Plik `billing/calculator.py` zawiera pięć funkcji utworzonych w
+  Labie 06.
 
 ### Go
 
 - Bieżący katalog: `examples/restaurant-bill/go/`.
-- `billing/calculator.go` istnieje z typami `Item`/`Bill` i pięcioma
-  funkcjami z Lab 06.
+- Plik `billing/calculator.go` zawiera typy `Item` i `Bill` oraz pięć
+  funkcji utworzonych w Labie 06.
 
 ### Java
 
 - Bieżący katalog: `examples/restaurant-bill/java/`.
-- `billing/Calculator.java` istnieje z typami `Item`/`Bill` i pięcioma
-  metodami z Lab 06, a `build.gradle` ma zależności JUnit 5.
+- Plik `billing/Calculator.java` zawiera typy `Item` i `Bill` oraz pięć
+  metod utworzonych w Labie 06. W `build.gradle` są już zależności
+  JUnit 5.
 
 ## Twoje zadanie
 
-Każda ścieżka pisze te same sześć przypadków. Strukturyzuj każdy test
-jako Arrange (przygotuj dane wejściowe), Act (wywołaj funkcję), Assert
-(sprawdź wynik) — nawet jeśli każda część to tylko jedna linia.
+W każdej ścieżce napisz testy dla sześciu poniższych przypadków. Ułóż
+każdy test według schematu Arrange (przygotuj dane), Act (wywołaj
+funkcję), Assert (sprawdź wynik). Każda z tych części może zajmować
+tylko jedną linię.
 
-1. Obliczenie subtotal sumuje `price * quantity` dla wielu pozycji.
-2. Obliczenie rabatu zwraca `0` dla subtotal poniżej `50`.
-3. Obliczenie rabatu zwraca 10% subtotal, gdy jest na poziomie `50` lub
-   wyżej.
-4. Obliczenie podatku zwraca 8% dowolnej podanej kwoty.
-5. Obliczenie napiwku zwraca podany procent dowolnej podanej kwoty.
-6. Obliczenie całego rachunku, dla **małego zamówienia, które nie
-   uruchamia rabatu** (te same trzy pozycje co w przykładzie rachunku:
-   burger, frytki, soda — subtotal $38), zwraca total `46.74`.
+1. Suma częściowa uwzględnia `price * quantity` dla wielu pozycji.
+2. Rabat wynosi `0`, gdy suma częściowa jest mniejsza niż `50`.
+3. Rabat wynosi 10% sumy częściowej równej co najmniej `50`.
+4. Podatek wynosi 8% przekazanej kwoty.
+5. Napiwek stanowi podany procent przekazanej kwoty.
+6. Pełny rachunek dla **małego zamówienia bez rabatu** zwraca kwotę
+   `46.74`. Użyj tych samych produktów co w przykładzie: burgera,
+   frytek i napoju o łącznej wartości $38.
 
 ### Python
 
-Utwórz `tests/test_calculator.py`. Tutaj masz wystarczająco, żeby
-zacząć pierwszy przypadek — napisz pozostałe pięć sam/a, w tej samej
-formie:
+Utwórz `tests/test_calculator.py`. Poniższy przykład pokazuje pierwszy
+przypadek. Pozostałe pięć napisz samodzielnie w podobnej formie.
 
 ```python
 from billing.calculator import calculate_subtotal
@@ -77,13 +77,13 @@ def test_calculate_subtotal_sums_multiple_items():
 
 ### Go
 
-Utwórz `billing/calculator_test.go` (ten sam pakiet co `calculator.go`
-— to daje Twoim testom bezpośredni dostęp do wszystkiego w nim, gdyby
-go potrzebowały). Tutaj masz wystarczająco, żeby zacząć pierwszy
-przypadek — napisz pozostałe pięć sam/a, w tej samej formie. Dla
-przypadków rabatu (2 i 3), rozważ test table-driven — jeden
-`[]struct{...}` par wejście/oczekiwane, w pętli z `t.Run` — bo to ten
-sam check powtórzony z różnymi liczbami:
+Utwórz `billing/calculator_test.go` w tym samym pakiecie co
+`calculator.go`. Dzięki temu testy mają bezpośredni dostęp do jego
+zawartości. Poniżej znajdziesz przykład pierwszego przypadku;
+pozostałe pięć napisz samodzielnie. Przypadki 2 i 3 możesz połączyć w
+test tabelaryczny: przygotuj `[]struct{...}` z danymi wejściowymi i
+oczekiwanymi wynikami, a następnie wykonaj przypadki za pomocą
+`t.Run`.
 
 ```go
 package billing
@@ -107,9 +107,10 @@ func TestCalculateSubtotalSumsMultipleItems(t *testing.T) {
 
 ### Java
 
-Utwórz `src/test/java/billing/CalculatorTest.java` (pakiet `billing`,
-odpowiadający `Calculator.java`). Tutaj masz wystarczająco, żeby zacząć
-pierwszy przypadek — napisz pozostałe pięć sam/a, w tej samej formie:
+Utwórz `src/test/java/billing/CalculatorTest.java` w pakiecie
+`billing`, tak jak `Calculator.java`. Poniższy przykład pokazuje
+pierwszy przypadek. Pozostałe pięć napisz samodzielnie w podobnej
+formie.
 
 ```java
 package billing;
@@ -136,12 +137,12 @@ class CalculatorTest {
 
 ## Kryteria akceptacji
 
-- Istnieje co najmniej sześć testów, jeden na każdy przypadek
-  wymieniony powyżej (więcej jest w porządku — na przykład podzielenie
-  przypadku rabatu na dwa jest zachęcane).
-- Każdy test podąża za Arrange-Act-Assert, nawet nieformalnie — żadnej
-  ceremonii frameworka testowego poza tym, co już daje standardowe
-  narzędzie Twojego języka.
+- Istnieje co najmniej sześć testów, po jednym dla każdego przypadku.
+  Możesz napisać ich więcej, na przykład rozdzielając dwa warianty
+  rabatu.
+- Każdy test zachowuje układ Arrange-Act-Assert. Nie dodawaj
+  dodatkowych bibliotek ani konfiguracji ponad to, co zapewnia
+  standardowe narzędzie wybranego języka.
 
 ### Python
 
@@ -169,8 +170,8 @@ uv run pytest -v
 cd -
 ```
 
-Oczekiwane: każdy test pokazany jako `PASSED`, żaden `FAILED`, żaden
-skipped.
+Wszystkie testy powinny mieć wynik `PASSED`. Żaden nie powinien być
+pominięty ani zakończony wynikiem `FAILED`.
 
 ### Go
 
@@ -180,7 +181,7 @@ go test ./... -v
 cd -
 ```
 
-Oczekiwane: każdy test pokazany jako `--- PASS`, żaden `--- FAIL`.
+Każdy test powinien mieć wynik `--- PASS`, a żaden `--- FAIL`.
 
 ### Java
 
@@ -190,7 +191,7 @@ cd examples/restaurant-bill/java
 cd -
 ```
 
-Oczekiwane: `BUILD SUCCESSFUL`. Otwórz
+Oczekiwany wynik to `BUILD SUCCESSFUL`. Otwórz
 `build/reports/tests/test/index.html` w przeglądarce, jeśli chcesz
 zobaczyć każdy test wylistowany osobno.
 
@@ -199,11 +200,9 @@ zobaczyć każdy test wylistowany osobno.
 - Wszystkie sześć Twoich testów przechodzi. Czy to dowodzi, że
   obliczenie całego rachunku jest poprawne dla *każdego* zamówienia,
   czy tylko dla konkretnych wejść, które wypróbowałeś/aś?
-- Przetestowałeś/aś małe zamówienie i wartość wystarczająco dużą, żeby
-  uruchomić rabat, dla samego obliczenia rabatu — ale czy przetestowałeś/aś
-  obliczenie całego rachunku z zamówieniem wystarczająco dużym, żeby
-  uruchomić rabat? Co to mogłoby ujawnić, czego Twoje obecne testy nie
-  mogą?
+- Osobno przetestowałeś/aś małe zamówienie i rabat dla dużej wartości.
+  Czy któryś test oblicza jednak cały rachunek dla zamówienia objętego
+  rabatem? Jaki błąd mógłby ujawnić taki przypadek?
 
 ## Jeśli utkniesz
 
@@ -212,50 +211,45 @@ zobaczyć każdy test wylistowany osobno.
 - **Podpowiedź 1:** Zaimportuj to, co testujesz, na górze pliku:
   `from billing.calculator import calculate_subtotal, calculate_discount,
   calculate_tax, calculate_tip, calculate_bill`.
-- **Podpowiedź 2:** Test to po prostu funkcja zaczynająca się od
-  `test_`, zawierająca instrukcje `assert` — pytest znajduje ją i
-  uruchamia automatycznie.
-- **Podpowiedź 3:** Dla wyników zmiennoprzecinkowych, porównywanie przez
+- **Podpowiedź 2:** Test jest funkcją, której nazwa zaczyna się od
+  `test_` i która zawiera instrukcje `assert`. Pytest znajdzie ją i
+  uruchomi automatycznie.
+- **Podpowiedź 3:** Wyniki zmiennoprzecinkowe możesz porównywać przez
   `==` po zaokrągleniu do 2 miejsc po przecinku (co `calculate_bill`
-  już robi) jest wystarczająco wiarygodne dla tego projektu; nie
-  potrzebujesz tu `pytest.approx`.
+  już robi). W tym projekcie nie potrzebujesz `pytest.approx`.
 
 ### Go
 
-- **Podpowiedź 1:** Umieszczenie pliku testowego w `package billing`
-  (nie `package billing_test`) daje Twoim testom bezpośredni dostęp do
-  nieeksportowanych detali, gdybyś ich kiedyś potrzebował/a — choć w
-  tym labie wystarczy pięć eksportowanych funkcji.
-- **Podpowiedź 2:** Test to funkcja nazwana `TestXxx(t *testing.T)` w
-  pliku kończącym się na `_test.go` — `go test` znajduje ją i uruchamia
-  automatycznie.
-- **Podpowiedź 3:** Dla testu table-driven, slice małych structów
-  (nazwa, wejście, oczekiwane) w pętli z `for _, c := range cases {
-  t.Run(c.name, func(t *testing.T) { ... }) }` utrzymuje powtarzane
-  przypadki krótkimi, bez kopiowania logiki asercji.
+- **Podpowiedź 1:** Plik testowy w `package billing` zamiast
+  `package billing_test` ma dostęp także do nieeksportowanych elementów
+  pakietu. W tym labie wystarczy jednak pięć eksportowanych funkcji.
+- **Podpowiedź 2:** `go test` automatycznie uruchamia funkcje o nazwie
+  `TestXxx(t *testing.T)` zapisane w plikach zakończonych na
+  `_test.go`.
+- **Podpowiedź 3:** W teście tabelarycznym zapisz nazwę, dane wejściowe
+  i oczekiwany wynik w strukturach, a potem wykonaj je w pętli z
+  `t.Run`. Unikniesz w ten sposób kopiowania asercji.
 
 ### Java
 
-- **Podpowiedź 1:** `@Test` na metodzie bez argumentów i zwracanym
-  typem `void` to jest to, czego szuka JUnit 5 — `./gradlew test`
-  znajduje ją i uruchamia automatycznie.
-- **Podpowiedź 2:** `assertEquals(expected, actual)` — expected jest
-  pierwszy; odwrócenie kolejności nie psuje testu, ale sprawia, że
-  komunikaty o porażce czyta się myląco.
-- **Podpowiedź 3:** Dla wyników zmiennoprzecinkowych, `assertEquals(double,
-  double)` porównuje dokładnie; to jest tu w porządku, bo każda wartość
-  w tym projekcie (ceny, stawki, sumy) jest już dokładną liczbą
-  dwumiejscową w momencie, gdy jest obliczana.
+- **Podpowiedź 1:** JUnit 5 automatycznie wykrywa metody oznaczone
+  `@Test`, które nie przyjmują argumentów i zwracają `void`.
+- **Podpowiedź 2:** W `assertEquals(expected, actual)` najpierw podaj
+  wartość oczekiwaną. Odwrotna kolejność nie zepsuje testu, ale utrudni
+  czytanie komunikatu o błędzie.
+- **Podpowiedź 3:** `assertEquals(double, double)` porównuje wartości
+  bez tolerancji. Tutaj to wystarczy, ponieważ obliczane wartości są
+  już zaokrąglane do dwóch miejsc po przecinku.
 
-Przed przejściem dalej: zacommituj i wypchnij wszystko z tego laba
-(`git add -A && git commit -m "..."; git push`). Nic później jeszcze
-nie zakłada czystego drzewa, ale Akt IV (zaczynający się od Lab 16)
-tak — przyzwyczajaj się już teraz.
+Przed przejściem dalej zacommituj i wypchnij zmiany z tego laba:
+`git add -A && git commit -m "..."; git push`. Czyste drzewo robocze
+będzie wymagane od Labu 16, więc warto już teraz wyrobić sobie ten
+nawyk.
 
 ## Co dalej
 
-Twoje testy są zielone. Potem klient narzeka na swój rachunek. Czas
-sprawdzić, czy "wszystkie testy przechodzą" i "kod jest poprawny" to
-faktycznie to samo.
+Wszystkie testy przechodzą, a mimo to klient zgłasza błąd na rachunku.
+W następnym labie sprawdzisz, dlaczego zielony zestaw testów nie zawsze
+oznacza poprawny program.
 
 Przejdź do [Lab 08 — Nadchodzi zgłoszenie błędu](../08-bug-report/README.pl.md).

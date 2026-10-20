@@ -2,34 +2,31 @@
 
 [Po polsku →](troubleshooting.pl.md) · [← Back to Start here](../../START-HERE.md)
 
-This page collects problems that can come up anywhere during setup,
-not just on one operating system. Find the heading that matches what
-you're seeing.
+Find the heading below that describes the problem you see. These steps
+apply across operating systems.
 
 ## I don't have administrator rights on this computer
 
 See the Windows guide's
-[No administrator rights?](windows.md#no-administrator-rights) section
-— it covers installing Git and VS Code without admin rights. If even
-that's blocked on this machine, use
+[No administrator rights?](windows.md#no-administrator-rights) section.
+It covers installing Git and VS Code without administrator rights.
+If that method is also blocked, use
 [GitHub Codespaces](../../START-HERE.md#github-codespaces-the-no-install-option)
-instead, which needs no local installation at all.
+without installing tools locally.
 
-## `choco`, `git`, `code`, or `brew` says "not recognized" / "command not found"
+## `choco`, `git`, `code`, or `brew`: "not recognized" or "command not found"
 
 Close every terminal window (and VS Code, if it's open) and open a
 fresh one. A program that just finished installing often doesn't show
-up in a window that was already open beforehand. If it's still
-missing after that, go back to the install step in your system's guide
-and check it actually completed — scroll up in that terminal to look
-for an error partway through.
+up in a window that was already open. If it is still missing, return
+to the installation step in your system's guide. Review the earlier
+terminal output for an error.
 
 ## Git Bash isn't visible in VS Code's terminal (Windows)
 
 See the Windows guide's dedicated
 [I don't see Git Bash in VS Code](windows.md#i-dont-see-git-bash-in-vs-code)
-section — it covers restarting VS Code and manually pointing it at
-Git Bash.
+section. It covers restarting VS Code and manually selecting Git Bash.
 
 ## I'm having trouble logging into GitHub
 
@@ -45,7 +42,7 @@ Git Bash.
 
 ## GitHub says I already have a fork of this repository
 
-That's fine — you don't need to fork it again. Go to
+Do not create another fork. Go to
 [`already-have-a-fork.md`](already-have-a-fork.md) and follow "I
 forked it on GitHub, but I don't know if I cloned it."
 
@@ -60,9 +57,9 @@ section in your system's guide
 
 ## The repository is already on my disk somewhere — I don't want to clone it again
 
-Go to [`already-have-a-fork.md`](already-have-a-fork.md) and follow
-"I have a local copy already" — it shows you how to find it and check
-it's in a safe state without re-cloning.
+Follow "I have a local copy already" in
+[`already-have-a-fork.md`](already-have-a-fork.md). It shows how to
+find the repository and check its state without cloning it again.
 
 ## I don't know what directory I'm in
 
@@ -70,44 +67,39 @@ Run:
 ```bash
 pwd
 ```
-This always tells you exactly where you are. If it's not where you
-expect, `cd ~` takes you back to your home directory, and you can
-navigate from there.
+This prints the current directory. If it is not where you expect,
+return to your home directory with `cd ~` and navigate from there.
 
 ## VS Code opened the wrong folder
 
-**File → Open Folder…** again, and this time navigate carefully to
-your cloned repository folder (the one `pwd` shows after `cd`-ing into
-it in a terminal). The folder you want contains `labs`, `examples`,
-and `scripts` as subfolders — if the Explorer panel doesn't show those
-three after opening, you opened the wrong level (too high, like your
-whole `projects` folder, or too low, like inside `labs` itself).
+Choose **File → Open Folder…** again and select the cloned repository.
+The Explorer panel should show `labs`, `examples`, and `scripts`. If it
+does not, you may have opened a parent directory such as `projects` or
+a subdirectory such as `labs`.
 
 ## "command not found" for something other than git/code/choco/brew
 
-Check that you're in the terminal your system's guide set up (Git Bash
-on Windows, the default terminal on macOS/Linux) — a command that
-exists in one shell may not exist in another. If you're not sure which
-terminal you're in, close it and open a fresh one via the exact steps
-in your system's guide.
+Check that you are using the terminal from your system's guide: Git
+Bash on Windows or the default terminal on macOS and Linux. Commands
+available in one shell may not exist in another. If unsure, close the
+terminal and reopen it by following the guide.
 
 ## `labs/`, `examples/`, or `scripts/` is missing from the project
 
-This almost always means VS Code (or your terminal) is open to the
-wrong folder, or the clone didn't finish. Run:
+This usually means VS Code or the terminal is open in the wrong folder,
+or the clone did not finish. Run:
 ```bash
 pwd
 ls
 ```
-If `ls` doesn't show `labs`, `examples`, and `scripts`, you're in the
-wrong place — `cd` into the actual repository folder, or reopen it in
-VS Code with **File → Open Folder…**.
+If `ls` does not show `labs`, `examples`, and `scripts`, use `cd` to
+enter the repository folder or reopen it in VS Code with
+**File → Open Folder…**.
 
 ## My first `git push` isn't working
 
-See [`github-auth.md`](github-auth.md) — it's written specifically for
-first-push authentication problems, including what to do if no browser
-window appears.
+See [`github-auth.md`](github-auth.md). It explains first-push
+authentication and what to do if no browser window appears.
 
 ## Git Bash says something about line endings, or a `.sh` script won't run (Windows)
 

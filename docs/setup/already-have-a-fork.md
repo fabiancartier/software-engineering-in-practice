@@ -2,29 +2,27 @@
 
 [Po polsku →](already-have-a-fork.pl.md) · [← Back to Start here](../../START-HERE.md)
 
-If you already forked this repository, already cloned it, or started
-this setup once before and aren't sure what state you're in, this page
-helps you figure that out safely. Nothing here deletes anything —
-if a step would require deleting or overwriting your own work, it
-tells you to stop and ask instead.
+Use this guide if you already have a fork or local copy but do not know
+where to continue. The steps below do not delete or overwrite
+anything. Stop and ask for help if continuing would require either
+operation.
 
 ## "I forked it on GitHub, but I don't know if I cloned it"
 
 1. Open [github.com](https://github.com) in your browser, click your
    avatar (top right), click **Your repositories**.
-2. Look for `software-engineering-in-practice` in the list. If it's
-   there, you already forked it — don't fork it again.
-3. On your computer, check whether you also already cloned it: open a
-   terminal and run
+2. Look for `software-engineering-in-practice` in the list. If it is
+   there, the fork already exists. Do not create another one.
+3. Check whether the repository is also on your computer. Open a
+   terminal and run:
    ```bash
    find ~ -maxdepth 4 -iname "software-engineering-in-practice" -type d 2>/dev/null
    ```
-   If this prints a path, you have a local copy already — go to
-   "I have a local copy already" below. If it prints nothing, you
-   haven't cloned it yet — go to the "Clone your fork" step in your
-   system's guide ([Windows](windows.md#63--clone-it-onto-your-computer),
-   [macOS](macos.md#63--clone-it-onto-your-computer),
-   [Linux](linux.md#63--clone-it-onto-your-computer)).
+   If this prints a path, continue with "I have a local copy already"
+   below. If it prints nothing, use the "Clone your fork" step in your
+   system's guide: [Windows](windows.md#63-clone-the-repository-onto-your-computer),
+   [macOS](macos.md#63-clone-it-onto-your-computer),
+   [Linux](linux.md#63-clone-it-onto-your-computer).
 
 ## "I have a local copy already"
 
@@ -33,36 +31,34 @@ tells you to stop and ask instead.
    ```bash
    cd ~/projects/software-engineering-in-practice
    ```
-2. Check that it's actually a Git repository pointing at your own fork:
+2. Check that the repository points to your fork:
    ```bash
    git remote -v
    ```
-   **If this shows your own GitHub username:** good, this is your
-   working copy — go to "Opening it again" below.
+   **If this shows your GitHub username**, continue with "Opening it
+   again" below.
 
-   **If this shows `michalmaj` instead of your username:** this is a
-   clone of the instructor's original repository, not your fork. Don't
-   delete it — rename it out of the way instead, then clone your actual
-   fork fresh:
+   **If this shows `michalmaj` instead of your username**, you have a
+   clone of the instructor's repository. Do not delete it. Rename the
+   directory, then clone your fork:
    ```bash
    cd ..
    mv software-engineering-in-practice software-engineering-in-practice.instructor-copy
    ```
    Then follow the "Clone your fork" step in your system's guide.
 
-3. Check whether you have unsaved changes sitting in this copy:
+3. Check the state of the local files:
    ```bash
    git status
    ```
-   - `nothing to commit, working tree clean` — nothing unsaved, safe to
+   - `nothing to commit, working tree clean` means it is safe to
      continue.
-   - Any other output (modified files, untracked files) — **don't
-     discard these**. If you don't remember making the change on
-     purpose and you're unsure whether it matters, that's fine — leave
-     it as-is for now and keep going; you can ask your instructor about
-     it later. Never run a command that discards changes (see
+   - Any other output may indicate modified or untracked files.
+     **Do not discard them.** Leave them in place and ask your
+     instructor if you do not know where they came from. Never run a
+     command that discards changes (see
      [What never to do here](#what-never-to-do-here) below) just to
-     make this message go away.
+     make the message go away.
 
 ## Opening it again
 
@@ -80,10 +76,9 @@ tells you to stop and ask instead.
 
 ## "My fork looks out of date compared to the course repository"
 
-This can happen if the instructor has pushed updates since you forked.
-You don't need this to start Lab 01 — it only matters once a specific
-lab tells you to sync. When a lab does ask you to sync your fork, use
-GitHub's own safe sync feature rather than any manual Git surgery:
+Your fork may fall behind when the instructor updates the course
+repository. You do not need to sync it before Lab 01. Wait until a lab
+asks you to do so, then use GitHub's sync feature:
 
 1. On your fork's page on GitHub, look for a **Sync fork** button
    (GitHub shows this automatically when your fork is behind).
@@ -93,28 +88,25 @@ GitHub's own safe sync feature rather than any manual Git surgery:
    git pull
    ```
 
-If `git pull` reports a conflict, stop and ask your instructor rather
-than guessing — don't resolve it with any of the commands listed below.
+If `git pull` reports a conflict, stop and ask your instructor. Do not
+try to remove it with any of the commands listed below.
 
 ## What never to do here
 
-None of these commands should ever be run as part of "fixing" a setup
-problem in this course, because every one of them can permanently
-destroy work you haven't pushed anywhere else:
+Do not use these commands to fix a setup problem. Each can permanently
+delete work that has not been pushed elsewhere:
 
 - `git reset --hard`
 - `git clean -fd` (or `-fdx`)
 - `rm -rf` on your repository folder
-- `git push --force` / `git push -f`
+- `git push --force` or `git push -f`
 
-If a situation seems to call for one of these, it doesn't — stop and
-ask your instructor instead, describing what you see (see the shared
-[`troubleshooting.md`](troubleshooting.md) for how to report a
-problem).
+If you think you need one of them, stop and describe the problem to
+your instructor. See [`troubleshooting.md`](troubleshooting.md) for
+what information to include.
 
 ## Still not sure what state you're in?
 
-See the shared [`troubleshooting.md`](troubleshooting.md), or go back
-to [Start here](../../START-HERE.md) and follow your system's guide
-from the top — re-reading it costs you a few minutes; guessing at a
-fix risks your work.
+See [`troubleshooting.md`](troubleshooting.md), or return to
+[Start here](../../START-HERE.md) and follow your system's guide from
+the beginning. Do not guess if a fix could put your work at risk.

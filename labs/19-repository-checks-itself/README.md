@@ -2,7 +2,7 @@
 
 ## Story
 
-A change merged last week broke the test suite on `main` — the author
+A change merged last week broke the test suite on `main`. The author
 forgot to run the tests before merging, and the reviewer trusted the PR
 description instead of actually running anything. Nobody noticed until
 someone ran the program by hand and it crashed.
@@ -20,9 +20,9 @@ After this lab you should be able to:
 
 ## Before you start
 
-- Lab 18 complete: `main` has the reorder-report feature, merged
+- Complete Lab 18 first. `main` should have the reorder-report feature merged
   through a real pull request, in your chosen track.
-- Current directory: the repository root — the workflow file lives
+- Work from the repository root. The workflow file lives
   outside `examples/team-inventory/`, at `.github/workflows/`.
 - If your repository is a fork, GitHub disables Actions workflows on it
   by default. Open your fork's **Actions** tab and click **"I understand
@@ -31,20 +31,20 @@ After this lab you should be able to:
 - This course's own canonical repository has a maintainer workflow,
   `.github/workflows/course-health.yml`, that checks the whole course.
   It's deliberately scoped to run only on the canonical repository, not
-  on your fork — if you look at it, you'll see a condition checking the
+  on your fork. If you look at it, you'll see a condition checking the
   repository name, and on your fork, GitHub shows that job as
-  **skipped**, not failed or missing. That's a different thing from
-  what you're building here: your new workflow is yours, runs on your
+  **skipped**, not failed or missing. That's different from
+  what you're building here. Your new workflow runs on your
   fork, and checks only `examples/team-inventory/<your-language>`.
 
 ## Your task
 
-1. Create branch `feature/ci-pipeline` from `main`.
+1. Create a branch named `feature/ci-pipeline` from `main`.
 2. Create `.github/workflows/team-inventory-ci.yml` (create
    `.github/workflows/` if it doesn't exist). Copy your track's
-   **complete** workflow below into that one file, exactly as shown —
-   don't paste anything else into it first. Each version below is the
-   whole file, `on:` key included once; all three tracks happen to
+   **complete** workflow below into that one file, exactly as shown.
+   Don't paste anything else into it first. Each version below is the
+   whole file, with the `on:` key included once. All three tracks happen to
    share the same `on: [push, pull_request]` trigger line, but that's
    not a separate piece to add on top of what's already in your
    track's example.
@@ -81,9 +81,9 @@ jobs:
 ```
 
 `uv sync --locked` fails the build instead of silently updating
-`uv.lock` if it's ever out of sync with `pyproject.toml` — exactly the
+`uv.lock` if it's ever out of sync with `pyproject.toml`. This is exactly the
 kind of drift CI exists to catch. `3.13` and `0.11.21` match this
-course's own baseline — see the root [`README.md`](../../README.md)'s
+course's own baseline. See the root [`README.md`](../../README.md)'s
 toolchain table, or the `.python-version` file at the repository root,
 rather than any one editor's configuration.
 
@@ -109,7 +109,7 @@ jobs:
         run: go test ./...
 ```
 
-`1.27` matches this course's own Go baseline — see the root
+`1.27` matches this course's own Go baseline. See the root
 [`README.md`](../../README.md)'s toolchain table.
 
 ### Java
@@ -139,14 +139,14 @@ jobs:
 
 `gradle/actions/setup-gradle@v6` validates your committed Gradle
 Wrapper's checksum before `./gradlew` ever runs, and caches Gradle's
-own downloads between runs — it does **not** install a global Gradle;
+own downloads between runs. It does **not** install a global Gradle;
 `./gradlew test` still runs through your committed wrapper, the same
 as it does on your own machine.
 
 ## All tracks
 
 3. Commit and push the branch, then open a pull request (as in
-   Lab 18 — web UI first, double-checking the base repository and
+   Lab 18. Use the web UI first and double-check the base repository and
    branch).
 4. Open the PR's "Checks" tab and watch the workflow run. Confirm it
    goes green.
@@ -167,7 +167,7 @@ as it does on your own machine.
 
 ## Verification
 
-There's no local command that replaces "watch it run on GitHub" — that
+There's no local command that replaces "watch it run on GitHub." That
 observation *is* the point of this lab. Locally, you can only replicate
 what the workflow will do:
 
@@ -202,8 +202,8 @@ in the same directory, the PR check will match.
 ## Think about it
 
 - In Lab 18, a reviewer could have skipped running your tests and just
-  trusted the PR description. What changed once the workflow existed —
-  who, or what, is now responsible for catching an untested change?
+  trusted the PR description. What changed once the workflow existed?
+  Who, or what, is now responsible for catching an untested change?
 - The workflow runs the exact same commands you've been running by
   hand for several labs. What did automating them buy you, if the
   commands themselves didn't change?
@@ -212,47 +212,46 @@ in the same directory, the PR check will match.
 
 ### Python
 
-- **Hint 1:** A minimal workflow needs `on:`, a `jobs:` section with at
-  least one job, and a `steps:` list — checkout, Python setup, `uv`
+- **Hint 1.** A minimal workflow needs `on:`, a `jobs:` section with at
+  least one job, and a `steps:` list: checkout, Python setup, `uv`
   install, `uv sync --locked`, `uv run pytest`. The version shown above
   is the one actually verified for this course.
-- **Hint 2:** Use `working-directory: examples/team-inventory/python`
-  on the steps that run `uv sync --locked`/`uv run pytest`, since the
+- **Hint 2.** Use `working-directory: examples/team-inventory/python`
+  on the steps that run `uv sync --locked` and `uv run pytest`, since the
   workflow's default working directory is the repository root.
-- **Hint 3:** If `uv sync --locked` fails in CI but `uv sync` works
-  locally, your `uv.lock` is out of date — run `uv lock` locally,
+- **Hint 3.** If `uv sync --locked` fails in CI but `uv sync` works
+  locally, your `uv.lock` is out of date. Run `uv lock` locally,
   commit the updated lock file, and push again.
 
 ### Go
 
-- **Hint 1:** A minimal workflow needs `on:`, a `jobs:` section with at
-  least one job, and a `steps:` list — checkout, Go setup, `go test
-  ./...`. There's no install/sync step the way Python needs one — Go's
+- **Hint 1.** A minimal workflow needs `on:`, a `jobs:` section with at
+  least one job, and a `steps:` list: checkout, Go setup, `go test
+  ./...`. There's no install or sync step as there is for Python. Go's
   module system resolves dependencies as part of `go test` itself.
-- **Hint 2:** Use `working-directory: examples/team-inventory/go` on
+- **Hint 2.** Use `working-directory: examples/team-inventory/go` on
   the test step, since the workflow's default working directory is the
   repository root.
-- **Hint 3:** If the workflow can't find your package, double-check
-  `go.mod` is actually committed — an untracked `go.mod` works on your
+- **Hint 3.** If the workflow can't find your package, double-check
+  `go.mod` is actually committed. An untracked `go.mod` works on your
   machine but doesn't exist from the workflow's point of view.
 
 ### Java
 
-- **Hint 1:** A minimal workflow needs `on:`, a `jobs:` section with at
-  least one job, and a `steps:` list — checkout, JDK setup,
+- **Hint 1.** A minimal workflow needs `on:`, a `jobs:` section with at
+  least one job, and a `steps:` list: checkout, JDK setup,
   `setup-gradle`, `./gradlew test`.
-- **Hint 2:** Use `working-directory: examples/team-inventory/java` on
+- **Hint 2.** Use `working-directory: examples/team-inventory/java` on
   the test step, since the workflow's default working directory is the
   repository root.
-- **Hint 3:** If the workflow reports `gradlew: Permission denied`,
-  your committed `gradlew` file lost its executable bit somewhere —
+- **Hint 3.** If the workflow reports `gradlew: Permission denied`,
+  your committed `gradlew` file lost its executable bit somewhere.
   `chmod +x examples/team-inventory/java/gradlew`, commit the mode
   change, and push again.
 
-Before moving on: commit and push everything from this lab
-(`git add -A && git commit -m "..."; git push`). Nothing later assumes
-a clean tree yet, but Act IV (starting at Lab 16) does — get in the
-habit now.
+Before moving on, commit and push everything from this lab
+(`git add -A && git commit -m "..."; git push`). Later labs will expect a
+clean working tree, so get into the habit now.
 
 ## What's next
 

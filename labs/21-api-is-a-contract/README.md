@@ -2,17 +2,17 @@
 
 ## Story
 
-Another part of the kitchen system needs to create and check on orders
-— not by importing your code, but over the network, from a program
-that might not even be written in the same language. You need a
-boundary both sides can agree on without reading each other's source.
+Another part of the kitchen system needs to create orders and check
+their status over the network. Its code may use a different language
+and cannot import yours. Both sides need an interface they can agree on
+without reading each other's source code.
 
 ## Learning objectives
 
 After this lab you should be able to:
 
-- Describe an HTTP endpoint's contract: request shape, response shape,
-  status codes, and error format.
+- Describe an HTTP endpoint's contract, including its requests,
+  responses, status codes, and error format.
 - Explain why a contract needs to specify error behavior, not just the
   success path.
 - Add a new validation rule to an existing endpoint without changing
@@ -20,43 +20,43 @@ After this lab you should be able to:
 
 ## Before you start
 
-- Labs 06-20 complete, in your chosen track.
+- Complete Labs 06-20 in your chosen track.
 - If you already started this project at its old location
   (`examples/order-api/api.py`, with no `python/` subfolder), nothing
-  is lost: move whatever you'd already created into
+  is lost. Move the files you already created into
   `examples/order-api/python/` yourself (for example
   `mkdir -p examples/order-api/python && git mv examples/order-api/api.py examples/order-api/python/`,
   adjusting for whatever files you personally added), then continue
-  from here. Don't run `git reset --hard` or `git clean` to "start
-  over" — either one would throw away work you haven't pushed anywhere
-  else.
+  from here. Do not run `git reset --hard` or `git clean` to "start
+  over." Either command would discard work you have not pushed
+  anywhere else.
 
 ### Python
 
-- Current directory: `examples/order-api/python/`.
-- Confirm the starter works: `uv run pytest -v`.
+- Work in `examples/order-api/python/`.
+- Confirm that the starter works with `uv run pytest -v`.
 
 ### Go
 
-- Current directory: `examples/order-api/go/`.
-- Confirm the starter works: `go test ./...`.
+- Work in `examples/order-api/go/`.
+- Confirm that the starter works with `go test ./...`.
 
 ### Java
 
-- Current directory: `examples/order-api/java/`.
-- Confirm the starter works: `./gradlew test`.
+- Work in `examples/order-api/java/`.
+- Confirm that the starter works with `./gradlew test`.
 
 ## Your task
 
-### Step 1 — run the server and explore it by hand
+### Step 1. Run the server and explore it by hand
 
-You'll need two terminals open at once: one running the server, one
-running `curl` against it. In VS Code, open the first terminal
-normally (**Terminal → New Terminal**), then click the **split
+Keep two terminals open, one for the server and one for `curl`. In VS
+Code, open the first terminal normally (**Terminal → New Terminal**),
+then click the **split
 terminal** icon in that panel (or run **Terminal → New Terminal**
-again) to get a second one — both stay inside the same VS Code window.
+again). Both terminals remain in the same VS Code window.
 
-**Terminal A** — start the server, and leave it running:
+In **Terminal A**, start the server and leave it running.
 
 #### Python
 
@@ -77,21 +77,21 @@ go run .
 ```
 
 The first run downloads the Gradle distribution and dependencies if
-they aren't cached yet — that can take a minute or two; every run
-after the first is fast.
+they are not cached yet. This can take a minute or two. Later runs are
+faster.
 
-**All three tracks** print the same line once ready:
+**All three tracks** print the same line when they are ready.
 
 ```text
 order-api listening on http://localhost:8000
 ```
 
-That line is your signal the server is actually up — don't move to
-Terminal B until you've seen it.
+This line confirms that the server is running. Wait for it before
+moving to Terminal B.
 
-**Terminal B** — with the server still running in Terminal A, exercise
-it by hand. These three commands are identical for every track, since
-they're only talking HTTP:
+In **Terminal B**, leave the server running in Terminal A and exercise
+it by hand. These commands are the same for every track because they
+only use HTTP.
 
 ```bash
 curl -i -X POST http://localhost:8000/orders \
@@ -104,58 +104,53 @@ curl -i http://localhost:8000/orders/999
 Read each response's status line and body before moving to the next
 command.
 
-**If `curl` says** `curl: (7) Failed to connect to localhost port 8000...
-Couldn't connect to server`: Terminal A's server isn't running, or it
-crashed, or you're pointed at the wrong port. Check Terminal A for an
-error, and confirm you saw the "listening" line before trying `curl`
-again.
+**If `curl` reports** `curl: (7) Failed to connect to localhost port
+8000... Couldn't connect to server`, the server in Terminal A is not
+running, has crashed, or is using a different port. Check Terminal A
+for an error and wait for the "listening" line before trying again.
 
-**If starting the server in Terminal A fails with an address-already-
-in-use error**: something is already listening on port 8000 — most
-likely a server you started earlier and forgot to stop. Find it:
+**If Terminal A reports that the address is already in use**, another
+process is listening on port 8000. It is probably a server you started
+earlier and forgot to stop. Find it as follows.
 
 - Look for an earlier terminal tab/pane that's still running a server.
 - Or run `lsof -i :8000` (macOS/Linux) or, in Git Bash on Windows,
   check Task Manager for a lingering `python`, `go`, or `java`
   process, and stop that process.
-- As a last resort, every track's server also honors a `PORT`
-  environment variable, so you can sidestep the conflict entirely
-  without hunting for the other process: `PORT=8001 uv run python
-  api.py` (or the equivalent `go run .` / `./gradlew run` command),
-  then use `http://localhost:8001` in your `curl` commands instead.
+- As a last resort, use the `PORT` environment variable supported by
+  every track. For example, run `PORT=8001 uv run python api.py`, or
+  add the same variable to the `go run .` or `./gradlew run` command.
+  Then use `http://localhost:8001` in your `curl` commands.
 
 Once you're done exploring, stop the server in Terminal A with
 `Ctrl+C`.
 
 #### Python
 
-You'll see a `KeyboardInterrupt` traceback print in Terminal A — that's
-expected and harmless; it's Python's normal way of reporting that a
-`Ctrl+C` interrupted a blocking call. The server has stopped either
-way.
+Terminal A will print a `KeyboardInterrupt` traceback. This is expected
+and harmless. Python uses it to report that `Ctrl+C` interrupted a
+blocking call, and the server has stopped.
 
 #### Go
 
-The process just exits, with no further message — that's Go's normal,
-unremarkable `Ctrl+C` behavior for a program with no special
-shutdown handling.
+The process exits without another message. This is normal Go behavior
+for a program with no special shutdown handling.
 
 #### Java
 
-The process exits; Gradle may print a line noting the build was
-cancelled. Either way, the server has stopped.
+The process exits, and Gradle may report that the build was cancelled.
+Either way, the server has stopped.
 
-### Step 2 — document the contract
+### Step 2. Document the contract
 
-Write `examples/order-api/CONTRACT.md` documenting, for each endpoint:
-the HTTP method and path, the request body shape (if any), every
-response you can produce (status code + body shape), and what causes
-each error response. This file describes the wire-level HTTP contract
-— it's shared across all three tracks because the contract itself
-doesn't depend on which language implements it.
+Write `examples/order-api/CONTRACT.md`. For each endpoint, document the
+HTTP method and path, the request body when present, every possible
+response with its status code and body, and the cause of each error.
+This HTTP contract is shared by all three tracks because it does not
+depend on the implementation language.
 
-To get started, here's the shape for one endpoint — fill in the rest
-yourself from what you actually observed in Step 1, not from guessing:
+The example below shows the structure for one endpoint. Complete the
+rest from what you observed in Step 1 rather than guessing.
 
 ```markdown
 ### `POST /orders`
@@ -174,14 +169,14 @@ Creates a new order.
 ```
 
 Do the same for `GET /orders/{id}` (both the found and not-found
-cases) and for an unknown path. Don't just transcribe this template —
-confirm each case against a real response first.
+cases) and for an unknown path. Confirm every case against a real
+response instead of merely copying the template.
 
-### Step 3 — add a validation rule
+### Step 3. Add a validation rule
 
-The owner has a new requirement: **each entry in `items` must be a
-non-empty string**. A number, an empty string, or `null` in the list
-should be rejected the same way a missing `items` list already is.
+The owner adds a requirement. **Each entry in `items` must be a
+non-empty string.** Reject numbers, empty strings, and `null` values in
+the same way as a missing `items` list.
 
 #### Python
 
@@ -210,32 +205,32 @@ finds an entry that isn't a non-empty string. Each entry comes out of
 the parsed JSON as `Object`, so you'll need an `instanceof` check
 before checking it's non-empty.
 
-### Step 4 — add a test
+### Step 4. Add a test
 
 #### Python
 
 Add a test to `tests/test_api.py` confirming that
-`POST /orders` with `{"items": ["Burger", ""]}` (or any other
-non-string entry) returns `400`.
+`POST /orders` with `{"items": ["Burger", ""]}` (or another invalid
+entry) returns `400`.
 
 #### Go
 
 Add a test to `api_test.go` confirming that `POST /orders` with
-`{"items": ["Burger", ""]}` returns `400`. Follow the shape of
+`{"items": ["Burger", ""]}` returns `400`. Use
 `TestPostWithoutItemsReturns400`.
 
 #### Java
 
 Add a test to `ApiServerTest.java` confirming that `POST /orders`
-with `{"items": ["Burger", ""]}` returns `400`. Follow the shape of
+with `{"items": ["Burger", ""]}` returns `400`. Use
 `postWithoutItemsReturns400`.
 
-### Step 5 — update the contract
+### Step 5. Update the contract
 
-Add the new error case to `CONTRACT.md`, under `POST /orders`'s list
-of responses.
+Add the new error case to the list of `POST /orders` responses in
+`CONTRACT.md`.
 
-### Step 6 — set up CI
+### Step 6. Set up CI
 
 Create `.github/workflows/order-api-ci.yml` (same pattern as
 Lab 19's `team-inventory-ci.yml`) triggering on `[push, pull_request]`.
@@ -318,28 +313,26 @@ jobs:
         run: ./gradlew test
 ```
 
-This workflow only runs your own track — it has no reason to set up
-Python, Go, *and* Java just to test one project. That's a different
-thing from this repository's own maintainer workflow
-(`.github/workflows/course-health.yml`), which does set up all three,
-because it's checking the whole course, not one student's project.
+This workflow runs only your track, so it does not need to configure
+Python, Go, *and* Java for one project. The repository's maintenance
+workflow, `.github/workflows/course-health.yml`, configures all three
+because it checks the entire course.
 
-### Step 7 — branch, PR, review, merge
+### Step 7. Open and merge a pull request
 
 Do this lab's work on a branch (for example `feature/api-contract`),
-push it, and open a pull request — same process as Lab 18: GitHub's
-web UI first, double-checking the base repository and base branch
-before you create it. Confirm the new CI check goes green on the PR
-(open the **Checks** tab on the PR page, and confirm it's the
-`order-api CI` workflow you just added that ran, not just the
-pre-existing `team-inventory CI` from Lab 19). Then merge, and pull
-the merged change into your local `main`.
+push it, and open a pull request as you did in Lab 18. Start in GitHub's
+web interface and check the target repository and branch before
+creating the pull request. Open its **Checks** tab and confirm that the
+new `order-api CI` workflow is green. Do not rely only on the existing
+`team-inventory CI` workflow from Lab 19. Then merge the pull request
+and pull the merged change into your local `main`.
 
 ## Acceptance criteria
 
 - `examples/order-api/CONTRACT.md` exists and documents every
   endpoint, every status code it can return, and what triggers each
-  one — including the new item-validation error case.
+  one, including the new item-validation error case.
 - The new item-validation rule is implemented and has a passing test.
 - Your track's test command passes with the original three tests plus
   your new one (4 total).
@@ -381,9 +374,9 @@ test -f examples/order-api/CONTRACT.md && echo "contract documented"
 test -f .github/workflows/order-api-ci.yml && echo "CI workflow exists"
 ```
 
-Expected: `4 passed` (or the Java/Gradle equivalent), `contract
-documented`, and `CI workflow exists` — plus a green check on the
-pull request that merged this lab's work.
+Expect `4 passed` (or the Java/Gradle equivalent), `contract
+documented`, and `CI workflow exists`. The pull request used to merge
+this lab should also have a green check.
 
 ## Think about it
 
@@ -399,47 +392,42 @@ pull request that merged this lab's work.
 
 ### Python
 
-- **Hint 1:** `curl -i` shows you the response status line and headers,
-  not just the body — useful for confirming status codes by hand.
-- **Hint 2:** The new validation goes in `do_POST`, checked right after
-  the existing "must be a non-empty list" check, before the order is
-  created.
-- **Hint 3:** `all(isinstance(item, str) and item.strip() for item in
+- **Hint 1.** `curl -i` shows the response status line and headers, not
+  just the body. Use them to confirm status codes by hand.
+- **Hint 2.** Put the new validation in `do_POST`, after the existing
+  "must be a non-empty list" check and before creating the order.
+- **Hint 3.** `all(isinstance(item, str) and item.strip() for item in
   items)` is one way to check every item is a non-empty string.
 
 ### Go
 
-- **Hint 1:** `curl -i` shows you the response status line and headers,
-  not just the body — useful for confirming status codes by hand.
-- **Hint 2:** The new validation goes in `handleCreateOrder`, checked
-  right after the existing `len(items) == 0` check, before the order
-  is created.
-- **Hint 3:** `item.(string)` is a type assertion — paired with its
+- **Hint 1.** `curl -i` shows the response status line and headers, not
+  just the body. Use them to confirm status codes by hand.
+- **Hint 2.** Put the new validation in `handleCreateOrder`, after the
+  existing `len(items) == 0` check and before creating the order.
+- **Hint 3.** `item.(string)` is a type assertion. Paired with its
   two-value form (`s, ok := item.(string)`), it tells you both whether
   an entry is a string and, if so, gives it to you to check with
   `strings.TrimSpace(s) == ""`.
 
 ### Java
 
-- **Hint 1:** `curl -i` shows you the response status line and headers,
-  not just the body — useful for confirming status codes by hand.
-- **Hint 2:** The new validation goes in `handleCreateOrder`, checked
-  right after the existing `items.isEmpty()` check, before the order
-  is created.
-- **Hint 3:** Java's pattern-matching `instanceof` (`if (item
+- **Hint 1.** `curl -i` shows the response status line and headers, not
+  just the body. Use them to confirm status codes by hand.
+- **Hint 2.** Put the new validation in `handleCreateOrder`, after the
+  existing `items.isEmpty()` check and before creating the order.
+- **Hint 3.** Java's pattern-matching `instanceof` (`if (item
   instanceof String s)`) both checks the type and gives you a usable
-  `String` variable in one step — pair it with `s.trim().isEmpty()`.
+  `String` variable in one step. Pair it with `s.trim().isEmpty()`.
 
-Before moving on: commit and push everything from this lab
-(`git add -A && git commit -m "..."; git push`). Act IV's
-branch → PR → green CI → merge loop doesn't stop just because Act V
-changed which project you're working in — from here through the rest
-of Act V, every lab's changes go through it, now covering `order-api`.
+Before moving on, commit and push everything from this lab
+(`git add -A && git commit -m "..."; git push`). Keep using the process
+from Act IV: branch, pull request, green CI, and merge. Every change in
+Act V follows it, now for `order-api`.
 
 ## What's next
 
-Your API works — until you restart it and every order you created
-disappears. Next, the data has to survive — in Python, Go, and Java
-alike.
+Your API works until you restart it and every order disappears. Next,
+the data has to survive in Python, Go, and Java alike.
 
 Continue to [Lab 22 — Code changed, old data remained](../22-data-outlives-code/README.md).

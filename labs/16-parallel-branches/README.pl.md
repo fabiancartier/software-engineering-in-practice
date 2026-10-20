@@ -1,66 +1,66 @@
-# Lab 16 — Branche istnieją, bo praca dzieje się równolegle
+# Lab 16 — Gałęzie istnieją, bo praca toczy się równolegle
 
 ## Sytuacja
 
-Ty i kolega z zespołu musicie dodać funkcję ostrzeżenia do skryptu
-magazynu kuchennego, dziś, bez czekania na siebie nawzajem. Branche to
-sposób, żebyście oboje zaczęli z tego samego miejsca i pracowali w tym
-samym czasie, bez dotykania pracy drugiej osoby jeszcze.
+Ty i druga osoba z zespołu musicie dziś dodać ostrzeżenia do skryptu
+obsługującego magazyn kuchenny, bez czekania na siebie. Gałęzie
+pozwalają zacząć z tego samego miejsca i pracować równolegle, a
+niedokończone zmiany pozostają rozdzielone.
 
-To pierwszy lab w Akcie IV, i tak jak w Akcie II i Akcie III, Python,
-Go i Java są tutaj wszystkie prawdziwymi, kompletnymi ścieżkami —
-czytaj tylko swoją.
+To pierwszy lab w Akcie IV. Podobnie jak w Aktach II i III, Python, Go
+i Java tworzą kompletne ścieżki. Czytaj tylko instrukcje dla wybranego
+języka.
 
 ## Cele nauki
 
 Po tym labie potrafisz:
 
-- Utworzyć i przełączyć się na nowy branch z konkretnego punktu
-  startowego.
-- Wylistować istniejące branche i wyjaśnić, co każdy z nich zawiera.
+- Utworzyć nową gałąź w konkretnym punkcie historii i przełączyć się na
+  nią.
+- Wyświetlić istniejące gałęzie i wyjaśnić, co zawiera każda z nich.
 - Przeczytać wynik `git log --all --graph` i zidentyfikować
   rozbieżną historię.
 
 ## Zanim zaczniesz
 
-- Laby 06-15 ukończone, w Twojej wybranej ścieżce.
+- Najpierw ukończ laby 06-15 w wybranej ścieżce.
 - Polecenia Gita w tym labie (`git switch`, `git branch`, `git merge`,
   `git commit`) operują na historii **całego repozytorium kursu**, nie
-  na osobnym repozytorium wewnątrz folderu Twojego języka — branch,
-  który tworzysz, jest branchem całego repo, nawet jeśli dotkniesz
-  tylko plików pod katalogiem swojej własnej ścieżki.
+  na osobnym repozytorium w katalogu wybranego języka. Każda utworzona
+  gałąź należy do całego repozytorium, nawet jeśli zmieniasz tylko
+  pliki jednej ścieżki.
 
 ### Python
 
-- Bieżący katalog: `examples/team-inventory/python/`.
-- Potwierdź, że starter działa: `uv run pytest -v` i `uv run python
+- Pracuj w `examples/team-inventory/python/`.
+- Sprawdź wersję startową poleceniami `uv run pytest -v` i `uv run python
   inventory.py`.
 
 ### Go
 
-- Bieżący katalog: `examples/team-inventory/go/`.
-- Potwierdź, że starter działa: `go test ./...` i `go run .`.
+- Pracuj w `examples/team-inventory/go/`.
+- Sprawdź wersję startową poleceniami `go test ./...` i `go run .`.
 
 ### Java
 
-- Bieżący katalog: `examples/team-inventory/java/`.
-- Potwierdź, że starter działa: `./gradlew test` i `./gradlew run
+- Pracuj w `examples/team-inventory/java/`.
+- Sprawdź wersję startową poleceniami `./gradlew test` i `./gradlew run
   --console=plain`.
 
 ## Twoje zadanie
 
-Zagrasz obu "kolegów z zespołu" sam/a, jeden branch na raz. Punkt
-startowy, nazwy branchy i kolejność są te same dla każdej ścieżki —
-różni się tylko zawartość plików.
+Wykonasz pracę obu osób z zespołu, po jednej gałęzi naraz. Punkt
+startowy, nazwy gałęzi i kolejność są takie same w każdej ścieżce.
+Różni się tylko zawartość plików.
 
-1. Potwierdź, że zaczynasz z czystego `main`: `git switch main` potem
-   `git status --short`. Jeśli to coś wypisuje, zacommituj albo
-   stashuj to najpierw — obie branche poniżej muszą zacząć z tego
-   samego czystego punktu.
+1. Sprawdź, czy zaczynasz od czystej gałęzi `main`. Uruchom
+   `git switch main`, a następnie `git status --short`. Jeśli drugie
+   polecenie coś wypisze, najpierw utwórz commit albo odłóż zmiany w
+   stashu. Obie gałęzie muszą zacząć w tym samym punkcie.
 
-**Kolega A — ostrzeżenie o niskim stanie:**
+**Osoba A, ostrzeżenie o niskim stanie**
 
-2. Z `main`, utwórz i przełącz się na nowy branch:
+2. Na `main` utwórz nową gałąź i przełącz się na nią.
    `git switch -c feature/low-stock-warning`.
 
 ### Python
@@ -86,17 +86,17 @@ różni się tylko zawartość plików.
 
        assert result == ["Milk"]
    ```
-6. Uruchom `uv run pytest -v`, potem zacommituj wszystko na tym
-   branchu.
+6. Uruchom `uv run pytest -v`, a potem utwórz na tej gałęzi commit ze
+   wszystkimi zmianami.
 
 ### Go
 
 3. W `inventory.go` dodaj
    `func LowStockItems(inventory []Item, threshold int) []string`,
    zwracającą nazwy pozycji, których `Quantity` jest poniżej
-   `threshold` (w Go nie ma składni domyślnych argumentów, więc
-   `threshold` jest zawsze podawany jawnie — przekażesz `5` z
-   `Summarize`). Wstaw ją **bezpośrednio powyżej `Summarize`**.
+   `threshold`. W Go nie ma domyślnych argumentów, więc `threshold`
+   zawsze podajesz jawnie. Z `Summarize` przekażesz `5`.
+   Wstaw funkcję **bezpośrednio powyżej `Summarize`**.
 4. W `Summarize`, zaraz po pętli `for` i przed linią `return`, dodaj:
    ```go
    	lowStock := LowStockItems(inventory, 5)
@@ -118,7 +118,7 @@ różni się tylko zawartość plików.
    }
    ```
 6. Uruchom `gofmt -l .` (oczekiwane: brak wyniku) i `go test ./... -v`,
-   potem zacommituj wszystko na tym branchu.
+   a potem utwórz na tej gałęzi commit ze wszystkimi zmianami.
 
 ### Java
 
@@ -147,13 +147,14 @@ różni się tylko zawartość plików.
            assertEquals(List.of("Milk"), result);
        }
    ```
-6. Uruchom `./gradlew test`, potem zacommituj wszystko na tym branchu.
+6. Uruchom `./gradlew test`, a potem utwórz na tej gałęzi commit ze
+   wszystkimi zmianami.
 
-**Kolega B — ostrzeżenie o terminie ważności:**
+**Osoba B, ostrzeżenie o terminie ważności**
 
-7. Przełącz się z powrotem na `main` — **nie mergeuj jeszcze
+7. Wróć na `main`. **Nie scalaj jeszcze gałęzi
    `feature/low-stock-warning`.**
-8. Z `main`, utwórz i przełącz się na nowy branch:
+8. Na `main` utwórz nową gałąź i przełącz się na nią.
    `git switch -c feature/expiry-warning`.
 
 ### Python
@@ -161,8 +162,8 @@ różni się tylko zawartość plików.
 9. W `inventory.py` dodaj
    `expiring_items(inventory: list[dict], days: int = 3) -> list[str]`,
    zwracającą nazwy pozycji, których `expires_in_days` jest `<=`
-   `days`. Wstaw ją **bezpośrednio powyżej `summarize`** — to samo
-   miejsce co krok 3, bo zaczynasz z tego samego `main`, co kolega A.
+   `days`. Wstaw ją **bezpośrednio powyżej `summarize`**, w tym samym
+   miejscu co w kroku 3, bo zaczynasz z tego samego `main` co osoba A.
 10. W `summarize`, w **tym samym miejscu** co krok 4 (zaraz po pętli
     `for`, przed `return`), dodaj:
     ```python
@@ -173,7 +174,7 @@ różni się tylko zawartość plików.
 11. W `tests/test_inventory.py` zmień import w pierwszej linii na
     `from inventory import expiring_items, summarize`, potem dodaj
     test bezpośrednio po
-    `test_summarize_lists_each_item_with_quantity` — to samo miejsce
+    `test_summarize_lists_each_item_with_quantity`, w tym samym miejscu
     co krok 5:
     ```python
     def test_expiring_items_lists_items_within_days():
@@ -183,15 +184,15 @@ różni się tylko zawartość plików.
 
         assert result == ["Milk"]
     ```
-12. Uruchom `uv run pytest -v`, potem zacommituj wszystko na tym
-    branchu.
+12. Uruchom `uv run pytest -v`, a potem utwórz na tej gałęzi commit ze
+    wszystkimi zmianami.
 
 ### Go
 
 9. W `inventory.go` dodaj
    `func ExpiringItems(inventory []Item, days int) []string`, zwracającą
    nazwy pozycji, których `ExpiresInDays` jest `<=` `days`. Wstaw ją
-   **bezpośrednio powyżej `Summarize`** — to samo miejsce co krok 3.
+   **bezpośrednio powyżej `Summarize`**, w tym samym miejscu co krok 3.
 10. W `Summarize`, w **tym samym miejscu** co krok 4 (zaraz po pętli
     `for`, przed `return`), dodaj:
     ```go
@@ -201,7 +202,7 @@ różni się tylko zawartość plików.
     	}
     ```
 11. W `inventory_test.go` dodaj test bezpośrednio po
-    `TestSummarizeListsEachItemWithQuantity` — to samo miejsce co krok
+    `TestSummarizeListsEachItemWithQuantity`, w tym samym miejscu co krok
     5:
     ```go
     func TestExpiringItemsListsItemsWithinDays(t *testing.T) {
@@ -214,15 +215,15 @@ różni się tylko zawartość plików.
     	}
     }
     ```
-12. Uruchom `gofmt -l .` i `go test ./... -v`, potem zacommituj
-    wszystko na tym branchu.
+12. Uruchom `gofmt -l .` i `go test ./... -v`, a potem utwórz na tej
+    gałęzi commit ze wszystkimi zmianami.
 
 ### Java
 
 9. W `Inventory.java` dodaj
    `public static List<String> expiringItems(List<Item> inventory, int days)`,
    zwracającą nazwy pozycji, których `expiresInDays` jest `<=` `days`.
-   Wstaw ją **bezpośrednio powyżej `summarize`** — to samo miejsce co
+   Wstaw ją **bezpośrednio powyżej `summarize`**, w tym samym miejscu co
    krok 3.
 10. W `summarize`, w **tym samym miejscu** co krok 4 (zaraz po pętli
     `for`, przed `return`), dodaj:
@@ -233,9 +234,9 @@ różni się tylko zawartość plików.
             }
     ```
 11. W `InventoryTest.java` dodaj test bezpośrednio po
-    `summarizeListsEachItemWithQuantity` — to samo miejsce co krok 5
-    (import `assertEquals` z brancha kolegi A tutaj nie istnieje, bo
-    rozpocząłeś/aś od `main`; dodaj go w ten sam sposób):
+    `summarizeListsEachItemWithQuantity`, w tym samym miejscu co krok 5.
+    Importu `assertEquals` z gałęzi osoby A tutaj nie ma, bo ta gałąź
+    powstała z `main`; dodaj go w ten sam sposób.
     ```java
         @Test
         void expiringItemsListsItemsWithinDays() {
@@ -246,24 +247,23 @@ różni się tylko zawartość plików.
             assertEquals(List.of("Milk"), result);
         }
     ```
-12. Uruchom `./gradlew test`, potem zacommituj wszystko na tym
-    branchu.
+12. Uruchom `./gradlew test`, a potem utwórz na tej gałęzi commit ze
+    wszystkimi zmianami.
 
-**Obie ścieżki:**
+**Wszystkie ścieżki**
 
 13. Uruchom `git branch` i `git log --all --graph --oneline -5`.
-    Potwierdź, że obie branche istnieją, obie zaczynają od tego samego
-    commita, i żadna nie zawiera jeszcze pracy drugiej.
+    Potwierdź, że obie gałęzie istnieją i zaczynają od tego samego
+    commitu. Żadna nie powinna jeszcze zawierać pracy z drugiej.
 
 ## Kryteria akceptacji
 
-- Obie branche `feature/low-stock-warning` i `feature/expiry-warning`
-  istnieją, każda z dokładnie jednym commitem feature na tym samym
-  commicie `main`.
-- Przełączenie się na każdy branch osobno i uruchomienie komendy
-  testowej Twojej ścieżki przechodzi na tym branchu samodzielnie.
-- Plik źródłowy żadnego brancha nie zawiera funkcji/metody drugiego
-  brancha.
+- Istnieją gałęzie `feature/low-stock-warning` i
+  `feature/expiry-warning`. Każda ma dokładnie jeden commit funkcjonalny
+  utworzony na tym samym commicie z `main`.
+- Po przełączeniu na każdą z gałęzi testy wybranej ścieżki przechodzą.
+- Plik źródłowy na żadnej gałęzi nie zawiera funkcji ani metody z
+  drugiej gałęzi.
 
 ## Weryfikacja
 
@@ -303,15 +303,16 @@ git switch main
 cd -
 ```
 
-Oczekiwane: obie branche wylistowane, oba przebiegi testów przechodzą,
-a `main` sam wciąż nie ma żadnej funkcji (to zadanie Lab 17).
+Obie gałęzie powinny pojawić się na liście, a oba uruchomienia testów
+powinny przejść. Na `main` nadal nie ma żadnej z nowych funkcji; ich
+połączenie jest zadaniem w labie 17.
 
 ## Zastanów się
 
-- Rozgałęziłeś/aś `feature/expiry-warning` z `main`, nie z
-  `feature/low-stock-warning`. Co byłoby inne w nadchodzącym merge,
-  gdybyś rozgałęził/a go z `feature/low-stock-warning` zamiast tego?
-- Obie branche zmieniły tę samą funkcję w tym samym miejscu. Czy Git
+- Gałąź `feature/expiry-warning` powstała z `main`, a nie z
+  `feature/low-stock-warning`. Jak wpłynęłoby na późniejsze scalanie
+  utworzenie jej z `feature/low-stock-warning`?
+- Obie gałęzie zmieniły tę samą funkcję w tym samym miejscu. Czy Git
   widzi to teraz jako problem? Czemu tak albo czemu nie, na tym
   etapie?
 
@@ -319,49 +320,46 @@ a `main` sam wciąż nie ma żadnej funkcji (to zadanie Lab 17).
 
 ### Python
 
-- **Podpowiedź 1:** `git switch -c <name>` tworzy i przełącza się na
-  branch w jednym kroku. Samo `git switch <name>` przełącza się na
-  branch, który już istnieje.
-- **Podpowiedź 2:** Upewnij się, że jesteś na `main` (`git branch`
-  pokazuje `*` przy Twoim bieżącym branchu) przed utworzeniem każdego
-  nowego brancha feature — jeśli rozgałęzisz B z A przez pomyłkę, B
+- **Podpowiedź 1.** `git switch -c <name>` tworzy gałąź i od razu się
+  na nią przełącza. `git switch <name>` przełącza na istniejącą gałąź.
+- **Podpowiedź 2.** Przed utworzeniem każdej gałęzi funkcjonalnej upewnij
+  się, że jesteś na `main`. `git branch` oznacza bieżącą gałąź znakiem
+  `*`. Jeśli przez pomyłkę utworzysz B z A, B
   będzie już zawierać pracę A.
-- **Podpowiedź 3:** I nowa funkcja pomocnicza (bezpośrednio powyżej
+- **Podpowiedź 3.** Nowa funkcja pomocnicza (bezpośrednio powyżej
   `summarize`), i dwa wstawione bloki wewnątrz `summarize` (zaraz po
   pętli `for`) muszą trafić w dokładnie to samo miejsce w obu
-  branchach, żeby następny lab zadziałał tak, jak opisano.
+  gałęziach, aby następny lab zadziałał zgodnie z opisem.
 
 ### Go
 
-- **Podpowiedź 1:** `git switch -c <name>` tworzy i przełącza się na
-  branch w jednym kroku. Samo `git switch <name>` przełącza się na
-  branch, który już istnieje.
-- **Podpowiedź 2:** Upewnij się, że jesteś na `main` (`git branch`
-  pokazuje `*` przy Twoim bieżącym branchu) przed utworzeniem każdego
-  nowego brancha feature — jeśli rozgałęzisz B z A przez pomyłkę, B
+- **Podpowiedź 1.** `git switch -c <name>` tworzy gałąź i od razu się
+  na nią przełącza. `git switch <name>` przełącza na istniejącą gałąź.
+- **Podpowiedź 2.** Przed utworzeniem każdej gałęzi funkcjonalnej upewnij
+  się, że jesteś na `main`. `git branch` oznacza bieżącą gałąź znakiem
+  `*`. Jeśli przez pomyłkę utworzysz B z A, B
   będzie już zawierać pracę A.
-- **Podpowiedź 3:** I nowa funkcja pomocnicza (bezpośrednio powyżej
+- **Podpowiedź 3.** Nowa funkcja pomocnicza (bezpośrednio powyżej
   `Summarize`), i dwie wstawione linie wewnątrz `Summarize` (zaraz po
   pętli `for`) muszą trafić w dokładnie to samo miejsce w obu
-  branchach, żeby następny lab zadziałał tak, jak opisano.
+  gałęziach, aby następny lab zadziałał zgodnie z opisem.
 
 ### Java
 
-- **Podpowiedź 1:** `git switch -c <name>` tworzy i przełącza się na
-  branch w jednym kroku. Samo `git switch <name>` przełącza się na
-  branch, który już istnieje.
-- **Podpowiedź 2:** Upewnij się, że jesteś na `main` (`git branch`
-  pokazuje `*` przy Twoim bieżącym branchu) przed utworzeniem każdego
-  nowego brancha feature — jeśli rozgałęzisz B z A przez pomyłkę, B
+- **Podpowiedź 1.** `git switch -c <name>` tworzy gałąź i od razu się
+  na nią przełącza. `git switch <name>` przełącza na istniejącą gałąź.
+- **Podpowiedź 2.** Przed utworzeniem każdej gałęzi funkcjonalnej upewnij
+  się, że jesteś na `main`. `git branch` oznacza bieżącą gałąź znakiem
+  `*`. Jeśli przez pomyłkę utworzysz B z A, B
   będzie już zawierać pracę A.
-- **Podpowiedź 3:** I nowa metoda pomocnicza (bezpośrednio powyżej
+- **Podpowiedź 3.** Nowa metoda pomocnicza (bezpośrednio powyżej
   `summarize`), i dwie wstawione linie wewnątrz `summarize` (zaraz po
   pętli `for`) muszą trafić w dokładnie to samo miejsce w obu
-  branchach, żeby następny lab zadziałał tak, jak opisano.
+  gałęziach, aby następny lab zadziałał zgodnie z opisem.
 
 ## Co dalej
 
-Obie funkcje istnieją. Żadna nie wie o drugiej. Dalej je połączysz — i
-odkryjesz, że nie scalają się po cichu.
+Obie funkcje istnieją, ale żadna nie wie o drugiej. W następnym labie
+połączysz je i zobaczysz, dlaczego Git potrzebuje Twojej pomocy.
 
-Przejdź do [Lab 17 — Konflikt merge'a](../17-merge-conflict/README.pl.md).
+Przejdź do [Lab 17 — Konflikt scalania](../17-merge-conflict/README.pl.md).

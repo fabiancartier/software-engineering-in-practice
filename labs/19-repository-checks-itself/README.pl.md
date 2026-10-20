@@ -2,53 +2,49 @@
 
 ## Sytuacja
 
-Zmiana zmergowana tydzień temu złamała zestaw testów na `main` — autor
-zapomniał uruchomić testy przed mergem, a reviewer zaufał opisowi PR
-zamiast faktycznie coś uruchomić. Nikt tego nie zauważył, aż ktoś
-uruchomił program ręcznie i się wywalił.
+Zmiana scalona tydzień temu zepsuła testy na `main`. Autor zapomniał je
+uruchomić, a osoba przeglądająca zaufała opisowi pull requesta. Problem
+wyszedł na jaw dopiero wtedy, gdy ktoś ręcznie uruchomił program, a ten
+zakończył się błędem.
 
 ## Cele nauki
 
 Po tym labie potrafisz:
 
-- Napisać minimalny workflow GitHub Actions, który uruchamia się przy
-  każdym push i pull request.
-- Wyjaśnić, co robi każdy krok workflow CI, nie traktując YAML jako
-  magii.
-- Użyć czerwonego/zielonego checka CI jako dowodu, zamiast ufać
-  opisowi.
+- Napisać prosty przepływ pracy GitHub Actions uruchamiany przy każdym
+  pushu i pull requeście.
+- Wyjaśnić działanie każdego kroku CI, zamiast traktować YAML jak magię.
+- Traktować wynik kontroli CI jako dowód, zamiast ufać samemu opisowi.
 
 ## Zanim zaczniesz
 
-- Lab 18 ukończony: `main` ma funkcję reorder-report, zmergowaną przez
-  prawdziwy pull request, w Twojej wybranej ścieżce.
-- Bieżący katalog: katalog główny repozytorium — plik workflow mieszka
+- Najpierw ukończ lab 18. `main` powinien zawierać funkcję reorder-report
+  scaloną przez pull request w wybranej ścieżce.
+- Pracuj w katalogu głównym repozytorium. Plik przepływu pracy znajduje się
   poza `examples/team-inventory/`, w `.github/workflows/`.
 - Jeśli Twoje repozytorium jest forkiem, GitHub domyślnie wyłącza na
-  nim workflowy Actions. Otwórz zakładkę **Actions** swojego forka i
+  nim przepływy GitHub Actions. Otwórz zakładkę **Actions** swojego forka i
   kliknij **"I understand my workflows, go ahead and enable them"**,
-  zanim workflow tego laba w ogóle się uruchomi.
-- Kanoniczne repozytorium tego kursu ma własny workflow maintainera,
+  zanim przepływ z tego laba będzie mógł się uruchomić.
+- Główne repozytorium kursu ma własny przepływ utrzymaniowy,
   `.github/workflows/course-health.yml`, który sprawdza cały kurs. Jest
-  celowo zakresowany, żeby uruchamiać się tylko na kanonicznym
-  repozytorium, nie na Twoim forku — jeśli na niego spojrzysz,
-  zobaczysz warunek sprawdzający nazwę repozytorium, a na Twoim forku
-  GitHub pokazuje tamten job jako **skipped** (pominięty), nie
-  failed ani brakujący. To jest inna rzecz niż to, co budujesz tutaj:
-  Twój nowy workflow jest Twój, działa na Twoim forku, i sprawdza
-  tylko `examples/team-inventory/<twój-język>`.
+  celowo ograniczony do głównego repozytorium. W jego definicji zobaczysz
+  warunek sprawdzający nazwę repozytorium. Na Twoim forku GitHub oznaczy
+  to zadanie jako **skipped** (pominięte), a nie jako zakończone błędem
+  lub brakujące. Przepływ tworzony w tym labie działa na Twoim forku i
+  sprawdza tylko `examples/team-inventory/<twój-język>`.
 
 ## Twoje zadanie
 
-1. Utwórz branch `feature/ci-pipeline` z `main`.
+1. Utwórz gałąź `feature/ci-pipeline` z `main`.
 2. Utwórz `.github/workflows/team-inventory-ci.yml` (utwórz
    `.github/workflows/`, jeśli nie istnieje). Skopiuj **kompletny**
-   workflow swojej ścieżki poniżej do tego jednego pliku, dokładnie
-   tak, jak jest pokazany — nie wklejaj do niego niczego innego
-   najpierw. Każda wersja poniżej to cały plik, z kluczem `on:` raz
-   wliczonym; wszystkie trzy ścieżki akurat mają ten sam trigger `on:
+   przepływ swojej ścieżki do tego jednego pliku, dokładnie w pokazanej
+   postaci. Nie dodawaj wcześniej żadnej innej zawartości. Każdy przykład
+   jest całym plikiem i zawiera klucz `on:` tylko raz. Wszystkie trzy
+   ścieżki korzystają z tego samego wyzwalacza `on:
    [push, pull_request]`, ale to nie jest osobny fragment do dodania
-   na wierch tego, co już jest w przykładzie Twojej ścieżki.
+   nad przykładem wybranej ścieżki.
 
 ### Python
 
@@ -81,13 +77,12 @@ jobs:
         run: uv run pytest
 ```
 
-`uv sync --locked` failuje build, zamiast po cichu aktualizować
-`uv.lock`, jeśli ten jest kiedyś niezgodny z `pyproject.toml` —
-dokładnie taki dryf CI ma za zadanie łapać. `3.13` i `0.11.21`
-odpowiadają własnemu baseline'owi tego kursu — zobacz tabelę
-toolchainu w głównym [`README.pl.md`](../../README.pl.md), albo plik
-`.python-version` w katalogu głównym repozytorium, a nie konfigurację
-jakiegokolwiek edytora.
+Jeśli `uv.lock` nie zgadza się z `pyproject.toml`, polecenie
+`uv sync --locked` przerywa zadanie zamiast po cichu aktualizować plik.
+Właśnie takie rozbieżności ma wykrywać CI. Wersje `3.13` i `0.11.21`
+są zgodne z wymaganiami kursu. Sprawdź tabelę narzędzi w głównym
+[`README.pl.md`](../../README.pl.md) lub plik `.python-version` w katalogu
+głównym repozytorium, a nie konfigurację wybranego edytora.
 
 ### Go
 
@@ -111,8 +106,8 @@ jobs:
         run: go test ./...
 ```
 
-`1.27` odpowiada własnemu baseline'owi Go tego kursu — zobacz tabelę
-toolchainu w głównym [`README.pl.md`](../../README.pl.md).
+Wersja `1.27` jest zgodna z wymaganiami kursu. Zobacz tabelę narzędzi
+w głównym [`README.pl.md`](../../README.pl.md).
 
 ### Java
 
@@ -139,40 +134,39 @@ jobs:
         run: ./gradlew test
 ```
 
-`gradle/actions/setup-gradle@v6` sprawdza sumę kontrolną Twojego
-zacommitowanego Gradle Wrapper, zanim `./gradlew` się kiedykolwiek
-uruchomi, i cache'uje własne pobrania Gradle między przebiegami — **nie**
-instaluje globalnego Gradle; `./gradlew test` wciąż działa przez Twój
-zacommitowany wrapper, tak samo jak na Twojej własnej maszynie.
+`gradle/actions/setup-gradle@v6` sprawdza sumę kontrolną plików Gradle
+Wrappera przed uruchomieniem `./gradlew` i przechowuje pobrane pliki
+Gradle w pamięci podręcznej. **Nie** instaluje Gradle'a globalnie.
+Polecenie `./gradlew test` nadal korzysta z wrappera zapisanego w
+repozytorium, tak samo jak na Twoim komputerze.
 
 ## Wszystkie ścieżki
 
-3. Zacommituj i wypchnij branch, potem otwórz pull request (jak w Lab
-   18 — web UI najpierw, sprawdzając dwa razy base repository i
-   branch).
-4. Otwórz zakładkę "Checks" PR i obserwuj uruchomienie workflow.
-   Potwierdź, że jest zielony.
-5. Celowo złam test lokalnie (zmień asercję na coś fałszywego),
-   zacommituj, i wypchnij. Obserwuj, jak check staje się
-   **czerwony** na PR. Potem odwróć swoje celowe uszkodzenie, wypchnij
-   jeszcze raz, i obserwuj, jak staje się zielony.
-6. Zmergeuj PR, gdy jest zielony.
+3. Utwórz commit, wypchnij gałąź i otwórz pull request, tak jak w labie
+   18. Zacznij od interfejsu WWW i jeszcze raz sprawdź repozytorium oraz
+   gałąź docelową.
+4. Otwórz zakładkę **Checks** pull requesta i obserwuj działanie
+   przepływu. Sprawdź, czy kontrola zakończyła się powodzeniem.
+5. Celowo spraw, aby jeden test lokalnie nie przechodził, na przykład
+   zmieniając asercję na fałszywą. Utwórz commit i wypchnij go. Obserwuj,
+   jak kontrola w pull requeście zmienia kolor na **czerwony**. Następnie
+   wycofaj tę zmianę, wypchnij kolejny commit i poczekaj na zielony wynik.
+6. Scal pull request, gdy wszystkie kontrole są zielone.
 
 ## Kryteria akceptacji
 
-- `.github/workflows/team-inventory-ci.yml` istnieje, celuje w
-  `examples/team-inventory/<twój-język>`, i uruchamia się przy push i
-  pull request.
-- Osobiście zaobserwowałeś/aś, jak check zarówno failuje (czerwony,
-  dla prawdziwego złamanego testu), jak i przechodzi (zielony) na
-  prawdziwym pull request.
-- Finalny zmergowany stan na `main` jest zielony.
+- Plik `.github/workflows/team-inventory-ci.yml` istnieje, sprawdza
+  `examples/team-inventory/<twój-język>` i uruchamia się po wypchnięciu
+  zmian oraz dla pull requestów.
+- Na prawdziwym pull requeście udało Ci się zaobserwować zarówno czerwony
+  wynik dla testu, który nie przechodził, jak i zielony po jego naprawie.
+- Po scaleniu zmian kontrole na `main` są zielone.
 
 ## Weryfikacja
 
-Nie ma lokalnej komendy, która zastąpi "obserwuj, jak to się uruchamia
-na GitHubie" — ta obserwacja *jest* sensem tego laba. Lokalnie możesz
-tylko odtworzyć, co zrobi workflow:
+Żadne lokalne polecenie nie zastąpi obserwowania działania kontroli na
+GitHubie. Ta obserwacja *jest* sensem tego laba. Lokalnie możesz jedynie
+odtworzyć polecenia wykonywane przez przepływ:
 
 ### Python
 
@@ -199,73 +193,72 @@ cd examples/team-inventory/java
 cd -
 ```
 
-Jeśli to przechodzi lokalnie, a Twój YAML workflow uruchamia te same
-komendy w tym samym katalogu, check PR będzie się zgadzał.
+Jeśli testy przechodzą lokalnie, a plik YAML uruchamia te same polecenia
+w tym samym katalogu, wynik kontroli pull requesta powinien być taki sam.
 
 ## Zastanów się
 
-- W Lab 18, reviewer mógł pominąć uruchomienie Twoich testów i po
-  prostu zaufać opisowi PR. Co się zmieniło, gdy workflow już istniał
-  — kto, albo co, jest teraz odpowiedzialne za złapanie
-  nieprzetestowanej zmiany?
-- Workflow uruchamia te dokładne same komendy, które uruchamiałeś/aś
-  ręcznie przez kilka labów. Co Ci dała ich automatyzacja, jeśli same
-  komendy się nie zmieniły?
+- W labie 18 osoba przeglądająca mogła pominąć uruchomienie testów i
+  zaufać opisowi pull requesta. Co się zmieniło po dodaniu przepływu?
+  Kto lub co odpowiada teraz za wykrycie nieprzetestowanej zmiany?
+- Przepływ wykonuje te same polecenia, które od kilku labów uruchamiasz
+  ręcznie. Co daje ich automatyzacja, skoro same polecenia się nie
+  zmieniły?
 
 ## Jeśli utkniesz
 
 ### Python
 
-- **Podpowiedź 1:** Minimalny workflow potrzebuje `on:`, sekcji
-  `jobs:` z co najmniej jednym jobem, i listy `steps:` — checkout,
-  setup Pythona, instalacja `uv`, `uv sync --locked`, `uv run pytest`.
-  Wersja pokazana powyżej jest tą faktycznie zweryfikowaną dla tego
-  kursu.
-- **Podpowiedź 2:** Użyj `working-directory:
-  examples/team-inventory/python` na krokach, które uruchamiają `uv
-  sync --locked`/`uv run pytest`, bo domyślny katalog roboczy workflow
-  to katalog główny repozytorium.
-- **Podpowiedź 3:** Jeśli `uv sync --locked` failuje w CI, a `uv sync`
-  działa lokalnie, Twój `uv.lock` jest nieaktualny — uruchom `uv lock`
-  lokalnie, zacommituj zaktualizowany plik locka, i wypchnij jeszcze
-  raz.
+- **Podpowiedź 1.** Minimalny przepływ potrzebuje `on:`, sekcji `jobs:`
+  z co najmniej jednym zadaniem oraz listy `steps:`. Powinna ona zawierać
+  pobranie repozytorium, konfigurację Pythona, instalację `uv` oraz
+  polecenia `uv sync --locked` i `uv run pytest`. Powyższa wersja została
+  sprawdzona na potrzeby tego kursu.
+- **Podpowiedź 2.** Ustaw `working-directory:
+  examples/team-inventory/python` dla kroków z poleceniami
+  `uv sync --locked` i `uv run pytest`. Domyślnym katalogiem roboczym jest
+  katalog główny repozytorium.
+- **Podpowiedź 3.** Jeśli `uv sync --locked` kończy się błędem w CI, ale
+  `uv sync` działa lokalnie, plik `uv.lock` jest nieaktualny. Uruchom
+  lokalnie `uv lock`, zapisz zaktualizowany plik w commicie i ponownie
+  wypchnij zmiany.
 
 ### Go
 
-- **Podpowiedź 1:** Minimalny workflow potrzebuje `on:`, sekcji
-  `jobs:` z co najmniej jednym jobem, i listy `steps:` — checkout,
-  setup Go, `go test ./...`. Nie ma kroku instalacji/synchronizacji
-  tak, jak potrzebuje tego Python — system modułów Go rozwiązuje
-  zależności jako część samego `go test`.
-- **Podpowiedź 2:** Użyj `working-directory: examples/team-inventory/go`
-  na kroku testowym, bo domyślny katalog roboczy workflow to katalog
-  główny repozytorium.
-- **Podpowiedź 3:** Jeśli workflow nie może znaleźć Twojego pakietu,
-  sprawdź dwa razy, czy `go.mod` jest faktycznie zacommitowany —
-  nieśledzony `go.mod` działa na Twojej maszynie, ale nie istnieje z
-  punktu widzenia workflow.
+- **Podpowiedź 1.** Minimalny przepływ potrzebuje `on:`, sekcji `jobs:`
+  z co najmniej jednym zadaniem oraz listy `steps:`. Powinna ona zawierać
+  pobranie repozytorium, konfigurację Go i `go test ./...`. Osobny krok
+  instalowania lub synchronizowania zależności nie jest potrzebny.
+  System modułów Go zrobi to podczas `go test`.
+- **Podpowiedź 2.** Ustaw `working-directory: examples/team-inventory/go`
+  dla kroku testowego. Domyślnym katalogiem roboczym jest katalog główny
+  repozytorium.
+- **Podpowiedź 3.** Jeśli przepływ nie może znaleźć pakietu, sprawdź, czy
+  plik `go.mod` jest zapisany w commicie. Plik nieśledzony przez Git działa
+  na Twoim komputerze, ale nie jest dostępny dla GitHub Actions.
 
 ### Java
 
-- **Podpowiedź 1:** Minimalny workflow potrzebuje `on:`, sekcji
-  `jobs:` z co najmniej jednym jobem, i listy `steps:` — checkout,
-  setup JDK, `setup-gradle`, `./gradlew test`.
-- **Podpowiedź 2:** Użyj `working-directory:
-  examples/team-inventory/java` na kroku testowym, bo domyślny
-  katalog roboczy workflow to katalog główny repozytorium.
-- **Podpowiedź 3:** Jeśli workflow raportuje `gradlew: Permission
-  denied`, Twój zacommitowany plik `gradlew` gdzieś zgubił swój bit
-  wykonywalności — `chmod +x examples/team-inventory/java/gradlew`,
-  zacommituj zmianę mode, i wypchnij jeszcze raz.
+- **Podpowiedź 1.** Minimalny przepływ potrzebuje `on:`, sekcji `jobs:`
+  z co najmniej jednym zadaniem oraz listy `steps:`. Powinna ona zawierać
+  pobranie repozytorium, konfigurację JDK, `setup-gradle` i
+  `./gradlew test`.
+- **Podpowiedź 2.** Ustaw `working-directory:
+  examples/team-inventory/java` dla kroku testowego. Domyślnym katalogiem
+  roboczym jest katalog główny repozytorium.
+- **Podpowiedź 3.** Jeśli pojawi się błąd `gradlew: Permission denied`,
+  plik `gradlew` stracił uprawnienie do wykonywania. Uruchom
+  `chmod +x examples/team-inventory/java/gradlew`, zapisz zmianę trybu
+  pliku w commicie i ponownie ją wypchnij.
 
-Przed przejściem dalej: zacommituj i wypchnij wszystko z tego laba
-(`git add -A && git commit -m "..."; git push`). Nic później jeszcze
-nie zakłada czystego drzewa, ale Akt IV (zaczynający się od Lab 16)
-tak — przyzwyczajaj się już teraz.
+Przed przejściem dalej utwórz commit ze wszystkimi zmianami z tego laba
+i wypchnij go (`git add -A && git commit -m "..."; git push`). W kolejnych
+labach przyda się czyste drzewo robocze, więc warto już teraz wyrobić sobie
+ten nawyk.
 
 ## Co dalej
 
-Masz testy, review, i CI. Mając to wszystko, kiedy zmiana jest
-"zrobiona"?
+Masz testy, przegląd kodu i CI. Kiedy przy takim zestawie zabezpieczeń
+można uznać zmianę za ukończoną?
 
 Przejdź do [Lab 20 — Co znaczy "zrobione"?](../20-definition-of-done/README.pl.md).

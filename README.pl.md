@@ -2,10 +2,10 @@
 
 [Read this in English →](README.md)
 
-**Nowy/a tutaj? → [Zacznij tutaj](START-HERE.pl.md)** przeprowadzi Cię
-przez konfigurację komputera (Windows, macOS albo Linux) i otwarcie tego
-repozytorium — bez zakładanego doświadczenia z terminalem, Gitem czy
-GitHubem.
+**Jesteś tu pierwszy raz? [Zacznij tutaj](START-HERE.pl.md).** Ten
+przewodnik pomoże Ci przygotować komputer z Windows, macOS albo Linuksem
+i otworzyć repozytorium. Nie musisz wcześniej znać terminala, Gita ani
+GitHuba.
 
 [![Course Health](https://github.com/michalmaj/software-engineering-in-practice/actions/workflows/course-health.yml/badge.svg)](https://github.com/michalmaj/software-engineering-in-practice/actions/workflows/course-health.yml)
 [![Python 3.13](https://img.shields.io/badge/Python-3.13-blue)](https://www.python.org/)
@@ -17,33 +17,32 @@ GitHubem.
 [![License: CC BY 4.0](https://img.shields.io/badge/content-CC%20BY%204.0-lightgrey)](LICENSE-CONTENT.md)
 [![Codespaces — ready](https://img.shields.io/badge/Codespaces%20%E2%80%94%20ready-success)](#github-codespaces)
 
-> Od terminala do zespołu — ucz się budować oprogramowanie, które przetrwa zmianę.
+> Od terminala do pracy zespołowej. Ucz się budować oprogramowanie,
+> które można bezpiecznie zmieniać.
 
 ## Czym jest ten kurs
 
-30 spotkań laboratoryjnych po 90 minut: praktyczny kurs laboratoryjny z
-inżynierii oprogramowania, opowiedziany jako jedna ciągła, progresywna
-historia, a nie katalog technologii. Jest pomyślany dla studentów kursu
-laboratoryjnego z Inżynierii Oprogramowania — nie zakłada wcześniejszego
-doświadczenia zawodowego w programowaniu, tylko podstawową znajomość
-języka, który wybierzesz dla swojego tracku (Python, Go albo Java).
+To praktyczny kurs inżynierii oprogramowania złożony z 30
+dziewięćdziesięciominutowych laboratoriów. Kolejne zadania rozwijają
+jeden projekt i wynikają z problemów napotkanych wcześniej. Kurs jest
+przeznaczony dla studentów. Nie wymaga doświadczenia zawodowego,
+wystarczą podstawy wybranego języka: Pythona, Go albo Javy.
 
 ## Główna idea
 
-> Programowanie polega na tym, żeby program działał. Inżynieria
-> oprogramowania polega na tym, żeby oprogramowanie dało się bezpiecznie
-> zmieniać, rozumieć, przeglądać, odtwarzać, obsługiwać i przekazywać
-> dalej.
+> W programowaniu chodzi o to, żeby program działał. W inżynierii
+> oprogramowania również o to, żeby można go było bezpiecznie zmieniać,
+> zrozumieć, sprawdzić, odtworzyć i przekazać kolejnej osobie.
 
-Każde laboratorium istnieje dlatego, że poprzedni stan projektu stworzył
-problem wart rozwiązania. Najpierw spotkasz problem, dopiero potem jego
-nazwę.
+Każde laboratorium zaczyna się od problemu, który pojawił się na
+poprzednim etapie projektu. Najpierw go napotkasz, potem poznasz jego
+nazwę i sposób rozwiązania.
 
 ## Podróż przez kurs
 
 ```text
 stanowisko pracy → terminal → Git → projekt → testy → projektowanie →
-współpraca → CI → API / dane / awarie → wydanie →
+współpraca → CI → API, dane i awarie → wydanie →
 projekt zespołowy → przekazanie
 ```
 
@@ -58,19 +57,18 @@ projekt zespołowy → przekazanie
 
 ## Zacznij tutaj
 
-Nowy/a w terminalu, Gicie albo GitHubie? Podążaj najpierw za
-[`START-HERE.pl.md`](START-HERE.pl.md) — wybiera właściwy przewodnik dla
-Twojego komputera (Windows, macOS albo Linux) i przeprowadza Cię przez
-instalację Gita i VS Code, fork tego repozytorium i jego klonowanie,
-zakładając zerowe wcześniejsze doświadczenie.
+Nie znasz jeszcze terminala, Gita albo GitHuba? Zacznij od
+[`START-HERE.pl.md`](START-HERE.pl.md). Znajdziesz tam osobne instrukcje
+dla Windows, macOS i Linuksa: instalację Gita i VS Code, utworzenie forka
+oraz sklonowanie repozytorium.
 
 Już czujesz się swobodnie z Gitem i terminalem? Krótka wersja:
 
 1. Zrób fork tego repozytorium (przycisk **Fork** w prawym górnym rogu
    strony GitHub).
-2. Sklonuj swój fork i otwórz go w VS Code — zobacz
-   [`START-HERE.pl.md`](START-HERE.pl.md) po dokładne komendy dla
-   swojego systemu.
+2. Sklonuj swój fork i otwórz go w VS Code. Odpowiednie polecenia dla
+   swojego systemu znajdziesz w
+   [`START-HERE.pl.md`](START-HERE.pl.md).
 3. Otwórz
    [`labs/01-workstation/README.pl.md`](labs/01-workstation/README.pl.md)
    i zaczynaj.
@@ -80,56 +78,51 @@ Wolisz środowisko w przeglądarce zamiast instalować coś lokalnie? Zobacz
 
 ## Konfiguracja lokalna (ścieżka domyślna)
 
-Windows, macOS i Linux to teraz równoprawne, w pełni wspierane ścieżki —
-nie fallback. [`START-HERE.pl.md`](START-HERE.pl.md) i przewodniki pod
-[`docs/setup/`](docs/setup/) prowadzą przez każdą z nich w pełnym,
-krok-po-kroku szczególe.
+Windows, macOS i Linux są wspierane na takich samych zasadach.
+[`START-HERE.pl.md`](START-HERE.pl.md) oraz przewodniki w
+[`docs/setup/`](docs/setup/) opisują konfigurację każdego z tych
+systemów krok po kroku.
 
-Samo zdobycie repozytorium na swój komputer wymaga tylko Gita — bez
-Docker Desktop, bez WSL, bez GitHub Desktop. **Nie** będziesz potrzebować
-Pythona, Go ani JDK, aż dotrzesz do labu, w którym wybierasz track
-językowy — instalowanie wszystkich trzech toolchainów na starcie nie
-jest potrzebne i nie jest oczekiwane na Lab 01.
+Do pobrania repozytorium potrzebujesz tylko Gita. Docker Desktop, WSL i
+GitHub Desktop nie są wymagane. Pythona, Go albo JDK zainstalujesz
+dopiero wtedy, gdy wybierzesz ścieżkę językową. Na początku kursu nie
+musisz instalować wszystkich trzech zestawów narzędzi.
 
-Gdy już wybierzesz track językowy, kolejne laby potrzebują prawdziwego
-toolchainu, i nie będziemy udawać inaczej:
+Po wybraniu języka będzie Ci potrzebny odpowiedni zestaw narzędzi:
 
 | Narzędzie | Wymagana wersja      |
 |-----------|------------------------|
 | Python    | 3.13.x                 |
-| `uv`      | dokładnie 0.11.21      |
+| `uv`      | 0.11.21                 |
 | Go        | 1.27.x                 |
 | JDK       | 21                     |
 
-Gradle **nie** jest wymaganiem globalnym: startery Java mają już własny,
-zacommitowany Gradle Wrapper (`./gradlew`), więc lokalnie potrzebujesz
-tylko JDK. Żeby sprawdzić swój toolchain względem tej tabeli w
-dowolnym momencie, uruchom `./scripts/check-environment.sh` — to
-narzędzie referencyjne dla późniejszych labów, nie brama dla Lab 01.
+Nie musisz osobno instalować Gradle. Startery w Javie zawierają Gradle
+Wrapper (`./gradlew`), dlatego lokalnie wystarczy JDK. Wersje narzędzi
+możesz w każdej chwili sprawdzić poleceniem
+`./scripts/check-environment.sh`. Przyda się ono w późniejszych labach,
+ale nie jest potrzebne w Labie 01.
 
 ## GitHub Codespaces
 
-Wolisz nie instalować niczego lokalnie? Codespaces uruchamia ten kurs w
-środowisku w przeglądarce, zamiast na Twoim własnym komputerze — nic do
-instalowania, ale wymaga stabilnego internetu na każdą sesję, a darmowy
-limit GitHuba ma miesięczne ograniczenia.
+Jeśli nie chcesz niczego instalować lokalnie, możesz pracować w
+Codespaces. Środowisko działa w przeglądarce, ale wymaga stałego
+połączenia z internetem. Pamiętaj też o miesięcznym limicie bezpłatnego
+użycia.
 
-- **Utwórz go na swoim forku**, nie na oryginalnym repozytorium kursu —
-  potrzebujesz uprawnień do zapisu do kolejnych labów, które każą Ci
-  commitować i pushować. Utworzenie Codespace'a na oryginalnym
-  repozytorium zamiast na swoim forku to najczęstszy błąd na starcie —
-  sprawdź dwa razy nazwę repozytorium w adresie URL, zanim przejdziesz
-  dalej.
+- **Utwórz Codespace na swoim forku**, nie w oryginalnym repozytorium
+  kursu. W kolejnych labach będziesz zapisywać i wysyłać zmiany, więc
+  potrzebujesz praw do zapisu. Przed rozpoczęciem sprawdź nazwę
+  repozytorium w adresie URL.
 - **Otwórz terminal** przez **Terminal → New Terminal**, gdy Codespace
   skończy się inicjalizować.
-- **Toolchain jest już zainstalowany** — Python, Go i JDK są już
-  skonfigurowane. Uruchomienie `./scripts/check-environment.sh` jest
-  opcjonalne, przydatne tylko, jeśli chcesz potwierdzić, że wersje
-  zgadzają się z tabelą powyżej; nie jest wymagane, żeby zacząć Lab 01.
-- **Zatrzymuj Codespace'y, z których nie korzystasz** z poziomu
+- **Narzędzia są już zainstalowane.** Python, Go i JDK są gotowe do
+  użycia. Możesz sprawdzić ich wersje poleceniem
+  `./scripts/check-environment.sh`, ale nie jest to wymagane w Labie 01.
+- **Zatrzymuj nieużywane Codespace'y** z poziomu
   [github.com/codespaces](https://github.com/codespaces) (albo pozwól
-  im się automatycznie uśpić). Codespaces ma miesięczne limity użycia;
-  zatrzymanie nie usuwa Twojej pracy.
+  im automatycznie się wyłączyć). Zatrzymanie środowiska nie usuwa
+  Twojej pracy.
 
 1. Zrób fork tego repozytorium (przycisk **Fork** w prawym górnym rogu
    strony GitHub).
@@ -148,27 +141,24 @@ limit GitHuba ma miesięczne ograniczenia.
 | Go        | standardowe narzędzia Go    | `go test`                     |
 | Java      | JDK 21 + Gradle Wrapper     | JUnit, przez `./gradlew test` |
 
-Laby 01-04 to jedna wspólna ścieżka, niezależna od języka. Od Lab 05
-wybierasz jeden z trzech praktycznych tracków językowych — Python, Go
-albo Java — i używasz go konsekwentnie od tego miejsca aż po capstone
-Aktu VI; Lab 14 to celowa przerwa, żeby porównać, jak ten sam pomysł
-wygląda we wszystkich trzech, nie zmiana tracku. We wszystkich trzech
-język jest medium — przedmiotem jest inżynieria oprogramowania. Tym,
-co jest zakładane na wejściu, są podstawy programowania w wybranym
-przez Ciebie języku, niekoniecznie w Pythonie.
+Laby 01-04 są wspólne dla wszystkich. W Labie 05 wybierasz jedną z
+trzech równorzędnych ścieżek: Python, Go albo Java. Trzymasz się jej aż
+do projektu końcowego w Akcie VI. Każda ścieżka ma te same cele,
+działające startery oraz własne polecenia do uruchamiania kodu i testów.
 
-Tracki Go i Java są wciąż utwardzane w całym kursie — traktuj je jako
-**podgląd (PREVIEW)**, dopóki nie wyląduje finalny cross-track audit,
-mimo że Laby 05-30 już mają prawdziwą, działającą treść we wszystkich
-trzech.
+W Labie 14 porównasz rozwiązania we wszystkich trzech językach, ale kod
+nadal napiszesz tylko w wybranym języku. Język jest tu narzędziem, a
+tematem kursu pozostaje inżynieria oprogramowania. Przez cały kurs
+wystarczy Ci jeden zestaw narzędzi.
 
 ## Jak działają laby
 
-Każdy lab ma tę samą strukturę: **Sytuacja → Cele nauki → Zanim
+Każdy lab ma podobną strukturę: **Sytuacja → Cele nauki → Zanim
 zaczniesz → Twoje zadanie → Kryteria akceptacji → Weryfikacja →
-Zastanów się → Jeśli utkniesz → Co dalej.** Ta spójność jest celowa —
-te materiały są zaprojektowane do samodzielnej pracy, czy to solo, czy
-jako część zajęć w klasie.
+Zastanów się → Jeśli utkniesz → Co dalej.** W razie potrzeby pojawiają
+się dodatkowe sekcje, na przykład wskazówki dotyczące czasu albo zapis
+decyzji architektonicznej w Labie 26. Materiały nadają się zarówno do
+samodzielnej nauki, jak i do pracy podczas zajęć.
 
 ## Mapa kursu
 
@@ -192,14 +182,12 @@ jako część zajęć w klasie.
 
 ## Zdrowie repozytorium
 
-Uruchom `./scripts/check-course.sh`, żeby uruchomić te same sprawdzenia,
-które własne CI tego repozytorium uruchamia przy każdym pushu i pull
-requeście: strukturę repozytorium, parytet EN/PL oraz testy, składnię i
-lockfile'y każdego przykładowego projektu. To repozytorium trzyma się
-tych samych praktyk, których
-uczy.
+Polecenie `./scripts/check-course.sh` uruchamia te same kontrole co CI
+repozytorium: sprawdza strukturę materiałów, zgodność wersji EN/PL,
+składnię, pliki blokad oraz testy przykładowych projektów. Repozytorium
+stosuje zasady, których uczy.
 
-## Współpraca / zgłaszanie problemów
+## Zgłaszanie problemów
 
 Widzisz błąd, niejasną instrukcję albo coś, co nie działa w Twoim
 środowisku? Otwórz issue.
@@ -208,11 +196,11 @@ Widzisz błąd, niejasną instrukcję albo coś, co nie działa w Twoim
 
 To repozytorium ma podwójną licencję:
 
-- **Kod** — kod źródłowy, testy, skrypty, konfiguracja, workflowy
-  CI/CD, starter projekty i fragmenty kodu osadzone w Markdownach
-  labów — jest objęty [licencją MIT](LICENSE).
-- **Treść dydaktyczna** — README labów, opisy zadań, narracja, pytania,
-  podpowiedzi i diagramy — jest objęta licencją
+- **Kod**, czyli kod źródłowy, testy, skrypty, konfiguracja, procesy
+  CI/CD, startery i fragmenty kodu w materiałach, jest objęty
+  [licencją MIT](LICENSE).
+- **Treść dydaktyczna**, czyli instrukcje, opisy zadań, pytania,
+  podpowiedzi i diagramy, jest objęta licencją
   [Creative Commons Attribution 4.0 International](LICENSE-CONTENT.md)
   (CC BY 4.0).
 
@@ -220,6 +208,6 @@ Materiały stron trzecich zawarte w tym repozytorium, jeśli takie
 istnieją, zachowują własne oryginalne prawa autorskie i warunki
 licencyjne.
 
-## Prowadzący / autor
+## Autor
 
 Stworzone i utrzymywane przez Michała Maja.

@@ -1,4 +1,4 @@
-# Lab 17 — Konflikt merge'a
+# Lab 17 — Konflikt scalania
 
 ## Sytuacja
 
@@ -9,8 +9,7 @@ drugiej.
 
 Po tym labie potrafisz:
 
-- Zmergować branch bez konfliktów i rozpoznać, jak wygląda czysty
-  merge.
+- Scalić gałąź bez konfliktów i rozpoznać poprawne scalenie.
 - Przeczytać markery konfliktu Gita i zidentyfikować dokładnie, co
   każda strona zmieniła.
 - Rozwiązać konflikt, łącząc obie zmiany, nie wybierając na oślep
@@ -18,36 +17,36 @@ Po tym labie potrafisz:
 
 ## Zanim zaczniesz
 
-- Lab 16 ukończony: obie branche `feature/low-stock-warning` i
-  `feature/expiry-warning` istnieją, każda z przechodzącym zestawem
-  testów, w Twojej wybranej ścieżce.
+- Najpierw ukończ lab 16. Gałęzie `feature/low-stock-warning` i
+  `feature/expiry-warning` powinny istnieć, a testy na każdej z nich
+  powinny przechodzić.
 
 ### Python
 
-- Bieżący katalog: `examples/team-inventory/python/`, na branchu
+- Pracuj w `examples/team-inventory/python/` na gałęzi
   `main`.
 
 ### Go
 
-- Bieżący katalog: `examples/team-inventory/go/`, na branchu `main`.
+- Pracuj w `examples/team-inventory/go/` na gałęzi `main`.
 
 ### Java
 
-- Bieżący katalog: `examples/team-inventory/java/`, na branchu
+- Pracuj w `examples/team-inventory/java/` na gałęzi
   `main`.
 
 ## Twoje zadanie
 
-1. Potwierdź, że jesteś na `main`: `git switch main`.
-2. Zmergeuj pierwszą funkcję: `git merge feature/low-stock-warning`. To
-   powinno zakończyć się bez konfliktu — przeczytaj komunikat, który
+1. Upewnij się, że jesteś na `main`, uruchamiając `git switch main`.
+2. Scal pierwszą funkcję poleceniem `git merge feature/low-stock-warning`.
+   Operacja powinna zakończyć się bez konfliktu. Przeczytaj komunikat,
    wypisuje Git (prawdopodobnie fast-forward, bo `main` się nie
    przesunął od Twojego rozgałęzienia).
-3. Uruchom komendę testową swojej ścieżki, żeby potwierdzić, że `main`
-   ma teraz funkcję niskiego stanu i wciąż przechodzi.
-4. Zmergeuj drugą funkcję: `git merge feature/expiry-warning`. To
-   **spowoduje** konflikt — w **dwóch plikach**: Twoim pliku
-   źródłowym i Twoim pliku testowym.
+3. Uruchom testy swojej ścieżki, aby potwierdzić, że `main` zawiera już
+   ostrzeżenie o niskim stanie i nadal działa poprawnie.
+4. Scal drugą funkcję poleceniem `git merge feature/expiry-warning`.
+   Ta operacja **spowoduje** konflikt w **dwóch plikach**, źródłowym i
+   testowym.
 5. Otwórz swój plik źródłowy (zobacz dokładny kształt konfliktu Twojej
    ścieżki poniżej). Przeczytaj obie strony każdego bloku, zanim
    czegokolwiek dotkniesz.
@@ -55,36 +54,36 @@ Po tym labie potrafisz:
    konfliktu.
 7. Otwórz swój plik testowy (zobacz dokładny kształt konfliktu Twojej
    ścieżki poniżej). Rozwiąż go, zachowując **obie** zmiany.
-8. Uruchom komendę testową swojej ścieżki. Wszystkie testy —
-   oryginalny, niskiego stanu, i terminu ważności — muszą przechodzić.
-9. Zastage'uj oba rozwiązane pliki i dokończ merge (Git wypełnia
-   komunikat merge commita za Ciebie; nie potrzebujesz `-m`).
+8. Uruchom testy swojej ścieżki. Test oryginalny oraz testy niskiego
+   stanu i terminu ważności muszą przechodzić.
+9. Dodaj oba rozwiązane pliki do indeksu i dokończ scalanie. Git
+   przygotuje komunikat commitu scalającego; nie potrzebujesz `-m`.
 10. Uruchom `git log --oneline --graph -5` i potwierdź, że obie funkcje
     są teraz częścią historii `main`.
 
-### Python — dokładny konflikt, który zobaczysz
+### Szczegóły konfliktu w Pythonie
 
-Dwa bloki w `inventory.py`: jeden, gdzie każda branch dodała swoją
+Dwa bloki w `inventory.py`: jeden, gdzie każda gałąź dodała swoją
 własną nową funkcję (całe ciało funkcji się różni, bo dwa filtry są
-napisane inaczej), jeden wewnątrz `summarize`, gdzie każda branch
+napisane inaczej), jeden wewnątrz `summarize`, gdzie każda gałąź
 dołączyła swoje własne dwie linie. Dwa bloki w
-`tests/test_inventory.py`: linia `import` (każda branch zaimportowała
-inną nową nazwę), i nowa funkcja testowa, którą każda branch dodała
-(każda nazwana inaczej i wywołująca inną funkcję — to jeden blok
+`tests/test_inventory.py`: linia `import` (każda gałąź importuje inną
+nową nazwę) i nowa funkcja testowa dodana na każdej gałęzi. Każda ma
+inną nazwę i wywołuje inną funkcję. To jeden blok
 konfliktu, bo dwie funkcje testowe siedzą na bezpośrednio sąsiadujących
 liniach).
 
-### Go — dokładny konflikt, który zobaczysz
+### Szczegóły konfliktu w Go
 
 To **nie jest** ten sam kształt co w Pythonie, i to jest oczekiwane,
 nie Twoja pomyłka: Go nie ma linii `import`, na której mógłby być
 konflikt (wywołanie innej funkcji w tym samym pakiecie nie potrzebuje
 importu), więc `inventory_test.go` konfliktuje w dokładnie **jednym**
-bloku — dwie funkcje testowe, sąsiadujące, każda nazwana inaczej i
+bloku obejmującym dwie sąsiadujące funkcje testowe, każdą nazwaną inaczej i
 wywołująca inną funkcję. W `inventory.go` pierwszy blok konfliktu
-obejmuje cztery linie z każdej strony — sygnaturę funkcji, linię `var
-names []string`, linię pętli `for`, i warunek `if` — nawet choć środkowe
-dwie z tych czterech linii są tekstowo identyczne między branchami. Git
+obejmuje cztery linie z każdej strony: sygnaturę funkcji, linię `var
+names []string`, linię pętli `for` i warunek `if`. Mimo że środkowe
+dwie linie są identyczne na obu gałęziach, Git
 wciąż umieszcza je wewnątrz markerów. Tylko pięcioliniowy ogon po tym
 (`names = append(names, item.Name)`, dwa zamykające nawiasy klamrowe,
 `return names`, i zamykający nawias klamrowy funkcji) jest wystarczająco
@@ -92,20 +91,21 @@ zgodny, żeby Git zmergował go automatycznie, poza markerami. Drugi
 konflikt, wewnątrz `Summarize`, obejmuje oba wstawione bloki w całości,
 bo żadna strona nie ma tam zgodnego ogona.
 
-### Java — dokładny konflikt, który zobaczysz
+### Szczegóły konfliktu w Javie
 
 Ten sam kształt co Go, z tego samego powodu: brak konfliktu na linii
-importu (obie branche wywołują statyczną metodę na tej samej klasie),
-więc `InventoryTest.java` konfliktuje w dokładnie **jednym** bloku —
+importu (obie gałęzie wywołują statyczną metodę na tej samej klasie),
+więc `InventoryTest.java` ma dokładnie **jeden** blok konfliktu,
 dwie metody `@Test`, sąsiadujące (sama linia anotacji `@Test` siedzi
 zaraz *przed* konfliktem i zgadza się na obu stronach, więc nie jest
 częścią oznaczonego bloku). W `Inventory.java`, jak w Go, pierwszy
-blok konfliktu obejmuje cztery linie z każdej strony — sygnaturę
+blok konfliktu obejmuje cztery linie z każdej strony: sygnaturę
 metody, linię `List<String> names = new ArrayList<>();`, linię pętli
-`for`, i warunek `if` — nawet choć środkowe dwie są tekstowo identyczne
-między branchami. Tylko pięcioliniowy ogon po tym (`names.add(item.name);`,
+`for` i warunek `if`. Mimo że środkowe dwie linie są identyczne na obu
+gałęziach, Git obejmuje je markerami. Tylko pięcioliniowy fragment po
+tym (`names.add(item.name);`,
 dwa zamykające nawiasy klamrowe, `return names;`, i zamykający nawias
-klamrowy metody) mergeuje się automatycznie, poza markerami. Drugi
+klamrowy metody) scala się automatycznie poza markerami. Drugi
 konflikt, wewnątrz `summarize`, obejmuje oba wstawione bloki w całości.
 
 ## Kryteria akceptacji
@@ -115,8 +115,8 @@ konflikt, wewnątrz `summarize`, obejmuje oba wstawione bloki w całości.
 - Obie nowe funkcje/metody są zdefiniowane i używane wewnątrz
   `summarize`/`Summarize`.
 - Komenda testowa Twojej ścieżki przechodzi z każdym testem z obu
-  branchy obecnym (3 testy łącznie).
-- Merge commit dla `feature/expiry-warning` istnieje na `main`.
+  gałęzi (łącznie 3 testy).
+- Commit scalający `feature/expiry-warning` istnieje na `main`.
 
 ## Weryfikacja
 
@@ -165,81 +165,80 @@ git log --oneline -4
 cd -
 ```
 
-Oczekiwane: `No conflict markers remain.`, każdy test przeszedł, i
-merge commit widoczny w logu. Zauważ `exit 1` wewnątrz `if` — bez
-niego, ten check wypisałby "Conflict markers remain." i wciąż
-zakończyłby się sukcesem, co psuje cały sens checka. Wypróbuj to na
-oba sposoby na pliku, o którym wiesz, że wciąż ma markery, i na takim,
-który ich nie ma, żeby zobaczyć różnicę samemu/samej.
+Powinien pojawić się komunikat `No conflict markers remain.`, wszystkie
+testy powinny przejść, a commit scalający powinien być widoczny w logu.
+Zwróć uwagę na `exit 1` wewnątrz `if`. Bez niego kontrola wypisałaby
+"Conflict markers remain.", ale zakończyłaby się sukcesem. Wypróbuj oba
+warianty na pliku z markerami i na pliku bez nich.
 
 ## Zastanów się
 
-- Żadna branch nie edytowała linii, którą druga branch też edytowała —
+- Żadna gałąź nie edytowała linii zmienionej przez drugą gałąź.
   obie tylko *dodały* nowe linie, w tym samym miejscu, w tych samych
   dwóch plikach. Czemu Git wciąż traktował oba pliki jako konflikty,
   zamiast po cichu zachować obie dodane rzeczy?
 - Kolega z zespołu mówi "weź po prostu moje, usuń ich", bez czytania
   drugiej strony konfliktu. Jakie jest konkretne ryzyko robienia tego
-  tutaj — w którymkolwiek pliku?
+  tutaj, w którymkolwiek z plików?
 
 ## Jeśli utkniesz
 
 ### Python
 
-- **Podpowiedź 1:** `<<<<<<< HEAD` oznacza początek wersji *Twojego
-  bieżącego brancha*; `=======` dzieli obie strony; `>>>>>>>
+- **Podpowiedź 1.** `<<<<<<< HEAD` oznacza początek wersji z *bieżącej
+  gałęzi*; `=======` dzieli obie strony; `>>>>>>>
   feature/expiry-warning` oznacza koniec wersji *przychodzącego*
-  brancha.
-- **Podpowiedź 2:** `inventory.py` ma dwa osobne bloki konfliktu; plik
-  testowy też ma dwa — jeden na linii importu, jeden obejmujący nazwę
-  i ciało nowej funkcji testowej. Rozwiąż każdy znaleziony blok — nie
+  gałęzi.
+- **Podpowiedź 2.** `inventory.py` ma dwa osobne bloki konfliktu; plik
+  testowy też ma dwa. Jeden znajduje się na linii importu, a drugi
+  obejmuje nazwę i ciało nowej funkcji testowej. Rozwiąż każdy blok; nie
   zatrzymuj się po pierwszym pliku.
-- **Podpowiedź 3:** Po edycji, oba pliki powinny zawierać zero linii
-  `<<<<<<<`, `=======` albo `>>>>>>>` — jeśli `grep` znajdzie
-  jakiekolwiek w którymkolwiek pliku, nie jesteś gotowy/a.
+- **Podpowiedź 3.** Po edycji w obu plikach nie może pozostać żadna
+  linia `<<<<<<<`, `=======` ani `>>>>>>>`. Jeśli `grep` coś znajdzie,
+  konflikt nie jest jeszcze rozwiązany.
 
 ### Go
 
-- **Podpowiedź 1:** `<<<<<<< HEAD` oznacza początek wersji *Twojego
-  bieżącego brancha*; `=======` dzieli obie strony; `>>>>>>>
+- **Podpowiedź 1.** `<<<<<<< HEAD` oznacza początek wersji z *bieżącej
+  gałęzi*; `=======` dzieli obie strony; `>>>>>>>
   feature/expiry-warning` oznacza koniec wersji *przychodzącego*
-  brancha.
-- **Podpowiedź 2:** `inventory.go` ma dwa bloki konfliktu, ale pierwszy
-  jest krótszy niż cała funkcja — kończy się przed liniami
+  gałęzi.
+- **Podpowiedź 2.** `inventory.go` ma dwa bloki konfliktu, ale pierwszy
+  jest krótszy niż cała funkcja. Kończy się przed liniami
   zamykającymi, które obie funkcje mają wspólne (`names = append(...)`
   przez finalne `}`), które nie są oznaczone wcale. Nie zakładaj, że
   musisz przepisać całą funkcję z markerów; przeczytaj, co faktycznie
   jest między nimi.
-- **Podpowiedź 3:** Po edycji, oba pliki powinny zawierać zero linii
-  `<<<<<<<`, `=======` albo `>>>>>>>` — jeśli `grep` znajdzie
-  jakiekolwiek w którymkolwiek pliku, nie jesteś gotowy/a.
+- **Podpowiedź 3.** Po edycji w obu plikach nie może pozostać żadna
+  linia `<<<<<<<`, `=======` ani `>>>>>>>`. Jeśli `grep` coś znajdzie,
+  konflikt nie jest jeszcze rozwiązany.
 
 ### Java
 
-- **Podpowiedź 1:** `<<<<<<< HEAD` oznacza początek wersji *Twojego
-  bieżącego brancha*; `=======` dzieli obie strony; `>>>>>>>
+- **Podpowiedź 1.** `<<<<<<< HEAD` oznacza początek wersji z *bieżącej
+  gałęzi*; `=======` dzieli obie strony; `>>>>>>>
   feature/expiry-warning` oznacza koniec wersji *przychodzącego*
-  brancha.
-- **Podpowiedź 2:** `Inventory.java` ma dwa bloki konfliktu, ale
-  pierwszy jest krótszy niż cała metoda — kończy się przed liniami
+  gałęzi.
+- **Podpowiedź 2.** `Inventory.java` ma dwa bloki konfliktu, ale
+  pierwszy jest krótszy niż cała metoda. Kończy się przed liniami
   zamykającymi, które obie metody mają wspólne (`names.add(...)` przez
   finalne `}`), które nie są oznaczone wcale. Nie zakładaj, że musisz
   przepisać całą metodę z markerów; przeczytaj, co faktycznie jest
   między nimi.
-- **Podpowiedź 3:** Po edycji, oba pliki powinny zawierać zero linii
-  `<<<<<<<`, `=======` albo `>>>>>>>` — jeśli `grep` znajdzie
-  jakiekolwiek w którymkolwiek pliku, nie jesteś gotowy/a.
+- **Podpowiedź 3.** Po edycji w obu plikach nie może pozostać żadna
+  linia `<<<<<<<`, `=======` ani `>>>>>>>`. Jeśli `grep` coś znajdzie,
+  konflikt nie jest jeszcze rozwiązany.
 
-Przed przejściem dalej: zacommituj i wypchnij wszystko z tego laba
+Przed przejściem dalej utwórz commit ze wszystkim z tego laba i
+wypchnij go do repozytorium
 (`git add -A && git commit -m "..."; git push`). Nic później jeszcze
-nie zakłada czystego drzewa, ale Akt IV (zaczynający się od Lab 16)
-tak — przyzwyczajaj się już teraz.
+nie wymaga czystego drzewa roboczego, ale Akt IV już tak. Warto od razu
+wyrobić sobie ten nawyk.
 
 ## Co dalej
 
-Rozwiązałeś/aś ten konflikt lokalnie, samodzielnie, potem dokończyłeś/aś
-merge bezpośrednio na `main`. W prawdziwym zespole, taka zmiana
-przeszłaby przez review, zanim trafiłaby do kodu. Dalej zrobisz to
-właściwie.
+Konflikt został rozwiązany lokalnie, a scalenie trafiło bezpośrednio na
+`main`. W prawdziwym zespole taka zmiana zwykle przechodzi najpierw
+przegląd kodu. W następnym labie wykonasz ten proces.
 
-Przejdź do [Lab 18 — Pull requesty i code review](../18-pull-requests-and-review/README.pl.md).
+Przejdź do [Lab 18 — Pull request i przegląd kodu](../18-pull-requests-and-review/README.pl.md).

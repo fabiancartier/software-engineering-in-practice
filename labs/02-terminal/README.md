@@ -2,9 +2,9 @@
 
 ## Story
 
-Yesterday you learned to look around. Today you need to get work done
-without touching a mouse: copy files, search inside them, chain commands
-together, and run something that keeps running until you stop it.
+Yesterday you learned to navigate your workstation. Today you will work
+without a mouse: copy files, search their contents, combine commands,
+and control a process that runs until you stop it.
 
 ## Learning objectives
 
@@ -19,8 +19,7 @@ After this lab you should be able to:
 ## Before you start
 
 - Lab 01 complete (you can navigate and create files from the terminal).
-- Current directory: your home directory or the repository checkout, either
-  is fine for this lab.
+- You can start in your home directory or in the repository checkout.
 
 ## Your task
 
@@ -29,16 +28,15 @@ After this lab you should be able to:
 3. Search `findings.txt` for the line containing `whoami` using `grep`, and
    redirect that single matching line into a new file
    `~/lab02-notes/whoami-line.txt`.
-4. Use `find` to locate every file named `findings.txt` under
-   `~/lab01-notes/` and `~/lab02-notes/` — the two directories you've
-   created so far — and pipe the result into `wc -l` to count the
-   matches: `find ~/lab01-notes ~/lab02-notes -name findings.txt | wc
-   -l`. Expect `1`: the original is still in `lab01-notes`; the copy
-   you made in step 1 is named `findings.bak.txt`, not `findings.txt`,
-   so it doesn't match.
-5. Start a simple long-running process in your home directory — a loop
-   that appends the current time to a file once a second, forever,
-   until you stop it:
+4. Use `find` to locate every file named `findings.txt` under the two
+   directories you have created, `~/lab01-notes/` and
+   `~/lab02-notes/`. Pipe the result into `wc -l` to count the matches:
+   `find ~/lab01-notes ~/lab02-notes -name findings.txt | wc -l`.
+   Expect `1`. The original is still in `lab01-notes`, while the copy
+   from step 1 has a different name: `findings.bak.txt`.
+5. Start a simple long-running process in your home directory. Use a
+   loop that appends the current time to a file once a second until you
+   stop it:
    `while true; do date >> ~/lab02-notes/ticker.txt; sleep 1; done`.
 6. While it's running, in a **second terminal**, confirm it's actually
    making progress by checking the line count twice, a couple of
@@ -88,8 +86,8 @@ find ~/lab01-notes ~/lab02-notes -name findings.txt | wc -l   # expect exactly 1
 
 ## What's next
 
-You can run things and inspect their output — but you have no way yet to
-tell what changed in this project since yesterday, or to undo a mistake.
-That's what version control is for.
+You can now run commands and inspect their output. Next, you need a way
+to see what changed in the project and to undo mistakes. That is what
+version control is for.
 
 Continue to [Lab 03 — You inherited a repository](../03-inherited-repository/README.md).

@@ -2,9 +2,9 @@
 
 ## Sytuacja
 
-Wczoraj udało Ci się nauczyć rozglądać. Dziś musisz faktycznie coś zrobić bez
-dotykania myszki: skopiować pliki, przeszukać ich zawartość, połączyć
-polecenia w łańcuch i uruchomić coś, co działa, dopóki tego nie zatrzymasz.
+Wczoraj nauczyłeś/aś się poruszać po swoim środowisku. Dziś popracujesz
+bez myszy: skopiujesz pliki, przeszukasz ich zawartość, połączysz
+polecenia i zapanujesz nad procesem działającym aż do zatrzymania.
 
 ## Cele nauki
 
@@ -14,14 +14,13 @@ Po tym labie potrafisz:
 - Przeszukiwać zawartość plików i znajdować pliki po nazwie.
 - Przekierowywać wyjście do pliku i przekazywać wyjście jednego polecenia
   do drugiego.
-- Uruchomić długo działający proces, obserwować go i zatrzymać przez
+- Uruchomić długo działający proces, obserwować go i zatrzymać skrótem
   `Ctrl+C`.
 
 ## Zanim zaczniesz
 
 - Lab 01 ukończony (potrafisz nawigować i tworzyć pliki z terminala).
-- Bieżący katalog: Twój katalog domowy albo checkout repozytorium — oba
-  są w porządku dla tego laboratorium.
+- Możesz zacząć w katalogu domowym albo w lokalnej kopii repozytorium.
 
 ## Twoje zadanie
 
@@ -30,22 +29,22 @@ Po tym labie potrafisz:
 3. Wyszukaj w `findings.txt` linię zawierającą `whoami` za pomocą `grep`
    i przekieruj tę jedną pasującą linię do nowego pliku
    `~/lab02-notes/whoami-line.txt`.
-4. Użyj `find`, żeby zlokalizować każdy plik o nazwie `findings.txt` w
-   `~/lab01-notes/` i `~/lab02-notes/` — dwóch katalogach, które dotąd
-   utworzyłeś — i przekaż wynik przez pipe do `wc -l`, żeby zliczyć
-   dopasowania: `find ~/lab01-notes ~/lab02-notes -name findings.txt |
-   wc -l`. Oczekiwane: `1` — oryginał wciąż jest w `lab01-notes`; kopia
-   z kroku 1 nazywa się `findings.bak.txt`, nie `findings.txt`, więc
-   się nie liczy.
-5. Uruchom prosty, długo działający proces w swoim katalogu domowym —
-   pętlę, która co sekundę dopisuje aktualny czas do pliku, w kółko, aż
-   go zatrzymasz:
+4. Użyj `find`, żeby znaleźć każdy plik o nazwie `findings.txt` w dwóch
+   utworzonych dotąd katalogach: `~/lab01-notes/` i `~/lab02-notes/`.
+   Przekaż wynik do `wc -l`, żeby policzyć dopasowania:
+   `find ~/lab01-notes ~/lab02-notes -name findings.txt | wc -l`.
+   Wynikiem powinno być `1`. Oryginał nadal znajduje się w
+   `lab01-notes`, a kopia z kroku 1 ma inną nazwę:
+   `findings.bak.txt`.
+5. Uruchom prosty, długo działający proces w katalogu domowym. Użyj
+   pętli, która co sekundę dopisuje aktualny czas do pliku, aż ją
+   zatrzymasz:
    `while true; do date >> ~/lab02-notes/ticker.txt; sleep 1; done`.
-6. Gdy działa, w **drugim terminalu** potwierdź, że faktycznie robi
-   postępy, sprawdzając liczbę linii dwa razy, z kilkusekundową
-   przerwą: `wc -l ~/lab02-notes/ticker.txt` (oczekiwane: druga liczba
-   jest wyższa niż pierwsza).
-7. Zatrzymaj proces w pierwszym terminalu przez `Ctrl+C`. Potwierdź w
+6. Gdy pętla działa, w **drugim terminalu** sprawdź liczbę linii dwa
+   razy z kilkusekundową przerwą:
+   `wc -l ~/lab02-notes/ticker.txt`. Za drugim razem wynik powinien być
+   wyższy.
+7. Zatrzymaj proces w pierwszym terminalu skrótem `Ctrl+C`. Potwierdź w
    drugim terminalu, że liczba linii przestała rosnąć: uruchom
    `wc -l ~/lab02-notes/ticker.txt` jeszcze dwa razy, z kilkusekundową
    przerwą, i oczekuj tej samej liczby oba razy.
@@ -53,7 +52,7 @@ Po tym labie potrafisz:
 ## Kryteria akceptacji
 
 - `~/lab02-notes/findings.bak.txt` oraz `~/lab02-notes/whoami-line.txt`
-  istnieją, a ten drugi zawiera dokładnie jedną linię, pasującą do
+  istnieją, a drugi plik zawiera dokładnie jedną linię ze słowem
   `whoami`.
 - Potrafisz wskazać dokładne polecenie, które zatrzymało proces, i
   wyjaśnić, jaki sygnał wysyła `Ctrl+C`.
@@ -73,7 +72,7 @@ find ~/lab01-notes ~/lab02-notes -name findings.txt | wc -l   # expect exactly 1
 - Jaka jest praktyczna różnica między przekazaniem (`|`) jednego polecenia
   do drugiego a przekierowaniem (`>`) do pliku?
 - Proces działał dalej po naciśnięciu Enter w pierwszym poleceniu. Dlaczego
-  terminal nie oddał Ci od razu nowego prompta?
+  terminal nie wyświetlił od razu nowego promptu?
 - Co zrobiłoby `>` (zamiast `>>`) z `findings.txt`, gdyby to była Twoja
   pomyłka w Lab 01?
 
@@ -90,8 +89,8 @@ find ~/lab01-notes ~/lab02-notes -name findings.txt | wc -l   # expect exactly 1
 
 ## Co dalej
 
-Potrafisz już uruchamiać rzeczy i sprawdzać ich wynik — ale nie masz
-jeszcze sposobu, żeby stwierdzić, co zmieniło się w tym projekcie od
-wczoraj, ani żeby cofnąć pomyłkę. Do tego służy system kontroli wersji.
+Potrafisz już uruchamiać polecenia i sprawdzać ich wynik. Teraz
+potrzebujesz sposobu na śledzenie zmian w projekcie i cofanie pomyłek.
+Do tego służy system kontroli wersji.
 
 Przejdź do [Lab 03 — Dziedziczysz repozytorium](../03-inherited-repository/README.pl.md).

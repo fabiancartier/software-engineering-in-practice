@@ -1,55 +1,51 @@
-# Lab 20 — Co oznacza "zrobione"?
+# Lab 20 — Co oznacza „zrobione”?
 
 ## Sytuacja
 
-Dwoje kolegów z zespołu się nie zgadza: jedno mówi, że zadanie jest
-zrobione, gdy testy przechodzą; drugie mówi, że nie jest zrobione,
-dopóki nie jest faktycznie zmergowane, a sprawdzenie CI zielone. Oboje
-mają rację, i oboje mają niepełny obraz.
+Dwie osoby z zespołu nie mogą dojść do porozumienia. Jedna uważa, że
+zadanie jest ukończone, gdy przechodzą testy. Druga chce jeszcze scalić
+zmianę i zobaczyć zielony wynik CI. Każda z tych definicji obejmuje tylko
+część pracy.
 
 ## Cele nauki
 
 Po tym labie potrafisz:
 
-- Napisać konkretną, sprawdzalną Definition of Done dla konkretnego
-  rodzaju projektu.
-- Odróżnić kryterium sprawdzalne ("CI jest zielone") od mglistego
-  ("kod jest dobry").
-- Ocenić ukończoną pracę względem pisemnego standardu, a nie
-  wrażenia.
+- Ułożyć konkretną i sprawdzalną definicję ukończenia (Definition of
+  Done) dla projektu.
+- Odróżnić sprawdzalne kryterium („CI jest zielone”) od ogólnego
+  stwierdzenia („kod jest dobry”).
+- Ocenić wykonaną pracę na podstawie zapisanych zasad, a nie wrażenia.
 
 ## Zanim zaczniesz
 
-- Laby 06-19 ukończone, w Twojej wybranej ścieżce.
-- Brak kodu w tym labie — przejrzyj (nie odtwarzaj od nowa) sekcje
-  "Kryteria akceptacji" Labów 11 do 19, zanim zaczniesz.
+- Ukończ laby 06-19 w wybranej ścieżce.
+- W tym labie nie piszesz kodu. Przed rozpoczęciem przejrzyj sekcje
+  „Kryteria akceptacji” w labach 11-19. Nie musisz ich odtwarzać.
 
 ## Twoje zadanie
 
-1. Napisz `labs/20-definition-of-done/definition-of-done.md`
-   zawierający jedną checklistę Definition of Done, 5-8 pozycji,
-   używając checkboxów markdown (`- [ ] pozycja`), która miałaby
-   zastosowanie do *każdej* przyszłej zmiany w
-   `examples/team-inventory/<twój-język>`. Oprzyj ją na tym, co
-   faktycznie było używane w Labach 06-19 — testy, review, CI,
-   dokumentacja — a nie na generycznej liście, na jaką jeszcze nie
-   zapracowano. To jest language-neutral: nie wymagaj narzędzia, które
-   akurat tylko jedna z trzech ścieżek używa.
-2. Każda pozycja musi być sprawdzalna: odpowiadalna tak lub nie przez
-   spojrzenie na coś konkretnego (kod wyjścia polecenia, istnienie
-   pliku, stan PR-a) — a nie "kod jest czysty" czy "działa dobrze".
-3. Wybierz jeden konkretny wcześniejszy lab (11 do 19) i, w tym samym
-   pliku, sprawdź jego faktyczny wynik względem własnej checklisty,
-   pozycja po pozycji. Tam, gdzie nie spełnia w pełni pozycji, powiedz
-   to szczerze.
+1. Utwórz plik `labs/20-definition-of-done/definition-of-done.md` z jedną
+   listą kontrolną definicji ukończenia. Lista ma zawierać 5-8 pozycji w
+   postaci pól wyboru Markdown (`- [ ] pozycja`) i pasować do *każdej*
+   przyszłej zmiany w `examples/team-inventory/<twój-język>`. Oprzyj ją
+   na praktykach używanych w labach 06-19, takich jak testy, przegląd
+   kodu, CI i dokumentacja. Nie wymagaj narzędzia używanego tylko w
+   jednej ścieżce językowej.
+2. Każde kryterium musi dać się jednoznacznie sprawdzić. Inna osoba
+   powinna móc odpowiedzieć „tak” lub „nie” na podstawie kodu wyjścia
+   polecenia, obecności pliku albo stanu pull requesta. Unikaj ogólników
+   w rodzaju „kod jest czysty” lub „działa dobrze”.
+3. Wybierz jeden wcześniejszy lab z zakresu 11-19. W tym samym pliku
+   oceń jego faktyczny wynik według własnej listy, punkt po punkcie.
+   Jeśli któreś kryterium nie jest w pełni spełnione, napisz to wprost.
 
 ## Kryteria akceptacji
 
-- `definition-of-done.md` ma między 5 a 8 pozycji checklisty, każda
-  niezależnie sprawdzalna.
-- Retrospektywne sprawdzenie względem jednego nazwanego wcześniejszego
-  laba jest uwzględnione, z uczciwą odpowiedzią dla każdej pozycji
-  (nie domyślnie wszystko "tak").
+- `definition-of-done.md` zawiera od 5 do 8 niezależnie sprawdzalnych
+  kryteriów.
+- Plik zawiera ocenę jednego wskazanego laba według każdego kryterium.
+  Odpowiedzi odzwierciedlają rzeczywisty stan, a nie domyślne „tak”.
 
 ## Weryfikacja
 
@@ -58,37 +54,33 @@ test -f labs/20-definition-of-done/definition-of-done.md && echo "DoD exists"
 grep -c '^- \[' labs/20-definition-of-done/definition-of-done.md
 ```
 
-Oczekiwane: plik istnieje, a liczba jest między 5 a 8.
+Plik powinien istnieć, a wyświetlona liczba mieścić się w zakresie 5-8.
 
 ## Zastanów się
 
-- Czy Definition of Done to koncepcja techniczna, czy koncepcja
-  umowy zespołowej? Czy dwa różne zespoły, pracujące nad podobnej
-  wielkości projektami, mogłyby zasadnie dojść do dwóch różnych, obu
-  ważnych Definition of Done?
-- Która pozycja na Twojej liście byłaby niemożliwa do napisania,
-  zanim istniał Lab 19? Co to mówi o tym, jak Definition of Done
-  ewoluuje razem z narzędziami samego projektu?
+- Czy definicja ukończenia jest pojęciem technicznym, czy raczej umową
+  zespołu? Czy dwa zespoły pracujące nad podobnymi projektami mogą
+  rozsądnie przyjąć inne definicje?
+- Którego kryterium nie dałoby się zapisać przed ukończeniem laba 19?
+  Co to mówi o zmianach definicji ukończenia wraz z rozwojem narzędzi
+  projektu?
 
 ## Jeśli utkniesz
 
-- **Podpowiedź 1:** Rozsądne kandydatki na pozycje: testy przechodzą
-  lokalnie, testy przechodzą w CI, PR ma opis wyjaśniający dlaczego,
-  code review jest zakończone, a wszystkie merytoryczne komentarze
-  rozwiązane, żadne znaczniki konfliktu nigdzie nie pozostają, zmiana
-  jest zmergowana (nie tylko otwarta jako PR).
-- **Podpowiedź 2:** Jeśli pozycji nie da się sprawdzić uruchamiając
-  polecenie albo patrząc na konkretny stan, przepisz ją, aż się da.
-- **Podpowiedź 3:** Co do stylu dobrego pliku checklisty/notatek,
-  spójrz jeszcze raz na `COMPARISON.md` z Lab 12 albo `my-notes.md` z
-  Lab 15.
+- **Podpowiedź 1.** Możesz uwzględnić testy przechodzące lokalnie i w CI,
+  opis pull requesta wyjaśniający powód zmiany, ukończony przegląd kodu,
+  rozwiązane uwagi, brak znaczników konfliktu oraz scalenie zmiany.
+- **Podpowiedź 2.** Jeśli kryterium nie da się sprawdzić poleceniem ani
+  na podstawie konkretnego stanu, przeredaguj je.
+- **Podpowiedź 3.** Przykłady czytelnych list i notatek znajdziesz w
+  plikach `COMPARISON.md` z laba 12 oraz `my-notes.md` z laba 15.
 
 ## Co dalej
 
-Akt IV jest zakończony — potrafisz bezpiecznie pracować z zespołem:
-rozgałęziać, rozwiązywać konflikty, recenzjować i pozwolić CI wyłapać
-to, co przeoczy review. Dalej oprogramowanie musi przetrwać kontakt ze
-światem zewnętrznym: innymi systemami, przechowywanymi danymi i
-awariami, które nie są niczyją winą.
+Akt IV jest zakończony. Potrafisz bezpiecznie pracować z zespołem na
+gałęziach, rozwiązywać konflikty, przeglądać kod i korzystać z CI jako
+dodatkowego zabezpieczenia. Teraz oprogramowanie musi zmierzyć się ze
+światem zewnętrznym, czyli innymi systemami, zapisanymi danymi i
+awariami, za które nikt nie odpowiada.
 
 Przejdź do [Lab 21 — API to kontrakt](../21-api-is-a-contract/README.pl.md).

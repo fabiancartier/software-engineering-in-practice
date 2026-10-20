@@ -2,37 +2,36 @@
 
 ## Sytuacja
 
-Spójrz z powrotem na plik kodów rabatowych Version B i implementacje
-`Notifier` z Lab 14 — oba we własnej ścieżce domowej. Zbudowałeś/aś
-oba, bez tego, żeby ktoś powiedział Ci ich "oficjalną" nazwę. Okazuje
-się, że jedna istnieje.
+Wróć do pliku kodów rabatowych z wersji B i implementacji `Notifier` z
+labu 14 w wybranej ścieżce. Oba rozwiązania powstały, zanim pojawiła
+się ich „oficjalna” nazwa. Teraz czas ją poznać.
 
 ## Cele nauki
 
 Po tym labie potrafisz:
 
-- Rozpoznać wzorzec Strategy w kodzie, który już napisałeś/aś, zanim
-  ktoś powiedział Ci jego nazwę.
-- Wyjaśnić Dependency Injection, używając funkcji, którą już
-  napisałeś/aś (`send_receipt_ready` / `SendReceiptReady` /
-  `sendReceiptReady`), a nie definicji.
-- Wyjaśnić, w jednym zdaniu każdy, do czego służą Factory i Adapter.
+- Rozpoznać wzorzec Strategy w istniejącym kodzie, zanim poznasz jego
+  nazwę.
+- Wyjaśnić Dependency Injection na przykładzie funkcji
+  `send_receipt_ready`, `SendReceiptReady` albo `sendReceiptReady`,
+  zamiast powtarzać definicję.
+- Wyjaśnić w jednym zdaniu, do czego służą Factory i Adapter.
 
 ## Zanim zaczniesz
 
-- Laby 12-14 ukończone, w Twojej ścieżce domowej.
-- Żaden nowy toolchain — ten lab odwiedza ponownie kod, który już
-  napisałeś/aś.
+- Najpierw ukończ laby 12-14 w wybranej ścieżce.
+- Nie potrzebujesz nowych narzędzi. W tym labie wracasz do istniejącego
+  kodu.
 
 ## Twoje zadanie
 
-1. Przeczytaj ponownie plik kodów rabatowych Version B swojej ścieżki
-   domowej i jego funkcję w stylu `apply`, oraz implementacje
-   `Notifier` plus funkcję w stylu `send_receipt_ready` z Lab 14. W
+1. Przeczytaj ponownie plik kodów rabatowych wersji B i jego funkcję w
+   rodzaju `apply` dla wybranej ścieżki. Wróć też do implementacji
+   `Notifier` i funkcji w rodzaju `send_receipt_ready` z labu 14. W
    pliku notatek `labs/15-patterns-without-worship/my-notes.md` napisz,
-   własnymi słowami, co te dwa fragmenty kodu mają wspólnego —
-   konkretnie, jak każdy z nich unika długiego łańcucha warunków, żeby
-   wybrać zachowanie.
+   własnymi słowami, co te dwa fragmenty kodu mają wspólnego. Skup się
+   na tym, jak unikają długiego łańcucha warunków przy wyborze
+   zachowania.
 
 ### Python
 
@@ -49,52 +48,45 @@ Po tym labie potrafisz:
 - `examples/discount-codes/version-b/java/src/main/java/billing/DiscountCodes.java`
 - `examples/notifier/java/{Notifier,ConsoleNotifier,InMemoryNotifier,ReceiptService}.java`
 
-2. Teraz nazwa: ta forma — kilka wymiennych implementacji tego samego
-   małego kontraktu, wybieranych przez tego, kto wywołuje, zamiast
-   zapiekanych w jednym wielkim warunku — nazywa się wzorcem
-   **Strategy**. Każdy wpis w Twojej mapie/dict kodów rabatowych to
-   strategia. `ConsoleNotifier` i `InMemoryNotifier` (i teraz Twój
-   `SilentNotifier`) są każdy strategią dostarczania powiadomienia.
-   Strategy nie wymaga hierarchii klas — w Go i Pythonie konkretnie,
-   zwykła funkcja przechowana w mapie *jest* strategią; nie musisz
-   owijać jej w typ, żeby stała się jedną.
-3. `send_receipt_ready`/`SendReceiptReady`/`sendReceiptReady` otrzymuje
-   swoją strategię jako *parametr*, zamiast konstruować jedną
-   wewnętrznie — nigdy nie pisze `notifier = ConsoleNotifier()` (albo
-   odpowiednika) sama. Przekazywanie zależności z zewnątrz w ten
-   sposób nazywa się **Dependency Injection** — żaden framework
-   niepotrzebny; to po prostu "wywołujący decyduje, którą implementację
-   użyć, przekazując ją jako argument." Napisz jedno zdanie w swoich
-   notatkach: co ta funkcja straciłaby zdolność robienia, gdyby
-   konstruowała swój własny `ConsoleNotifier` wewnętrznie, zamiast go
-   otrzymywać?
-4. Dwie kolejne nazwy, krótko: **Factory** to kod, którego zadaniem
-   jest scentralizowanie decyzji, *który* obiekt stworzyć albo
-   dostarczyć, żeby wywołujący nie musieli każdy podejmować tej
-   decyzji samemu. Ogólnie Factory może konstruować albo dostarczać
-   dowolny rodzaj obiektu; w *tym* ćwiczeniu konkretnie, ta decyzja
-   akurat polega na tym, którą implementację Strategy użyć (wyobraź
-   sobie funkcję `build_notifier(config)`, która zwraca
-   `ConsoleNotifier` albo `InMemoryNotifier`, zależnie od ustawienia —
-   nie zbudowałeś/aś takiej, ale teraz rozpoznasz, jak by wyglądała).
-   "Wybieranie Strategy" to po prostu zastosowanie Factory w tym
-   ćwiczeniu, nie to, czym Factory jest z natury. **Adapter** owija
-   coś z niekompatybilnym interfejsem, żeby dopasować go do tego, czego
-   oczekuje Twój kod (wyobraź sobie bibliotekę SMS strony trzeciej,
-   której metoda nazywa się `sendMessage(text)` zamiast `send(message)`
-   — mały wrapper tłumaczący jedno wywołanie na drugie to Adapter).
-   Napisz jedno zdanie na wzorzec w swoich notatkach, własnymi słowami.
-5. Jako praktykę, dodaj jeszcze jeden kod rabatowy do Version B
-   **swojej ścieżki domowej** — `"SAVE_FLAT2"`, warty płaskie $2 zniżki
-   — z własnym testem. Potwierdź, w swoich notatkach, co to Cię
-   kosztowało: ile nowych linii, i czy dotknąłeś/aś jakiejkolwiek
-   istniejącej logiki.
+2. Ta struktura ma nazwę. Kilka wymiennych implementacji tego samego
+   niewielkiego kontraktu jest wybieranych przez kod wywołujący, zamiast
+   trafiać do jednego dużego warunku. To wzorzec **Strategy**. Każdy
+   wpis w mapie lub słowniku kodów rabatowych jest strategią.
+   `ConsoleNotifier`, `InMemoryNotifier` i `SilentNotifier` to strategie
+   dostarczania powiadomień. Strategy nie wymaga hierarchii klas. W Go
+   i Pythonie strategią może być zwykła funkcja przechowywana w mapie
+   lub słowniku; nie trzeba opakowywać jej w osobny typ.
+3. Funkcja `send_receipt_ready`, `SendReceiptReady` lub
+   `sendReceiptReady` otrzymuje strategię jako *parametr*, zamiast
+   tworzyć ją wewnętrznie. Nie zawiera więc instrukcji w rodzaju
+   `notifier = ConsoleNotifier()`. Przekazanie zależności z zewnątrz
+   nazywa się **Dependency Injection**. Nie wymaga frameworka; to kod
+   wywołujący wybiera implementację i przekazuje ją jako argument.
+   Napisz w notatkach jedno zdanie o tym, czego funkcja nie mogłaby już
+   zrobić, gdyby zawsze samodzielnie tworzyła `ConsoleNotifier`.
+4. Przydadzą się jeszcze dwie nazwy. **Factory** skupia w jednym miejscu
+   decyzję o tym, *który* obiekt utworzyć lub zwrócić, dzięki czemu kod
+   wywołujący nie musi za każdym razem podejmować jej samodzielnie.
+   Factory może dostarczać dowolny rodzaj obiektu. W tym ćwiczeniu
+   wybierałaby akurat implementację Strategy. Przykładem byłaby funkcja
+   `build_notifier(config)`, która na podstawie ustawień zwraca
+   `ConsoleNotifier` albo `InMemoryNotifier`. Nie musisz jej budować,
+   ale potrafisz już rozpoznać jej rolę. Wybór strategii jest tylko
+   jednym z zastosowań Factory, a nie jego definicją. **Adapter** opakowuje
+   obiekt o niezgodnym interfejsie, aby pasował do kodu, który już masz.
+   Jeśli zewnętrzna biblioteka SMS udostępnia `sendMessage(text)` zamiast
+   `send(message)`, niewielka klasa tłumacząca jedno wywołanie na drugie
+   jest adapterem. Opisz każdy z tych wzorców jednym własnym zdaniem.
+5. Dla wprawy dodaj do wersji B w **wybranej ścieżce** jeszcze jeden
+   kod rabatowy. `"SAVE_FLAT2"` obniża kwotę o 2 dolary i powinien mieć
+   własny test. Zapisz w notatkach, ile linii trzeba było dodać i czy
+   trzeba było zmienić istniejącą logikę.
 
 ### Python
 
 Dodaj `"SAVE_FLAT2": lambda amount: 2.0` do `DISCOUNT_CODES` w
 `examples/discount-codes/version-b/python/billing/discount_codes.py`.
-Dodaj test do `tests/test_discount_codes.py` asercjonujący
+Dodaj test do `tests/test_discount_codes.py`, który sprawdza
 `apply_discount_code(100.0, "SAVE_FLAT2") == 2.0`.
 
 ### Go
@@ -102,29 +94,28 @@ Dodaj test do `tests/test_discount_codes.py` asercjonujący
 Dodaj `"SAVE_FLAT2": func(amount float64) float64 { return 2.0 }` do
 mapy `discountCodes` w
 `examples/discount-codes/version-b/go/billing/discount_codes.go`.
-Dodaj test do `discount_codes_test.go` asercjonujący, że
-`ApplyDiscountCode(100.0, "SAVE_FLAT2")` zwraca `2.0`. Uruchom
-`gofmt -w .` potem — dodanie dłuższego klucza do mapy przesuwa, jak
-`gofmt` wyrównuje kolumnę `:` dla każdego wpisu, i to jest oczekiwane,
-nie znak, że coś zepsułeś/aś.
+Dodaj test do `discount_codes_test.go`, który sprawdza, że
+`ApplyDiscountCode(100.0, "SAVE_FLAT2")` zwraca `2.0`. Następnie
+uruchom `gofmt -w .`. Dłuższy klucz zmieni wyrównanie kolumny
+`:` przy wszystkich wpisach. To oczekiwany efekt formatowania, a nie
+oznaka błędu.
 
 ### Java
 
 Dodaj `"SAVE_FLAT2", amount -> 2.0` do mapy `CODES` w
 `examples/discount-codes/version-b/java/src/main/java/billing/DiscountCodes.java`.
-Dodaj test do `DiscountCodesTest.java` asercjonujący
+Dodaj test do `DiscountCodesTest.java`, który sprawdza
 `DiscountCodes.apply(100.0, "SAVE_FLAT2") == 2.0`.
 
-Nie dodawaj tego kodu do Version A, i nie dodawaj go do publicznego
-startera — to praktyka tylko dla Twojej własnej kopii.
+Nie dodawaj tego kodu do wersji A ani do publicznej wersji startowej.
+To ćwiczenie dotyczy tylko Twojej kopii roboczej.
 
 ## Kryteria akceptacji
 
-- `my-notes.md` odpowiada na punkty 1, 3 i 4 własnymi słowami (nie
-  wklejone z tego README).
-- Version B Twojej ścieżki domowej ma nowy kod rabatowy z
-  przechodzącym testem, a Twoje notatki podają, ile linii/plików to
-  kosztowało.
+- `my-notes.md` zawiera własne odpowiedzi na punkty 1, 3 i 4, a nie
+  tekst skopiowany z tego pliku.
+- Wersja B w wybranej ścieżce ma nowy kod rabatowy i zaliczony test, a
+  notatki podają liczbę zmienionych linii i plików.
 
 ## Weryfikacja
 
@@ -135,9 +126,9 @@ test -f labs/15-patterns-without-worship/my-notes.md && echo "notes exist"
 cd examples/discount-codes/version-b/python && uv run pytest -v && cd - > /dev/null
 ```
 
-Oczekiwane: notatki istnieją, i zestaw testów przechodzi z jednym
-testem więcej niż wcześniej (9 łącznie, biorąc wcześniejsze 8 Version
-B — 7 dostarczone plus test `SAVE20`, który dodałeś/aś w Lab 12).
+Plik z notatkami powinien istnieć, a wszystkie 9 testów powinny
+przejść. Wersja B początkowo miała 7 testów; kolejny test dla `SAVE20`
+doszedł w labie 12, a ostatni dodajesz tutaj.
 
 ### Go
 
@@ -146,9 +137,9 @@ test -f labs/15-patterns-without-worship/my-notes.md && echo "notes exist"
 cd examples/discount-codes/version-b/go && go test ./... -v && cd - > /dev/null
 ```
 
-Oczekiwane: notatki istnieją, i zestaw testów przechodzi z jednym
-testem więcej niż wcześniej (9 łącznie, biorąc wcześniejsze 8 Version
-B — 7 dostarczone plus test `SAVE20`, który dodałeś/aś w Lab 12).
+Plik z notatkami powinien istnieć, a wszystkie 9 testów powinny
+przejść. Wersja B początkowo miała 7 testów; kolejny test dla `SAVE20`
+doszedł w labie 12, a ostatni dodajesz tutaj.
 
 ### Java
 
@@ -157,82 +148,74 @@ test -f labs/15-patterns-without-worship/my-notes.md && echo "notes exist"
 cd examples/discount-codes/version-b/java && ./gradlew test && cd - > /dev/null
 ```
 
-Oczekiwane: notatki istnieją, i zestaw testów przechodzi z jednym
-testem więcej niż wcześniej (9 łącznie, biorąc wcześniejsze 8 Version
-B — 7 dostarczone plus test `SAVE20`, który dodałeś/aś w Lab 12).
+Plik z notatkami powinien istnieć, a wszystkie 9 testów powinny
+przejść. Wersja B początkowo miała 7 testów; kolejny test dla `SAVE20`
+doszedł w labie 12, a ostatni dodajesz tutaj.
 
 ## Zastanów się
 
 - Strategy, Factory, Adapter i Dependency Injection to cztery różne
-  nazwy. Która z nich opisuje *czym kod jest* (formę), a która opisuje
-  *jak kod coś otrzymuje* (relację)? Czy Twoja mapa/dict kodów
+  nazwy. Która z nich opisuje *czym jest dany fragment kodu*, a która
+  *jak otrzymuje zależności*? Czy mapa lub słownik kodów
   rabatowych jest bliżej jednej czy drugiej?
-- Teraz, gdy masz te nazwy, sięgnąłbyś/abyś po "Strategy" jako
-  rozwiązanie pierwszego dnia Lab 12 — czy zobaczenie najpierw
-  sprzężonej wersji (i poczucie jej kosztu) było potrzebne, żeby
-  docenić, co wzorzec faktycznie daje?
+- Czy znajomość tych nazw wystarczyłaby, aby od razu wybrać Strategy w
+  labie 12? A może dopiero praca ze sprzężoną wersją pokazała, co ten
+  wzorzec faktycznie daje?
 
 ## Jeśli utkniesz
 
 ### Python
 
-- **Podpowiedź 1:** Jeśli nie jesteś pewien/pewna, czy coś "jest
-  Strategy," zapytaj: mógłbym/abym wymienić tę konkretną część na
-  inną implementację tego samego kontraktu bez zmiany kodu, który
-  wywołuje? Jeśli tak, to jest ten wzorzec.
-- **Podpowiedź 2:** Dependency Injection tutaj to nie framework — to
-  po prostu "wywołujący decyduje, którą implementację użyć, przekazując
-  ją jako argument."
-- **Podpowiedź 3:** Dla nowego kodu rabatowego, podążaj za dokładnie tą
-  samą formą co `"SAVE5"` w `DISCOUNT_CODES` — lambda, która ignoruje
-  swój argument i zwraca płaską kwotę.
+- **Podpowiedź 1.** Jeśli nie masz pewności, czy kod realizuje Strategy,
+  sprawdź, czy da się zastąpić ten fragment inną implementacją tego
+  samego kontraktu bez zmiany kodu wywołującego. Jeśli tak, rozpoznajesz
+  ten wzorzec.
+- **Podpowiedź 2.** Dependency Injection nie oznacza tutaj frameworka.
+  Kod wywołujący wybiera implementację i przekazuje ją jako argument.
+- **Podpowiedź 3.** Nowy kod rabatowy zbuduj tak samo jak `"SAVE5"` w
+  `DISCOUNT_CODES`: lambda ignoruje argument i zwraca stałą kwotę.
 
 ### Go
 
-- **Podpowiedź 1:** Jeśli nie jesteś pewien/pewna, czy coś "jest
-  Strategy," zapytaj: mógłbym/abym wymienić tę konkretną część na
-  inną implementację tego samego kontraktu bez zmiany kodu, który
-  wywołuje? Jeśli tak, to jest ten wzorzec.
-- **Podpowiedź 2:** Dependency Injection tutaj to nie framework — to
-  po prostu "wywołujący decyduje, którą implementację użyć, przekazując
-  ją jako argument."
-- **Podpowiedź 3:** Dla nowego kodu rabatowego, podążaj za dokładnie tą
-  samą formą co `"SAVE5"` w mapie `discountCodes` — funkcja, która
-  ignoruje swój argument i zwraca płaską kwotę.
+- **Podpowiedź 1.** Jeśli nie masz pewności, czy kod realizuje Strategy,
+  sprawdź, czy da się zastąpić ten fragment inną implementacją tego
+  samego kontraktu bez zmiany kodu wywołującego. Jeśli tak, rozpoznajesz
+  ten wzorzec.
+- **Podpowiedź 2.** Dependency Injection nie oznacza tutaj frameworka.
+  Kod wywołujący wybiera implementację i przekazuje ją jako argument.
+- **Podpowiedź 3.** Nowy kod rabatowy zbuduj tak samo jak `"SAVE5"` w
+  mapie `discountCodes`: funkcja ignoruje argument i zwraca stałą kwotę.
 
 ### Java
 
-- **Podpowiedź 1:** Jeśli nie jesteś pewien/pewna, czy coś "jest
-  Strategy," zapytaj: mógłbym/abym wymienić tę konkretną część na
-  inną implementację tego samego kontraktu bez zmiany kodu, który
-  wywołuje? Jeśli tak, to jest ten wzorzec.
-- **Podpowiedź 2:** Dependency Injection tutaj to nie framework — to
-  po prostu "wywołujący decyduje, którą implementację użyć, przekazując
-  ją jako argument."
-- **Podpowiedź 3:** Dla nowego kodu rabatowego, podążaj za dokładnie tą
-  samą formą co `"SAVE5"` w mapie `CODES` — lambda, która ignoruje
-  swój argument i zwraca płaską kwotę.
+- **Podpowiedź 1.** Jeśli nie masz pewności, czy kod realizuje Strategy,
+  sprawdź, czy da się zastąpić ten fragment inną implementacją tego
+  samego kontraktu bez zmiany kodu wywołującego. Jeśli tak, rozpoznajesz
+  ten wzorzec.
+- **Podpowiedź 2.** Dependency Injection nie oznacza tutaj frameworka.
+  Kod wywołujący wybiera implementację i przekazuje ją jako argument.
+- **Podpowiedź 3.** Nowy kod rabatowy zbuduj tak samo jak `"SAVE5"` w
+  mapie `CODES`: lambda ignoruje argument i zwraca stałą kwotę.
 
 ## Zanim przejdziesz do Aktu IV
 
-Akt IV (zaczynający się od Lab 16) zakłada, że Twój branch `main` jest
-czysty, a wszystko z Labów 06-15 jest zacommitowane i wypchnięte.
-Teraz:
+Akt IV (od labu 16) zakłada, że gałąź `main` jest czysta, a wszystko z
+labów 06-15 zostało zapisane w commitach i wypchnięte. Sprawdź to teraz.
 
 ```bash
 git status
 ```
 
-Jeśli to pokazuje coś niezacommitowanego, zacommituj i wypchnij to
-teraz (`git add -A && git commit -m "..."; git push`). Jeśli pokazuje
-czysto, jesteś gotowy/a.
+Jeśli są niezapisane zmiany, utwórz commit i wypchnij go teraz
+(`git add -A && git commit -m "..."; git push`). Czyste drzewo robocze
+oznacza, że możesz przejść dalej.
 
 ## Co dalej
 
-Zbudowałeś/aś małą funkcję, dałeś/aś jej nazwę, którą rozpozna
-prawdziwy zespół inżynierski, i użyłeś/aś jej ponownie pod nowymi
-wymogami bez strachu. Akt III jest zakończony. Dalej przestajesz
-pracować samemu — i "u mnie działa" zmienia się w "działa, gdy ktoś
-inny dotknie mojego kodu."
+Masz za sobą zbudowanie niewielkiej funkcji, nazwanie zastosowanego
+rozwiązania i ponowne użycie go przy nowych wymaganiach. Akt III jest
+zakończony. W następnym przestajesz pracować w pojedynkę, a „u mnie
+działa” musi zmienić się w „działa także wtedy, gdy kod zmienia ktoś
+inny”.
 
-Przejdź do [Lab 16 — Branche istnieją, bo praca dzieje się równolegle](../16-parallel-branches/README.pl.md).
+Przejdź do [Lab 16 — Gałęzie istnieją, bo praca toczy się równolegle](../16-parallel-branches/README.pl.md).
